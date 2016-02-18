@@ -1,0 +1,14 @@
+/* body.post-type-expert #titlediv { display: none; } */
+.column-nid { 
+	width: 8em; 
+}
+.meta-box-sortables .inside .welcome-panel { 
+	border: none; 
+	padding: 0; 
+	box-shadow: none; 
+}
+.post-type-people #titlediv, 
+.post-type-people #people_typediv, 
+.post-type-facility #facility_typediv { 
+	display: none; 
+}
