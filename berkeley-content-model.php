@@ -40,10 +40,18 @@ add_action( 'admin_head-index.php',   	'berkeley_content_model_enqueue_files' );
 
 function berkeley_content_model_enqueue_files() {
 	wp_enqueue_style( 'berkeley-content-model-css', plugins_url( '/css/style.css', __FILE__ ), '', '', 'screen' );
+	
+	wp_register_script( 'berkeley-content-model-tax-toggle-js', plugins_url( '/js/tax-toggle.js', __FILE__ ), 'jquery' );
+	$people_types = get_terms( 'people_type', array( 'fields' => 'id=>slug', 'hide_empty' => 0 ) );
+	$facility_types = get_terms( 'facility_type', array( 'fields' => 'id=>slug', 'hide_empty' => 0 ) );
+	$tax_ids = array( 'people_types' => $people_types, 'facility_types' => $facility_types );
+	wp_localize_script( 'berkeley-content-model-tax-toggle-js', 'taxids', $tax_ids );
+	//wp_localize_script( 'berkeley-content-model-tax-toggle-js', 'people_types', $people_types );
+	wp_enqueue_script( 'berkeley-content-model-tax-toggle-js' );
 }
 
 // Hand-written show/hide toggle for taxonomy fields, until ACF supports these fields natively
-add_action( 'acf/input/admin_head', 'berkeley_content_model_tax_toggle_js' );
+// add_action( 'acf/input/admin_head', 'berkeley_content_model_tax_toggle_js' );
 function berkeley_content_model_tax_toggle_js() {
 	wp_register_script( 'berkeley-content-model-tax-toggle-js', plugins_url( '/js/tax-toggle.js', __FILE__ ), 'jquery' );
 	$people_types = get_terms( 'people_type', array( 'fields' => 'id=>slug', 'hide_empty' => 0 ) );

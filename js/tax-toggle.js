@@ -37,7 +37,7 @@ jQuery( document ).ready(function() {
 		
 		people = jQuery( '#people_type input:radio:checked' ).val();
 		//console.log( people + " is now checked" );
-		peoplegroup = taxids.people_types[peoplegroup];
+		peoplegroup = taxids.people_types[people];
 		//console.log( "People type is now: " + peoplegroup );
 		jQuery( ".faculty" ).hide();
 		jQuery( ".staff" ).hide();
