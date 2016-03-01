@@ -3,7 +3,7 @@
 Plugin Name: Berkeley Engineering Content Model
 Description: Creates the custom post types and taxonomies for the Berkeley Engineering sites.
 Author: Stephanie Leary
-Version: 1.4
+Version: 1.5
 Author URI: http://stephanieleary.com
 Text Domain: beng
 */
@@ -12,7 +12,7 @@ Text Domain: beng
 include( 'inc/options.php' );
 include( 'inc/taxonomies.php' );
 include( 'inc/post-types.php' );
-// include( 'inc/save-fields.php' );
+include( 'inc/save-fields.php' );
 include( 'inc/filters.php' );
 include( 'inc/columns.php' );
 include( 'inc/dashboard.php' );

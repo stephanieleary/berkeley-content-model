@@ -1,4 +1,5 @@
-jQuery( document ).ready(function() {	
+jQuery( document ).ready(function() {
+		
 	// hide all taxonomy-specific fields
 	jQuery( ".faculty" ).hide();
 	jQuery( ".staff" ).hide();
@@ -71,6 +72,7 @@ jQuery( document ).ready(function() {
 		jQuery( ".equipment" ).hide();
 		jQuery( "." + facilitygroup ).show();
 	})
+	
     
 });
 

@@ -6,7 +6,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.4.2
-Stable tag: 1.4
+Stable tag: 1.5
 
 == Description ==
 
@@ -22,6 +22,8 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 
 == Changelog ==
 
+= 1.5 =
+* Restored function to concatenate names as post titles for people.
 = 1.4 =
 * Added Genesis SEO and CPT archive settings support to post types.
 * Corrected JS show/hide toggle to correctly show fields when a taxonomy has already been selected.

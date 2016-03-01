@@ -7,7 +7,8 @@
 	padding: 0; 
 	box-shadow: none; 
 }
-.post-type-people #titlediv, 
+/*
+.post-type-people #titlediv, /**/
 .post-type-people #people_typediv, 
 .post-type-facility #facility_typediv { 
 	display: none; 
