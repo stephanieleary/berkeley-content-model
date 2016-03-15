@@ -56,7 +56,7 @@ function berkeley_taxes_setting_validate( $settings ) {
 	$taxes = array( 
 		'committee', 
 		'groups', 
-		'research-areas', 
+		'subject_area', 
 	);
 	$newsettings = array();
 	

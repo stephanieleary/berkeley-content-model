@@ -1,6 +1,25 @@
 <?php
 
+add_action( 'init', 'berkeley_shortcodes_register' );
+
+function berkeley_shortcodes_register() {
+	add_shortcode( 'site-name', 'berkeley_sitename_shortcode' );
+	add_shortcode( 'people', 'berkeley_engineering_people_directory' );
+	add_shortcode( 'subcategories', 'berkeley_engineering_category_directory' );
+}
+
+function berkeley_sitename_shortcode() {
+	return get_option( 'blogname' );
+}
+
 function berkeley_engineering_people_directory($args) {
+	extract( $atts );
+	if ( !isset( $type ) && isset( $atts[0] ) )
+		$type = $atts[0];
+	else 
+		$type = 'faculty';
+	
+	$type = explode(',', $type);
 	
 	$args = array(
 		'post_type' => 'people',
@@ -11,8 +30,7 @@ function berkeley_engineering_people_directory($args) {
 				array(
 					'taxonomy' => 'people_type',
 					'field'    => 'slug',
-					'terms'    => 'student',
-					'operator' => 'NOT IN',
+					'terms'    => $type
 				),
 			),
 		'posts_per_page' => -1
@@ -43,7 +61,7 @@ function berkeley_engineering_people_directory($args) {
 	
 	return $out;
 }
-add_shortcode( 'people', 'berkeley_engineering_people_directory' );
+
 
 function berkeley_engineering_category_directory( $atts ) {
 	
@@ -61,4 +79,3 @@ function berkeley_engineering_category_directory( $atts ) {
 		'depth' => 1,
 	) );
 }
-add_shortcode( 'subcategories', 'berkeley_engineering_category_directory' );

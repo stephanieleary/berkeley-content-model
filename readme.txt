@@ -6,7 +6,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.4.2
-Stable tag: 1.5
+Stable tag: 1.6
 
 == Description ==
 
@@ -22,6 +22,12 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 
 == Changelog ==
 
+= 1.6 =
+* Moved archive settings file in from theme.
+* Moved shortcodes in from theme. Added 'type' attribute for people directory.
+* Changed Research Interests taxonomy to Subject Areas.
+* Changed Departments taxonomy to Organizations.
+* Added Student Type taxonomy.
 = 1.5 =
 * Restored function to concatenate names as post titles for people.
 = 1.4 =

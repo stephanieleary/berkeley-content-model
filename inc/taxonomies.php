@@ -44,23 +44,23 @@ function berkeley_content_model_taxonomies() {
 	register_taxonomy( 'people_type', array( 'people' ), $args );
 	
 	$labels = array(
-		'name'                       => _x( 'Departments', 'Taxonomy General Name' ),
-		'singular_name'              => _x( 'Department', 'Taxonomy Singular Name' ),
-		'menu_name'                  => __( 'Department' ),
-		'all_items'                  => __( 'Departments' ),
-		'parent_item'                => __( 'Parent Department' ),
-		'parent_item_colon'          => __( 'Parent Department:' ),
-		'new_item_name'              => __( 'New Department' ),
-		'add_new_item'               => __( 'Add New Department' ),
-		'edit_item'                  => __( 'Edit Department' ),
-		'update_item'                => __( 'Update Department' ),
-		'view_item'                  => __( 'View Department' ),
-		'separate_items_with_commas' => __( 'Separate departments with commas' ),
-		'add_or_remove_items'        => __( 'Add or remove departments' ),
+		'name'                       => _x( 'Organizations', 'Taxonomy General Name' ),
+		'singular_name'              => _x( 'Organization', 'Taxonomy Singular Name' ),
+		'menu_name'                  => __( 'Organization' ),
+		'all_items'                  => __( 'Organizations' ),
+		'parent_item'                => __( 'Parent Organization' ),
+		'parent_item_colon'          => __( 'Parent Organization:' ),
+		'new_item_name'              => __( 'New Organization' ),
+		'add_new_item'               => __( 'Add New Organization' ),
+		'edit_item'                  => __( 'Edit Organization' ),
+		'update_item'                => __( 'Update Organization' ),
+		'view_item'                  => __( 'View Organization' ),
+		'separate_items_with_commas' => __( 'Separate organizations with commas' ),
+		'add_or_remove_items'        => __( 'Add or remove organizations' ),
 		'choose_from_most_used'      => __( 'Choose from the most used' ),
-		'popular_items'              => __( 'Popular Departments' ),
-		'search_items'               => __( 'Search Departments' ),
-		'not_found'                  => __( 'No Departments Found' ),
+		'popular_items'              => __( 'Popular Organizations' ),
+		'search_items'               => __( 'Search Organizations' ),
+		'not_found'                  => __( 'No Organizations Found' ),
 	);
 	$args = array(
 		'labels'                     => $labels,
@@ -71,26 +71,26 @@ function berkeley_content_model_taxonomies() {
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
 	);
-	register_taxonomy( 'department', array( 'people', 'course' ), $args );
+	register_taxonomy( 'organization', array( 'people', 'course' ), $args );
 		
 	$labels = array(
-		'name'                       => _x( 'Research Interests', 'Taxonomy General Name' ),
-		'singular_name'              => _x( 'Research Interest', 'Taxonomy Singular Name' ),
-		'menu_name'                  => __( 'Research Interest' ),
-		'all_items'                  => __( 'Research Interests' ),
-		'parent_item'                => __( 'Parent Interest' ),
-		'parent_item_colon'          => __( 'Parent Interest:' ),
-		'new_item_name'              => __( 'New Interest' ),
-		'add_new_item'               => __( 'Add New Interest' ),
-		'edit_item'                  => __( 'Edit Interest' ),
-		'update_item'                => __( 'Update Interest' ),
-		'view_item'                  => __( 'View Interest' ),
-		'separate_items_with_commas' => __( 'Separate interests with commas' ),
-		'add_or_remove_items'        => __( 'Add or remove interests' ),
+		'name'                       => _x( 'Subject Areas', 'Taxonomy General Name' ),
+		'singular_name'              => _x( 'Subject Area', 'Taxonomy Singular Name' ),
+		'menu_name'                  => __( 'Subject Area' ),
+		'all_items'                  => __( 'Subject Areas' ),
+		'parent_item'                => __( 'Parent Subject Area' ),
+		'parent_item_colon'          => __( 'Parent Subject Area:' ),
+		'new_item_name'              => __( 'New Subject Area' ),
+		'add_new_item'               => __( 'Add New Subject Area' ),
+		'edit_item'                  => __( 'Edit Subject Area' ),
+		'update_item'                => __( 'Update Subject Area' ),
+		'view_item'                  => __( 'View Subject Area' ),
+		'separate_items_with_commas' => __( 'Separate subject areas with commas' ),
+		'add_or_remove_items'        => __( 'Add or remove subject areas' ),
 		'choose_from_most_used'      => __( 'Choose from the most used' ),
-		'popular_items'              => __( 'Popular Interests' ),
-		'search_items'               => __( 'Search Interests' ),
-		'not_found'                  => __( 'No Interests Found' ),
+		'popular_items'              => __( 'Popular Subject Areas' ),
+		'search_items'               => __( 'Search Subject Areas' ),
+		'not_found'                  => __( 'No Subject Areas Found' ),
 	);
 	$args = array(
 		'labels'                     => $labels,
@@ -101,7 +101,7 @@ function berkeley_content_model_taxonomies() {
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
 	);
-	register_taxonomy( 'interest', array( 'people' ), $args );
+	register_taxonomy( 'subject_area', array( 'people', 'facility', 'publication', 'course', 'research' ), $args );
 
 	$labels = array(
 		'name'                       => _x( 'Facility Types', 'Taxonomy General Name' ),
@@ -132,6 +132,37 @@ function berkeley_content_model_taxonomies() {
 		'show_tagcloud'              => false,
 	);
 	register_taxonomy( 'facility_type', array( 'facility' ), $args );
+	
+	
+	$labels = array(
+		'name'                       => _x( 'Student Types', 'Taxonomy General Name' ),
+		'singular_name'              => _x( 'Student Type', 'Taxonomy Singular Name' ),
+		'menu_name'                  => __( 'Student Type' ),
+		'all_items'                  => __( 'Student Types' ),
+		'parent_item'                => __( 'Parent Type' ),
+		'parent_item_colon'          => __( 'Parent Type:' ),
+		'new_item_name'              => __( 'New Type' ),
+		'add_new_item'               => __( 'Add New Type' ),
+		'edit_item'                  => __( 'Edit Type' ),
+		'update_item'                => __( 'Update Type' ),
+		'view_item'                  => __( 'View Type' ),
+		'separate_items_with_commas' => __( 'Separate types with commas' ),
+		'add_or_remove_items'        => __( 'Add or remove types' ),
+		'choose_from_most_used'      => __( 'Choose from the most used' ),
+		'popular_items'              => __( 'Popular Types' ),
+		'search_items'               => __( 'Search Types' ),
+		'not_found'                  => __( 'No Types Found' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => true,
+		'public'                     => true,
+		'show_ui'                    => true,
+		'show_admin_column'          => false,
+		'show_in_nav_menus'          => true,
+		'show_tagcloud'              => false,
+	);
+	register_taxonomy( 'student_type', array( 'people' ), $args );
 	
 	
 	// Optional taxonomies
@@ -202,7 +233,7 @@ function berkeley_content_model_taxonomies() {
 		register_taxonomy( 'groups', array( 'people' ), $args );
 	}
 	
-	if ( isset( $taxes['research-areas'] ) && $taxes['research-areas'] ) {
+	if ( isset( $taxes['research_areas'] ) && $taxes['research_areas'] ) {
 		$labels = array(
 			'name'                       => 'Research Areas',
 			'singular_name'              => 'Research Area',
@@ -231,38 +262,39 @@ function berkeley_content_model_taxonomies() {
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => true,
 		);
-		register_taxonomy( 'research-areas', array( 'people' ), $args );
+		register_taxonomy( 'research_areas', array( 'people' ), $args );
 	}
 }
 
 // insert default terms
 
 function berkeley_engineering_create_terms() {
-	$faculty = term_exists( 'Faculty', 'people_type' );
-	if ( !$faculty )
-		wp_insert_term( 'Faculty', 'people_type');
 	
-	$staff = term_exists( 'Staff', 'people_type' );
-	if ( !$staff )
-		wp_insert_term( 'Staff', 'people_type' );
+	$default_terms = array(
+		'Faculty' 	=> 'people_type',
+		'Staff' 	=> 'people_type',
+		'Student' 	=> 'people_type',
+		
+		'Undergrad'	=> 'student_type',
+		'Masters'	=> 'student_type',
+		'PhD'		=> 'student_type',
+		'Post Doc'	=> 'student_type',
+		'Visitor'	=> 'student_type',
+		
+		'Building'  => 'facility_type',
+		'Room'  	=> 'facility_type',
+		'Lab'  		=> 'facility_type',
+		'Tool or Equipment'  => 'facility_type',
+	);
 	
-	$student = term_exists( 'Student', 'people_type' );
-	if ( !$student )
-		wp_insert_term( 'Student', 'people_type' );
-	
-	$bldg = term_exists( 'Building', 'facility_type' );
-	if ( !$bldg )
-		wp_insert_term( 'Building', 'facility_type' );
-	
-	$room = term_exists( 'Room', 'facility_type' );
-	if ( !$room )
-		wp_insert_term( 'Room', 'facility_type' );
-	
-	$lab = term_exists( 'Lab', 'facility_type' );
-	if ( !$lab )
-		wp_insert_term( 'Lab', 'facility_type' );
-	
-	$tool = term_exists( 'Tool or Equipment', 'facility_type' );
-	if ( !$tool )
-		wp_insert_term( 'Tool or Equipment', 'facility_type', array( 'slug' => 'equipment' ) );
+	foreach ( $default_terms as $term => $taxonomy ) {
+		$exists = term_exists( $term, $taxonomy );
+		if ( !$exists ) {
+			if ( 'Tool or Equipment' == $term )
+				wp_insert_term( $term, $taxonomy, array( 'slug' => 'equipment' ) );
+			else
+				wp_insert_term( $term, $taxonomy );
+		}	
+	}
+		
 }
