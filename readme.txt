@@ -1,4 +1,4 @@
-=== Work Zone Safety ===
+=== Berkeley Content Model ===
 Contributors: sillybean
 Author: Stephanie Leary
 Author URI: http://stephanieleary.com
@@ -22,6 +22,8 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 
 == Changelog ==
 
+= 1.6.1 =
+* Added excerpts for pages.
 = 1.6 =
 * Moved archive settings file in from theme.
 * Moved shortcodes in from theme. Added 'type' attribute for people directory.

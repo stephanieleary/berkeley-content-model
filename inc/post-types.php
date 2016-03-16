@@ -1,7 +1,8 @@
 <?php
 
-
 function berkeley_content_model_post_types() {
+	
+	add_post_type_support( 'page', 'excerpt' );
 
 	$cpts = get_option( 'berkeley_cpts', array() );
 	

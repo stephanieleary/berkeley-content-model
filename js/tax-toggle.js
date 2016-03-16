@@ -8,8 +8,9 @@ jQuery( document ).ready(function() {
 	jQuery( ".lab" ).hide();
 	jQuery( ".equipment" ).hide();
 	
-	// also hide research-areas taxonomy box when student is selected
+	// also hide subject_area and interests taxonomy box when student is selected
 	jQuery( "#tagsdiv-interest" ).hide();
+	jQuery( "#tagsdiv-subject_area" ).hide();
 	
 	// tax_ids.people_types and tax_ids.facility_types objects are set via wp_localize_script in main plugin file
 	//console.log( "People types object: %o", taxids.people_types );
@@ -21,6 +22,7 @@ jQuery( document ).ready(function() {
 	jQuery( "." + peoplegroup ).show();
 	if ( peoplegroup == "faculty" ) {
 		jQuery( "#tagsdiv-interest" ).show();
+		jQuery( "#tagsdiv-subject_area" ).show();
 	}
 	
 	if ( peoplegroup == "student" ) {
@@ -45,9 +47,11 @@ jQuery( document ).ready(function() {
 		jQuery( "." + peoplegroup ).show();
 		if ( peoplegroup == "faculty" ) {
 			jQuery( "#tagsdiv-interest" ).show();
+			jQuery( "#tagsdiv-subject_area" ).show();
 		}
 		else {
 			jQuery( "#tagsdiv-interest" ).hide();
+			jQuery( "#tagsdiv-subject_area" ).hide();
 		}
 		// students don't use the bio (main content) field
 		if ( peoplegroup == "student" ) {
