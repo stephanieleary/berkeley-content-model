@@ -6,7 +6,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.4.2
-Stable tag: 1.6
+Stable tag: 1.7
 
 == Description ==
 
@@ -22,6 +22,11 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 
 == Changelog ==
 
+= 1.7 =
+* Default screen options
+* ACF after title field focus script
+* ACF featured image display checkbox styles
+* SearchWP error fix
 = 1.6.1 =
 * Added excerpts for pages.
 = 1.6 =

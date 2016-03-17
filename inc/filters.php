@@ -1,5 +1,12 @@
 <?php
 
+// Silence SearchWP warning about post_term cache
+add_action( 'pre_get_posts', function( $wp_query ) {
+	if ( is_search() ) {
+		set_query_var( 'update_post_term_cache', false );
+	}
+} );
+
 // Always sort people by last name, first name
 add_filter( 'pre_get_posts', 'berkeley_engineering_alphabetize_people' );
 
