@@ -10,7 +10,8 @@ jQuery( document ).ready(function() {
 	
 	// also hide subject_area and interests taxonomy box when student is selected
 	jQuery( "#tagsdiv-interest" ).hide();
-	jQuery( "#tagsdiv-subject_area" ).hide();
+	jQuery( ".people #tagsdiv-subject_area" ).hide();
+	jQuery( "#student_typediv" ).hide();
 	
 	// tax_ids.people_types and tax_ids.facility_types objects are set via wp_localize_script in main plugin file
 	//console.log( "People types object: %o", taxids.people_types );
@@ -22,12 +23,12 @@ jQuery( document ).ready(function() {
 	jQuery( "." + peoplegroup ).show();
 	if ( peoplegroup == "faculty" ) {
 		jQuery( "#tagsdiv-interest" ).show();
-		jQuery( "#tagsdiv-subject_area" ).show();
+		jQuery( ".people #tagsdiv-subject_area" ).show();
 	}
 	
 	if ( peoplegroup == "student" ) {
 		jQuery( "#tagsdiv-department" ).hide();
-		jQuery( "#postdivrich" ).hide();
+		jQuery( "#student_typediv" ).show();
 	}
 	
 	var facility = jQuery( '#facility_type input:radio:checked' ).val();
@@ -47,19 +48,19 @@ jQuery( document ).ready(function() {
 		jQuery( "." + peoplegroup ).show();
 		if ( peoplegroup == "faculty" ) {
 			jQuery( "#tagsdiv-interest" ).show();
-			jQuery( "#tagsdiv-subject_area" ).show();
+			jQuery( ".people #tagsdiv-subject_area" ).show();
 		}
 		else {
 			jQuery( "#tagsdiv-interest" ).hide();
-			jQuery( "#tagsdiv-subject_area" ).hide();
+			jQuery( ".people #tagsdiv-subject_area" ).hide();
 		}
-		// students don't use the bio (main content) field
+		
 		if ( peoplegroup == "student" ) {
 			jQuery( "#tagsdiv-department" ).hide();
-			jQuery( "#postdivrich" ).hide();
+			jQuery( "#student_typediv" ).show();
 		}
 		else {
-			jQuery( "#postdivrich" ).show();
+			jQuery( "#student_typediv" ).hide();
 		}
 	});
 	
@@ -75,7 +76,7 @@ jQuery( document ).ready(function() {
 		jQuery( ".lab" ).hide();
 		jQuery( ".equipment" ).hide();
 		jQuery( "." + facilitygroup ).show();
-	})
+	});
 	
     
 });
