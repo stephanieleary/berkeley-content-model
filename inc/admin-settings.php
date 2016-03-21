@@ -8,6 +8,7 @@ function berkeley_cpts_hidden_meta_boxes( $hidden, $screen ) {
 		'people_typediv', 
 		'facility_typediv', 
 		'wpe_dify_news_feed',
+		'i123_widgets_custom_fields',
 	);
 	
 	$hidden = array_merge( $hidden, $hide_these );

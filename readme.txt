@@ -22,6 +22,10 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 
 == Changelog ==
 
+= 1.7.1 =
+* updated default screen options
+* ACF message field style
+* hide tax input meta boxes that are duplicated in ACF fields
 = 1.7 =
 * Default screen options
 * ACF after title field focus script

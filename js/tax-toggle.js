@@ -1,5 +1,9 @@
 jQuery( document ).ready(function() {
 		
+	// hide default meta boxes for taxonomy choosers replicated in ACF
+	jQuery( "#facility_typediv" ).hide();
+	jQuery( "#people_typediv" ).hide();
+	
 	// hide all taxonomy-specific fields
 	jQuery( ".faculty" ).hide();
 	jQuery( ".staff" ).hide();
@@ -7,6 +11,7 @@ jQuery( document ).ready(function() {
 	jQuery( ".room" ).hide();
 	jQuery( ".lab" ).hide();
 	jQuery( ".equipment" ).hide();
+	jQuery( ".building" ).hide();
 	
 	// also hide subject_area and interests taxonomy box when student is selected
 	jQuery( "#tagsdiv-interest" ).hide();
@@ -75,6 +80,7 @@ jQuery( document ).ready(function() {
 		jQuery( ".room" ).hide();
 		jQuery( ".lab" ).hide();
 		jQuery( ".equipment" ).hide();
+		jQuery( ".building" ).hide();
 		jQuery( "." + facilitygroup ).show();
 	});
 	

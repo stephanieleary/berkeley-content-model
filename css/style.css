@@ -12,6 +12,10 @@
 	display: none; 
 }
 
+.acf-postbox.seamless > .acf-fields > .acf-field.acf-field-message {
+	padding-top: 2em;
+}
+
 #acf-group_56da0385e1fa1 .acf-label {
 	float: right;
 	width: 85%;
