@@ -8,7 +8,7 @@ function berkeley_engineering_save_meta_data( $post_id ) {
 		return $post_id;
 		
 	// check post type
-	if ( 'people' != $_POST['post_type'] )
+	if ( isset( $_POST['post_type'] ) && 'people' !== $_POST['post_type'] )
 		return $post_id;
 		
 	// check capabilites

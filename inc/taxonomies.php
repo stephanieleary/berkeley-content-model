@@ -1,14 +1,5 @@
 <?php
 
-
-// hide taxonomy metaboxes for fields that are shown in ACF
-add_action( 'admin_menu', 'berkeley_engineering_remove_tax_metaboxes' );
-function berkeley_engineering_remove_tax_metaboxes() {
-	remove_meta_box( 'tagsdiv-people-type', 'people', 'side' );
-	remove_meta_box( 'tagsdiv-facility-type', 'facility', 'side' );
-}
-
-
 // register taxonomies
 
 function berkeley_content_model_taxonomies() {

@@ -15,16 +15,9 @@ function berkeley_cpts_hidden_meta_boxes( $hidden, $screen ) {
     return $hidden;
 }
 
-// Enable Per Page Widgets on our custom post types
-add_action( 'add_meta_boxes', 'berkeley_i123_widgets_custom_fields_add' );
-
-function berkeley_i123_widgets_custom_fields_add() {
-	if ( !function_exists( 'i123_widgets_admin_init' ) )
-		return;
-		
-    i123_widgets_admin_init();
-	$types = array( 'people', 'publication', 'facility', 'research', 'course' );
-	foreach ( $types as $type ) {
-		add_meta_box( 'i123_widgets_custom_fields', __('Per Page Widgets', 'i123_widgets'), 'i123_widgets_custom_fields_controllbox', $type, 'side', 'high' );
-	}
+// hide taxonomy metaboxes for fields that are shown in ACF
+add_action( 'admin_menu', 'berkeley_engineering_remove_tax_metaboxes' );
+function berkeley_engineering_remove_tax_metaboxes() {
+	remove_meta_box( 'people_typediv', 'people', 'side' );
+	remove_meta_box( 'facility_typediv', 'facility', 'side' );
 }
