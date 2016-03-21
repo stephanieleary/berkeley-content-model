@@ -11,6 +11,9 @@ add_action( 'pre_get_posts', function( $wp_query ) {
 add_filter( 'pre_get_posts', 'berkeley_engineering_alphabetize_people' );
 
 function berkeley_engineering_alphabetize_people( $query ) {
+	if ( is_admin() )
+		return $query;
+		
 	if ( isset( $query->post_type ) && $query->post_type == 'people' ) {
 		// Alphabetize 
 	    $query->set( 'meta_key', 'lastname' );			// meta_key must be set to use meta_value in orderby

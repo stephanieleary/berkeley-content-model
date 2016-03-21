@@ -6,14 +6,33 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.4.2
-Stable tag: 1.6
+Stable tag: 1.7.2
 
 == Description ==
 
-Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley Engineering sites. Includes various filters for:
+Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley Engineering sites. 
+
+Features:
+
+* Custom post types:  'people', 'publication', 'facility', 'research', 'course'
+* Custom taxonomies: 'people_type', 'student_type', 'organization', 'subject_area', 'facility_type'
+* Optional taxonomies: 'committee', 'groups', 'research_areas'
+* Dashboard wayfinding widget
+* Genesis archive settings for custom post type slugs
+* Function to concatenante people's names as post titles on save
+
+Shortcodes:
+
+* 'people' (table/directory)
+* 'subcategories' (list/directory)
+* 'site-name'
+
+Includes filters for:
 
 * Edit post list columns
 * Placeholder text and other inline hints
+* Default hidden screen options
+* Built-in Dashboard widgets
 
 == Installation ==
 
@@ -22,6 +41,19 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 
 == Changelog ==
 
+= 1.7.2 =
+* Prevent pre_get_posts filter from running on admin screens
+* Add Per Page Widget meta box to all custom post types
+* Always regenerate people post titles from names
+= 1.7.1 =
+* updated default screen options
+* ACF message field style
+* hide tax input meta boxes that are duplicated in ACF fields
+= 1.7 =
+* Default screen options
+* ACF after title field focus script
+* ACF featured image display checkbox styles
+* SearchWP error fix
 = 1.6.1 =
 * Added excerpts for pages.
 = 1.6 =

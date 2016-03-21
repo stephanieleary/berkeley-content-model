@@ -14,10 +14,6 @@ function berkeley_engineering_save_meta_data( $post_id ) {
 	// check capabilites
 	if ( !current_user_can( 'edit_posts' ) )
 		return $post_id;
-		
-	// if the name is already set, bail
-	if ( isset( $_POST['post_title'] ) && !empty( $_POST['post_title'] ) )
-		return $post_id;
 	
 	// get ACF's name fields, which should be already saved
 	$name = array();	
