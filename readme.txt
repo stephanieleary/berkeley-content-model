@@ -5,8 +5,8 @@ Author URI: http://stephanieleary.com
 Description: Custom post types and taxonomies, plus various helper filters and Dashboard widget.
 License: GPL2
 Requires at least: 3.1
-Tested up to: 4.4.2
-Stable tag: 1.7.2
+Tested up to: 4.5
+Stable tag: 1.8
 
 == Description ==
 
@@ -41,6 +41,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8 =
+* Added taxonomy helper functions
 = 1.7.2 =
 * Prevent pre_get_posts filter from running on admin screens
 * Add Per Page Widget meta box to all custom post types

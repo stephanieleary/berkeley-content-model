@@ -3,7 +3,7 @@
 Plugin Name: Berkeley Engineering Content Model
 Description: Creates the custom post types and taxonomies for the Berkeley Engineering sites.
 Author: Stephanie Leary
-Version: 1.7.2
+Version: 1.8
 Author URI: http://stephanieleary.com
 Text Domain: beng
 */
@@ -17,6 +17,7 @@ include( 'inc/post-types.php' );
 include( 'inc/save-fields.php' );
 include( 'inc/shortcodes.php' );
 include( 'inc/taxonomies.php' );
+include( 'inc/taxonomy-functions.php' );
 
 add_action( 'init', 'berkeley_content_model_post_types' );
 add_action( 'init', 'berkeley_content_model_taxonomies' );
@@ -36,6 +37,8 @@ add_action( 'admin_head-edit.php',   	'berkeley_content_model_enqueue_files' );	
 add_action( 'admin_head-post.php', 		'berkeley_content_model_enqueue_files' );	// Edit screens
 add_action( 'admin_head-post-new.php',  'berkeley_content_model_enqueue_files' );	// New edit screens
 add_action( 'admin_head-index.php',   	'berkeley_content_model_enqueue_files' );	// Dashboard
+
+// Load JS files and pass PHP variables to JS scripts
 
 function berkeley_content_model_enqueue_files() {
 	wp_enqueue_style( 'berkeley-content-model-css', plugins_url( '/css/style.css', __FILE__ ), '', '', 'screen' );
