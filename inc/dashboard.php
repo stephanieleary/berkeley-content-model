@@ -59,22 +59,6 @@ function berkeley_engineering_wayfinding_dashboard_widget() {?>
 		<ul>
 			<li><?php printf( '<a href="%s">%s</a>', admin_url( 'users.php' ), __( 'Manage Users' ) ); ?></li>
 		</ul>
-		
-		<h3><?php _e( 'Custom Fields' ); ?></h3>
-		<ul>
-		<?php
-	    $groups = get_posts( array( 
-			'post_type' => 'acf-field-group', 
-			'posts_per_page' => -1,
-		) );
-	    foreach ( $groups as $group ) { ?>
-	    		<li>
-					<?php printf( '<a href="%s">%s</a>' , get_edit_post_link( $group->ID ), get_post_field( 'post_title', $group->ID ) ); ?>
-				</li>
-	    	<?php
-	    }
-	    ?>
-		</ul>
 	</div>
 	</div>
 	</div>
