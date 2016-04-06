@@ -12,18 +12,18 @@ function berkeley_sitename_shortcode() {
 	return get_option( 'blogname' );
 }
 
-function berkeley_engineering_people_directory($args) {
+function berkeley_engineering_people_directory( $atts ) {
 	extract( $atts );
 	if ( !isset( $type ) && isset( $atts[0] ) )
 		$type = $atts[0];
 	else 
 		$type = 'faculty';
 	
-	$type = explode(',', $type);
+	//$type = explode(',', $type);
 	
 	$args = array(
 		'post_type' => 'people',
-		'meta_key' => 'lastname',
+		'meta_key' => 'last_name',
 		'orderby' => 'meta_value title',
 		'order' => 'ASC',
 		'tax_query' => array(
@@ -43,16 +43,16 @@ function berkeley_engineering_people_directory($args) {
 	
 	while ( $the_query->have_posts() ) :
 		$the_query->the_post();
-		$phone = get_post_meta( $the_query->post->ID, 'phone', true );
+		$phone = get_post_meta( $the_query->post->ID, 'phone', true ) ? : '';
 		$phonelink = str_replace( '-', '', $phone );
 		$phonelink = 'tel:+1' . str_replace( '.', '', $phonelink );
-		$email = get_post_meta( $the_query->post->ID, 'email', true );
+		$email = get_post_meta( $the_query->post->ID, 'email', true ) ? : '';
 		
 		$out .= '<tr itemscope itemtype="http://schema.org/Person" class="vcard">';
 		$out .= sprintf( '<td itemprop="name" class="fn"><a href="%s">%s</a></td>', get_permalink(), get_the_title() );
 		$out .= sprintf( '<td itemprop="jobTitle" class="note">%s</td>', get_post_meta( $the_query->post->ID, 'job_title', true ) );
 		$out .= sprintf( '<td itemprop="telephone" class="tel"><a href="%s">%s</a></td>', $phonelink, $phone );
-		$out .= sprintf( '<td itemprop="email" class="email"><a href="mailto:%$1s">%$1s</a></td>', $email  );
+		$out .= sprintf( '<td itemprop="email" class="email"><a href="mailto:%s">%s</a></td>', $email, $email );
 		$out .= '</tr>';
 	endwhile;
 	

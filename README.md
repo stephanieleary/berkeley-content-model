@@ -7,7 +7,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 
 == Description ==
 
@@ -44,6 +44,7 @@ Includes filters for:
 
 = 1.8.2 =
 * Removed custom fields from wayfinding widget
+* Corrected shortcode $atts
 = 1.8.1 =
 * Updated list of hidden meta boxes
 = 1.8 =
