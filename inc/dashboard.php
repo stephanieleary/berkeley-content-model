@@ -28,7 +28,7 @@ function berkeley_engineering_wayfinding_dashboard_widget() {?>
 		<ul>
 			<?php
 		    $content_types = get_post_types( '', 'objects' );
-		    $ignored = array( 'revision', 'nav_menu_item', 'deprecated_log', 'acf-field', 'acf-field-group', 'import_users' );
+		    $ignored = array( 'revision', 'nav_menu_item', 'deprecated_log', 'acf-field', 'acf-field-group', 'import_users', 'soliloquy', 'wp-help', 'safecss' );
 		    foreach ( $content_types as $content_type ) {
 		    	if ( !in_array( $content_type->name, $ignored ) ) { ?>
 		    		<li>

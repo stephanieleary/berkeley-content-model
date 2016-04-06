@@ -45,6 +45,7 @@ Includes filters for:
 = 1.8.2 =
 * Removed custom fields from wayfinding widget
 * Corrected shortcode $atts
+* Updated list of ignored post types in wayfinding widget
 = 1.8.1 =
 * Updated list of hidden meta boxes
 = 1.8 =
