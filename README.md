@@ -2,6 +2,7 @@
 Contributors: sillybean
 Author: Stephanie Leary
 Author URI: http://stephanieleary.com
+GitHub Plugin URI: https://github.com/sillybean/berkeley-content-model
 Description: Custom post types and taxonomies, plus various helper filters and Dashboard widget.
 License: GPL2
 Requires at least: 3.1

@@ -2,11 +2,12 @@
 Contributors: sillybean
 Author: Stephanie Leary
 Author URI: http://stephanieleary.com
+GitHub Plugin URI: https://github.com/sillybean/berkeley-content-model
 Description: Custom post types and taxonomies, plus various helper filters and Dashboard widget.
 License: GPL2
 Requires at least: 3.1
-Tested up to: 4.5
-Stable tag: 1.8.1
+Tested up to: 4.4.2
+Stable tag: 1.7.2
 
 == Description ==
 
@@ -41,10 +42,6 @@ Includes filters for:
 
 == Changelog ==
 
-= 1.8.1 =
-* Updated list of hidden meta boxes
-= 1.8 =
-* Added taxonomy helper functions
 = 1.7.2 =
 * Prevent pre_get_posts filter from running on admin screens
 * Add Per Page Widget meta box to all custom post types
