@@ -6,7 +6,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.8
+Stable tag: 1.8.1
 
 == Description ==
 
@@ -41,6 +41,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.1 =
+* Updated list of hidden meta boxes
 = 1.8 =
 * Added taxonomy helper functions
 = 1.7.2 =
