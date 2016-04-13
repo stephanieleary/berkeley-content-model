@@ -21,7 +21,7 @@ function berkeley_cpts_hidden_meta_boxes( $hidden, $screen ) {
 }
 
 // hide taxonomy metaboxes for fields that are shown in ACF
-add_action( 'admin_menu', 'berkeley_engineering_remove_tax_metaboxes' );
+add_action( 'admin_menu', 'berkeley_engineering_remove_tax_metaboxes', 99 );
 function berkeley_engineering_remove_tax_metaboxes() {
 	remove_meta_box( 'people_typediv', 'people', 'side' );
 	remove_meta_box( 'facility_typediv', 'facility', 'side' );

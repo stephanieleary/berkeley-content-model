@@ -20,7 +20,7 @@ Features:
 * Optional taxonomies: 'committee', 'groups', 'research_areas'
 * Dashboard wayfinding widget
 * Genesis archive settings for custom post type slugs
-* Function to concatenante people's names as post titles on save
+* Function to concatenate people's names as post titles on save
 
 Shortcodes:
 
@@ -42,6 +42,9 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.3 =
+* Change priority of taxonomy meta box removal
+* Set default to true for all CPT toggles
 = 1.8.2 =
 * Removed custom fields from wayfinding widget
 * Corrected shortcode $atts
