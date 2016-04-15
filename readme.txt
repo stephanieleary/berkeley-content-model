@@ -42,6 +42,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.4 =
+* use add_meta_box instead of wp_add_dashboard_widget for better positioning control
 = 1.8.3 =
 * Change priority of taxonomy meta box removal
 * Set default to true for all CPT toggles

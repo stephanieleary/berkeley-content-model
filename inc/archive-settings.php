@@ -51,7 +51,7 @@ function berkeley_cpt_url_settings_defaults( $settings, $post_type ) {
 add_action( 'genesis_settings_sanitizer_init', 'berkeley_cpt_url_genesis_sanitize_settings' );
 
 function berkeley_cpt_url_genesis_sanitize_settings() {
-	// Post type grid loop settings
+	// URL Slug setting
 	$post_types = get_post_types( array( 'public' => true ) ); 
 
 	foreach ( $post_types as $post_type ) {

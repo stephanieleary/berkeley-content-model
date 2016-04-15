@@ -1,8 +1,15 @@
 <?php
 function berkeley_engineering_dashboard_widget_setup() {
-	if ( current_user_can('manage_options') ) {
-		wp_add_dashboard_widget( 'berkeley_engineering_dashboard_wayfinding_widget', 'Manage Content...', 'berkeley_engineering_wayfinding_dashboard_widget');
-	}
+	//wp_add_dashboard_widget( 'berkeley_engineering_dashboard_wayfinding_widget', 'Manage Content...', 'berkeley_engineering_wayfinding_dashboard_widget');
+	
+	add_meta_box(
+	    'berkeley_engineering_dashboard_wayfinding_widget',
+	   	'Manage Content',
+	    'berkeley_engineering_wayfinding_dashboard_widget',
+	    'dashboard', 
+	    'normal',
+	    'high'
+	);
 	
 	// Remove built-in Dashboard widgets
 	global $wp_meta_boxes;
@@ -54,12 +61,14 @@ function berkeley_engineering_wayfinding_dashboard_widget() {?>
 	    }
 	    ?>
 	</div>
+	<?php if ( current_user_can('manage_options') ) { ?>
 	<div class="welcome-panel-column welcome-panel-last">
 		<h3><?php _e( 'Users' ); ?></h3>
 		<ul>
 			<li><?php printf( '<a href="%s">%s</a>', admin_url( 'users.php' ), __( 'Manage Users' ) ); ?></li>
 		</ul>
 	</div>
+	<?php } ?>
 	</div>
 	</div>
 	</div>
