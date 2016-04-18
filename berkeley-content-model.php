@@ -3,7 +3,7 @@
 Plugin Name: Berkeley Engineering Content Model
 Description: Creates the custom post types and taxonomies for the Berkeley Engineering sites.
 Author: Stephanie Leary
-Version: 1.8.4
+Version: 1.8.5
 Author URI: http://stephanieleary.com
 Text Domain: beng
 GitHub Plugin URI: https://github.com/sillybean/berkeley-content-model
@@ -54,7 +54,6 @@ add_action( 'admin_head-index.php',   	'berkeley_content_model_enqueue_files' );
 
 function berkeley_content_model_enqueue_files() {
 	wp_enqueue_style( 'berkeley-content-model-css', plugins_url( '/css/style.css', __FILE__ ), '', '', 'screen' );
-	wp_enqueue_script( 'berkeley-field-focus-js', plugins_url( '/js/field-focus.js', __FILE__ ), 'jquery' );
 	wp_register_script( 'berkeley-tax-toggle-js', plugins_url( '/js/tax-toggle.js', __FILE__ ), 'jquery' );
 
 	$args = array( 
@@ -68,4 +67,7 @@ function berkeley_content_model_enqueue_files() {
 	
 	wp_localize_script( 'berkeley-tax-toggle-js', 'taxids', $tax_ids );
 	wp_enqueue_script(  'berkeley-tax-toggle-js' );
+	
+	if ( isset( $_REQUEST['post_type'] ) && in_array( $_REQUEST['post_type'], array( 'people', 'facility' ) ) )
+		wp_enqueue_script( 'berkeley-tabindex-js', plugins_url( '/js/tabindex.js', __FILE__ ), 'jquery' );
 }

@@ -7,7 +7,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.8.2
+Stable tag: 1.8.5
 
 == Description ==
 
@@ -42,6 +42,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.5 =
+* New focus/tabindex script; admin-settings -> theme
 = 1.8.4 =
 * use add_meta_box instead of wp_add_dashboard_widget for better positioning control
 = 1.8.3 =

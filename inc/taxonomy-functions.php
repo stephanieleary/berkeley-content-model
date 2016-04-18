@@ -1,5 +1,13 @@
 <?php
 
+// hide taxonomy metaboxes for fields that are shown in ACF
+add_action( 'admin_menu', 'berkeley_engineering_remove_tax_metaboxes', 99 );
+function berkeley_engineering_remove_tax_metaboxes() {
+	remove_meta_box( 'people_typediv', 'people', 'side' );
+	remove_meta_box( 'facility_typediv', 'facility', 'side' );
+}
+
+// infer post type when query var is not set
 function berkeley_find_post_type() {
 	
 	$type = get_query_var( 'post_type' );
@@ -15,6 +23,7 @@ function berkeley_find_post_type() {
 	return $type;
 }
 
+// add post_type arg to term links (narrow down the query)
 function taxonomy_link_for_post_type( $termlink, $term, $taxonomy ) {
 	
 	$tax_obj = get_taxonomy( $taxonomy );
