@@ -13,14 +13,11 @@ function berkeley_sitename_shortcode() {
 }
 
 function berkeley_engineering_people_directory( $atts ) {
-	extract( $atts );
-	if ( !isset( $type ) && isset( $atts[0] ) )
-		$type = $atts[0];
-	else 
+	if ( !isset( $atts['type'] ) )
 		$type = 'faculty';
-	
-	//$type = explode(',', $type);
-	
+	else
+		$type = $atts['type'];
+		
 	$args = array(
 		'post_type' => 'people',
 		'meta_key' => 'last_name',
@@ -57,6 +54,7 @@ function berkeley_engineering_people_directory( $atts ) {
 	endwhile;
 	
 	$out .= '</tbody></table>';
+	wp_reset_query();
 	wp_reset_postdata();
 	
 	return $out;

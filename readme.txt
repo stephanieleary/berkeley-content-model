@@ -42,6 +42,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.6 =
+* Fixed attribute handling in people shortcode
 = 1.8.5 =
 * New focus/tabindex script; admin-settings -> theme
 = 1.8.4 =
