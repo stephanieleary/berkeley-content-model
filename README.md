@@ -7,7 +7,7 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.8.5
+Stable tag: 1.8.7
 
 == Description ==
 
@@ -42,6 +42,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.7 =
+* Updated taxonomy toggle to accept both 'student' and 'students' term slugs
 = 1.8.6 =
 * Fixed attribute handling in people shortcode
 = 1.8.5 =

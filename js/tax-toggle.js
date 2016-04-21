@@ -31,7 +31,7 @@ jQuery( document ).ready(function() {
 		jQuery( ".people #tagsdiv-subject_area" ).show();
 	}
 	
-	if ( peoplegroup == "student" ) {
+	if ( peoplegroup == "student" || peoplegroup == "students" ) {
 		jQuery( "#tagsdiv-department" ).hide();
 		jQuery( "#student_typediv" ).show();
 	}
@@ -60,7 +60,7 @@ jQuery( document ).ready(function() {
 			jQuery( ".people #tagsdiv-subject_area" ).hide();
 		}
 		
-		if ( peoplegroup == "student" ) {
+		if ( peoplegroup == "student" || peoplegroup == "students" ) {
 			jQuery( "#tagsdiv-department" ).hide();
 			jQuery( "#student_typediv" ).show();
 		}
