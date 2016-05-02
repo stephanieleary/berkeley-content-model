@@ -1,5 +1,8 @@
 <?php
 
+// tell WP Engine to play nice with SearchWP
+define( 'WPE_GOVERNOR', false );
+
 // Silence SearchWP warning about post_term cache
 add_action( 'pre_get_posts', function( $wp_query ) {
 	if ( is_search() ) {

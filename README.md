@@ -42,6 +42,11 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.8.8 =
+* Dashboard code cleanup
+* Argument cleanup in [people] shortcode
+* set_option() -> update_option()
+* set WPE_GOVERNOR contstant to help SearchWP
 = 1.8.7 =
 * Updated taxonomy toggle to accept both 'student' and 'students' term slugs
 = 1.8.6 =

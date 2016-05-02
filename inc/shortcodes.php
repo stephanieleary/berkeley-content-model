@@ -46,10 +46,10 @@ function berkeley_engineering_people_directory( $atts ) {
 		$email = get_post_meta( $the_query->post->ID, 'email', true ) ? : '';
 		
 		$out .= '<tr itemscope itemtype="http://schema.org/Person" class="vcard">';
-		$out .= sprintf( '<td itemprop="name" class="fn"><a href="%s">%s</a></td>', get_permalink(), get_the_title() );
+		$out .= sprintf( '<th itemprop="name" class="fn"><a href="%s">%s</a></th>', get_permalink(), get_the_title() );
 		$out .= sprintf( '<td itemprop="jobTitle" class="note">%s</td>', get_post_meta( $the_query->post->ID, 'job_title', true ) );
 		$out .= sprintf( '<td itemprop="telephone" class="tel"><a href="%s">%s</a></td>', $phonelink, $phone );
-		$out .= sprintf( '<td itemprop="email" class="email"><a href="mailto:%s">%s</a></td>', $email, $email );
+		$out .= sprintf( '<td itemprop="email" class="email"><a href="mailto:%1$s">%1$s</a></td>', $email );
 		$out .= '</tr>';
 	endwhile;
 	
