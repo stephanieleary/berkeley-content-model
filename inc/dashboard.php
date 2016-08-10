@@ -30,47 +30,39 @@ function berkeley_engineering_wayfinding_dashboard_widget() {?>
 	<div class="welcome-panel-content">
 	<div class="welcome-panel-column-container">
 	<div class="welcome-panel-column">
-		<h3><?php _e( 'Post Types' ); ?></h3>
+		<h3><?php esc_html_e( 'Post Types' ); ?></h3>
 		<ul>
 			<?php
-		    $content_types = get_post_types( '', 'objects' );
-		    $ignored = array( 
-				'revision', 
-				'nav_menu_item', 
-				'deprecated_log', 
-				'acf-field', 
-				'acf-field-group', 
-				'import_users', 
-				'soliloquy', 
-				'wp-help', 
-				'safecss' 
-			);
-		    foreach ( $content_types as $content_type ) {
-		    	if ( !in_array( $content_type->name, $ignored ) ) {
-					printf( '<li><a href="%s">%s</a></li>' , add_query_arg( array( 'post_type' => $content_type->name ) , admin_url( 'edit.php' ) ), $content_type->labels->name );
+		    $post_types = apply_filters( 'berkeley_dashboard_widget_post_types', array( 'post', 'page', 'attachment', 'people', 'facility', 'publication', 'course', 'research' ) );
+			
+		    foreach ( $post_types as $post_type ) {
+				$content_type = get_post_type_object( $post_type );
+		    	if ( current_user_can( $content_type->cap->edit_posts ) ) {
+					printf( '<li><a href="%s">%s</a></li>' , esc_url( add_query_arg( array( 'post_type' => $content_type->name ) , admin_url( 'edit.php' ) ) ), $content_type->labels->name );
 				}
 		    }
 		    ?>
 		</ul>
 	</div>
 	<div class="welcome-panel-column">
-		<h3><?php _e( 'Taxonomies' ); ?></h3>
+		<h3><?php esc_html_e( 'Taxonomies' ); ?></h3>
 		
 		<?php
-	    $taxonomies = get_taxonomies( array( 'public' => true ), 'objects', 'and' );
-		$ignored = array( 'post_format' );
-	    foreach ( $taxonomies as $taxonomy ) {
-		 	if ( !in_array( $taxonomy->name, $ignored ) ) {
-				printf( '<li><a href="%s">%s</a></li>' , add_query_arg( array( 'taxonomy' => $taxonomy->name ), admin_url( 'edit-tags.php' ) ), $taxonomy->label );
+	    $taxonomies = apply_filters( 'berkeley_dashboard_widget_taxonomies', array( 'people_type', 'organization', 'subject_area', 'facility_type', 'student_type', 'committee', 'groups', 'research_areas' ) );
+		
+	    foreach ( $taxonomies as $tax ) {
+			$taxonomy = get_taxonomy( $tax );
+		 	if ( current_user_can( $taxonomy->cap->manage_terms ) ) {
+				printf( '<li><a href="%s">%s</a></li>' , esc_url( add_query_arg( array( 'taxonomy' => $taxonomy->name ), admin_url( 'edit-tags.php' ) ) ), $taxonomy->label );
 			}
 	    }
 	    ?>
 	</div>
-	<?php if ( current_user_can('manage_options') ) { ?>
+	<?php if ( current_user_can( 'edit_users' ) ) { ?>
 	<div class="welcome-panel-column welcome-panel-last">
-		<h3><?php _e( 'Users' ); ?></h3>
+		<h3><?php esc_html_e( 'Users' ); ?></h3>
 		<ul>
-			<li><?php printf( '<a href="%s">%s</a>', admin_url( 'users.php' ), __( 'Manage Users' ) ); ?></li>
+			<li><?php printf( '<a href="users.php">%s</a>', esc_html__( 'Manage Users' ) ); ?></li>
 		</ul>
 	</div>
 	<?php } ?>

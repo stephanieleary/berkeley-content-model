@@ -8,13 +8,6 @@ function berkeley_engineering_custom_column( $column, $id ) {
 	$id = intval( $id );
 	
 	switch ( $column ) {
-		case 'id':
-			echo $id;
-			break;
-	
-		case 'slug':
-			echo get_post_field( 'post_name', $id );
-		
 		case 'first_name':
 		case 'last_name':
 			echo esc_html( get_post_meta( $id, $column, true ) );
@@ -31,23 +24,22 @@ add_action( 'pre_get_posts', 'berkeley_engineering_column_orderby' );
 function berkeley_engineering_column_orderby( $query ) {
     if( ! is_admin() )
         return;
- 
+
     $orderby = $query->get( 'orderby');
 
 	if( ! isset( $orderby ) )
         return;
+
+	$post_type = $query->get( 'post_type');
+	
+	if ( 'people' !== $post_type )
+		return;
  
 	switch ( $orderby ) {
-		case 'id':
-			$query->set( 'orderby', 'id' );
-			break;
 		case 'first_name':
 		case 'last_name':
 			$query->set( 'meta_key', $orderby );
-	        $query->set( 'orderby', 'meta_value' );  // use meta_value_num for numbers
-			break;
-		case 'slug':
-			$query->set( 'orderby', 'name' ); 
+	        $query->set( 'orderby', 'meta_value' );
 			break;
 	}
 

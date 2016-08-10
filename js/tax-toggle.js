@@ -18,26 +18,26 @@ jQuery( document ).ready(function() {
 	jQuery( ".people #tagsdiv-subject_area" ).hide();
 	jQuery( "#student_typediv" ).hide();
 	
-	// tax_ids.people_types and tax_ids.facility_types objects are set via wp_localize_script in main plugin file
-	//console.log( "People types object: %o", taxids.people_types );
-	//console.log( "Facility types object: %o", taxids.facility_types );
+	// Berkeley_Edit_Post_Toggles_taxids.people_types and Berkeley_Edit_Post_Toggles_taxids.facility_types objects are set via wp_localize_script in main plugin file
+	//console.log( "People types object: %o", Berkeley_Edit_Post_Toggles_taxids.people_types );
+	//console.log( "Facility types object: %o", Berkeley_Edit_Post_Toggles_taxids.facility_types );
 	
 	// Show correct inputs when an initial value is set
 	var people = jQuery( '#people_type input:radio:checked' ).val();
-	var peoplegroup = taxids.people_types[people];
+	var peoplegroup = Berkeley_Edit_Post_Toggles_taxids.people_types[people];
 	jQuery( "." + peoplegroup ).show();
-	if ( peoplegroup == "faculty" ) {
+	if ( peoplegroup === "faculty" ) {
 		jQuery( "#tagsdiv-interest" ).show();
 		jQuery( ".people #tagsdiv-subject_area" ).show();
 	}
 	
-	if ( peoplegroup == "student" || peoplegroup == "students" ) {
+	if ( peoplegroup === "student" || peoplegroup === "students" ) {
 		jQuery( "#tagsdiv-department" ).hide();
 		jQuery( "#student_typediv" ).show();
 	}
 	
 	var facility = jQuery( '#facility_type input:radio:checked' ).val();
-	var facilitygroup = taxids.facility_types[facility];
+	var facilitygroup = Berkeley_Edit_Post_Toggles_taxids.facility_types[facility];
 	jQuery( "." + facilitygroup ).show();
 	
 	// toggle people fields' visibility when the taxonomy radio buttons change
@@ -45,13 +45,13 @@ jQuery( document ).ready(function() {
 		
 		people = jQuery( '#people_type input:radio:checked' ).val();
 		//console.log( people + " is now checked" );
-		peoplegroup = taxids.people_types[people];
+		peoplegroup = Berkeley_Edit_Post_Toggles_taxids.people_types[people];
 		//console.log( "People type is now: " + peoplegroup );
 		jQuery( ".faculty" ).hide();
 		jQuery( ".staff" ).hide();
 		jQuery( ".student" ).hide();
 		jQuery( "." + peoplegroup ).show();
-		if ( peoplegroup == "faculty" ) {
+		if ( peoplegroup === "faculty" ) {
 			jQuery( "#tagsdiv-interest" ).show();
 			jQuery( ".people #tagsdiv-subject_area" ).show();
 		}
@@ -60,7 +60,7 @@ jQuery( document ).ready(function() {
 			jQuery( ".people #tagsdiv-subject_area" ).hide();
 		}
 		
-		if ( peoplegroup == "student" || peoplegroup == "students" ) {
+		if ( peoplegroup === "student" || peoplegroup === "students" ) {
 			jQuery( "#tagsdiv-department" ).hide();
 			jQuery( "#student_typediv" ).show();
 		}
@@ -75,7 +75,7 @@ jQuery( document ).ready(function() {
 		
 		facility = jQuery( '#facility_type input:radio:checked' ).val();
 		//console.log( facility + " is now checked" );
-		facilitygroup = taxids.facility_types[facility];
+		facilitygroup = Berkeley_Edit_Post_Toggles_taxids.facility_types[facility];
 		//console.log( "Facility type is now: " + facilitygroup );
 		jQuery( ".room" ).hide();
 		jQuery( ".lab" ).hide();
@@ -86,4 +86,3 @@ jQuery( document ).ready(function() {
 	
     
 });
-

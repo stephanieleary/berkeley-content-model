@@ -5,9 +5,10 @@ Author URI: http://stephanieleary.com
 GitHub Plugin URI: https://github.com/sillybean/berkeley-content-model
 Description: Custom post types and taxonomies, plus various helper filters and Dashboard widget.
 License: GPL2
+Text Domain: beng
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.8.7
+Stable tag: 1.9
 
 == Description ==
 
@@ -42,6 +43,19 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.9 =
+* Escaping and translating function cleanup
+* Prefix JS globals
+* use admin_enqueue_scripts instead of admin_hook-*
+* Remove admin columns used only for migration QA; check post_type before setting orderby
+* clean up and consolidate pre_get_posts filters
+* Prefix taxonomy functions
+* Whitelist post_types/taxonomies and check caps in dashboard widget
+= 1.8.8 =
+* Dashboard code cleanup
+* Argument cleanup in [people] shortcode
+* set_option() -> update_option()
+* set WPE_GOVERNOR contstant to help SearchWP
 = 1.8.7 =
 * Updated taxonomy toggle to accept both 'student' and 'students' term slugs
 = 1.8.6 =

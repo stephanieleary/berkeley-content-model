@@ -35,21 +35,20 @@ function berkeley_engineering_people_directory( $atts ) {
 	$the_query = new WP_Query( $args );
 
 	$out = '<table cellpadding="0" cellspacing="0"><thead><tr>';
-	$out .= '<th>Name</th> <th>Title</th> <th>Phone</th> <th>Email</th>';
+	$out .= '<th>'.esc_html__('Name', 'beng').'</th> <th>'.esc_html__('title', 'beng').'</th> <th>'.esc_html__('Phone', 'beng').'</th> <th>'.esc_html__('Email', 'beng').'</th>';
 	$out .= '</tr></thead><tbody>';
 	
 	while ( $the_query->have_posts() ) :
 		$the_query->the_post();
 		$phone = get_post_meta( $the_query->post->ID, 'phone', true ) ? : '';
-		$phonelink = str_replace( '-', '', $phone );
-		$phonelink = 'tel:+1' . str_replace( '.', '', $phonelink );
+		$phonelink = 'tel:+1' . str_replace( array( '.', '-', '(', ')' ), '', esc_attr( $phone ) );
 		$email = get_post_meta( $the_query->post->ID, 'email', true ) ? : '';
 		
 		$out .= '<tr itemscope itemtype="http://schema.org/Person" class="vcard">';
-		$out .= sprintf( '<th itemprop="name" class="fn"><a href="%s">%s</a></th>', get_permalink(), get_the_title() );
+		$out .= sprintf( '<th itemprop="name" class="fn"><a href="%s">%s</a></th>', esc_url( get_permalink() ), get_the_title() );
 		$out .= sprintf( '<td itemprop="jobTitle" class="note">%s</td>', get_post_meta( $the_query->post->ID, 'job_title', true ) );
-		$out .= sprintf( '<td itemprop="telephone" class="tel"><a href="%s">%s</a></td>', $phonelink, $phone );
-		$out .= sprintf( '<td itemprop="email" class="email"><a href="mailto:%1$s">%1$s</a></td>', $email );
+		$out .= sprintf( '<td itemprop="telephone" class="tel"><a href="%s">%s</a></td>', esc_url( $phonelink ), $phone );
+		$out .= sprintf( '<td itemprop="email" class="email"><a href="mailto:%1$s">%1$s</a></td>', antispambot( $email ) );
 		$out .= '</tr>';
 	endwhile;
 	
@@ -72,7 +71,7 @@ function berkeley_engineering_category_directory( $atts ) {
 	return wp_list_categories( array(
 		'taxonomy' => $taxonomy, 
 		'title_li' => '', 
-		'show_option_none' => __( 'None listed' ), 
+		'show_option_none' => esc_html__( 'None listed' ), 
 		'echo' => false, 
 		'depth' => 1,
 	) );

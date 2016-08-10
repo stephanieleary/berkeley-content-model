@@ -36,7 +36,7 @@ function berkeley_cpt_slugs() {
 add_action( 'genesis_cpt_archives_settings_metaboxes' , 'berkeley_register_cpt_settings_box' );
 
 function berkeley_register_cpt_settings_box( $hook ) {
-	add_meta_box( 'berkeley-url-settings', __( 'URL Settings' ), 'berkeley_cpt_url_settings_box', $hook, 'main', 'low' );
+	add_meta_box( 'berkeley-url-settings', esc_html__( 'URL Settings' ), 'berkeley_cpt_url_settings_box', $hook, 'main', 'low' );
 }
 
 
@@ -71,7 +71,7 @@ function berkeley_cpt_url_genesis_sanitize_settings() {
 }
 
 function berkeley_cpt_url_error_notice() {
-	printf( '<div class="error notice"><p>%s</p></div>', __( 'The URL slug you have entered is already being used by another post type or taxonomy. This archive will be unreachable until you choose a different slug.' ) );
+	printf( '<div class="error notice"><p>%s</p></div>', esc_html__( 'The URL slug you have entered is already being used by another post type or taxonomy. This archive will be unreachable until you choose a different slug.' ) );
 }
 
 
@@ -87,7 +87,7 @@ function berkeley_cpt_url_settings_box() {
 
 	<tr valign="top">
 		<th scope="row">
-			<label for="<?php echo esc_attr( $name ); ?>"><?php _e( 'Change archive URL slug to' );?></label>
+			<label for="<?php echo esc_attr( $name ); ?>"><?php esc_html_e( 'Change archive URL slug to' );?></label>
 		</th>
 		<td>
 		<p>
