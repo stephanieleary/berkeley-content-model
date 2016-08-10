@@ -3,7 +3,7 @@
 Plugin Name: Berkeley Engineering Content Model
 Description: Creates the custom post types and taxonomies for the Berkeley Engineering sites.
 Author: Stephanie Leary
-Version: 1.9
+Version: 1.9.1
 Author URI: http://stephanieleary.com
 Text Domain: beng
 GitHub Plugin URI: https://github.com/sillybean/berkeley-content-model
@@ -14,7 +14,6 @@ include( 'inc/archive-settings.php' );
 include( 'inc/columns.php' );
 include( 'inc/dashboard.php' );
 include( 'inc/filters.php' );
-include( 'inc/maps.php' );
 include( 'inc/options.php' );
 include( 'inc/post-types.php' );
 include( 'inc/save-fields.php' );

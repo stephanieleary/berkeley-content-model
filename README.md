@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.9.1 =
+* Remove unnecessary maps file
 = 1.9 =
 * Escaping and translating function cleanup
 * Prefix JS globals
