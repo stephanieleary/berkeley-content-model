@@ -8,7 +8,7 @@ License: GPL2
 Text Domain: beng
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.9
+Stable tag: 1.9.1
 
 == Description ==
 
@@ -45,6 +45,7 @@ Includes filters for:
 
 = 1.9.1 =
 * Remove unnecessary maps file
+* Enable REST API support for post types
 = 1.9 =
 * Escaping and translating function cleanup
 * Prefix JS globals
