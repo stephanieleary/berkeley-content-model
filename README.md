@@ -8,7 +8,7 @@ License: GPL2
 Text Domain: beng
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 
 == Description ==
 
@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.9.2 =
+* Google Maps API key option and filter for Advanced Custom Fields options
 = 1.9.1 =
 * Remove unnecessary maps file
 * Enable REST API support for post types

@@ -3,6 +3,15 @@
 // tell WP Engine to play nice with SearchWP
 define( 'WPE_GOVERNOR', false );
 
+// Pass Google Maps API key option to Advanced Custom Fields options
+add_action( 'acf/init', 'berkeley_gmaps_for_acf' );
+
+function berkeley_gmaps_for_acf() {
+	$key = sanitize_text_field( get_option( 'berkeley_gmaps_api' ) );
+	if ( $key )
+		acf_update_setting( 'google_api_key', $key );
+}
+
 add_action( 'pre_get_posts', 'berkeley_engineering_pre_posts_filters' );
 
 function berkeley_engineering_pre_posts_filters( $query ) {

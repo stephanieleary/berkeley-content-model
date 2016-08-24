@@ -12,7 +12,7 @@ function berkeley_cpts_setting_api_init() {
 
 	add_settings_field( 
 		'berkeley_cpts', 
-		'Enable Content Types', 
+		esc_html__( 'Enable Content Types' ), 
 		'berkeley_cpts_setting_html', 
 		'general' 
 	);
@@ -25,8 +25,21 @@ function berkeley_cpts_setting_api_init() {
 
 	add_settings_field( 
 		'berkeley_taxes', 
-		'Enable Extra Groups for People', 
+		esc_html__( 'Enable Extra Groups for People' ), 
 		'berkeley_taxes_setting_html', 
+		'general' 
+	);
+	
+	register_setting(
+		'general',
+		'berkeley_gmaps_api',
+		'sanitize_text_field'
+	);
+
+	add_settings_field( 
+		'berkeley_gmaps_api', 
+		esc_html__( 'Google Maps API Key' ), 
+		'berkeley_gmaps_api_setting_html', 
 		'general' 
 	);
 	
@@ -76,7 +89,6 @@ function berkeley_taxes_setting_validate( $settings ) {
  */
 function berkeley_cpts_setting_html() { 
 	
-	
 	$cpts = get_option( 'berkeley_cpts' );
 
 	$allcpts = array( 
@@ -98,7 +110,6 @@ function berkeley_cpts_setting_html() {
 
 function berkeley_taxes_setting_html() { 
 	
-	
 	$taxes = get_option( 'berkeley_taxes' );
 
 	$alltaxes = array( 
@@ -115,3 +126,9 @@ function berkeley_taxes_setting_html() {
 	
 }
 
+function berkeley_gmaps_api_setting_html() {
+	
+	$key = get_option( 'berkeley_gmaps_api' );
+	
+	printf( '<input name="berkeley_gmaps_api" id="berkeley_gmaps_api" value="%s" />', esc_attr( $key ) );
+}
