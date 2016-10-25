@@ -125,37 +125,6 @@ function berkeley_content_model_taxonomies() {
 	register_taxonomy( 'facility_type', array( 'facility' ), $args );
 	
 	
-	$labels = array(
-		'name'                       => esc_html_x( 'Student Types', 'Taxonomy General Name', 'beng' ),
-		'singular_name'              => esc_html_x( 'Student Type', 'Taxonomy Singular Name', 'beng' ),
-		'menu_name'                  => esc_html__( 'Student Type', 'beng' ),
-		'all_items'                  => esc_html__( 'Student Types', 'beng' ),
-		'parent_item'                => esc_html__( 'Parent Type' , 'beng'),
-		'parent_item_colon'          => esc_html__( 'Parent Type:', 'beng' ),
-		'new_item_name'              => esc_html__( 'New Type', 'beng' ),
-		'add_new_item'               => esc_html__( 'Add New Type' , 'beng'),
-		'edit_item'                  => esc_html__( 'Edit Type', 'beng' ),
-		'update_item'                => esc_html__( 'Update Type', 'beng' ),
-		'view_item'                  => esc_html__( 'View Type', 'beng' ),
-		'separate_items_with_commas' => esc_html__( 'Separate types with commas', 'beng' ),
-		'add_or_remove_items'        => esc_html__( 'Add or remove types', 'beng' ),
-		'choose_from_most_used'      => esc_html__( 'Choose from the most used', 'beng' ),
-		'popular_items'              => esc_html__( 'Popular Types', 'beng' ),
-		'search_items'               => esc_html__( 'Search Types', 'beng' ),
-		'not_found'                  => esc_html__( 'No Types Found', 'beng' ),
-	);
-	$args = array(
-		'labels'                     => $labels,
-		'hierarchical'               => true,
-		'public'                     => true,
-		'show_ui'                    => true,
-		'show_admin_column'          => true,
-		'show_in_nav_menus'          => true,
-		'show_tagcloud'              => false,
-	);
-	register_taxonomy( 'student_type', array( 'people' ), $args );
-	
-	
 	// Optional taxonomies
 	
 	$taxes = get_option( 'berkeley_taxes' );
@@ -261,31 +230,25 @@ function berkeley_content_model_taxonomies() {
 
 function berkeley_engineering_create_terms() {
 	
-	$default_terms = array(
-		esc_html__( 'Faculty', 'beng' ) 	=> 'people_type',
-		esc_html__( 'Staff', 'beng' )		=> 'people_type',
-		esc_html__( 'Student', 'beng' ) 	=> 'people_type',
-		
-		esc_html__( 'Undergrad', 'beng' )	=> 'student_type',
-		esc_html__( 'Masters', 'beng' )		=> 'student_type',
-		esc_html__( 'PhD', 'beng' )			=> 'student_type',
-		esc_html__( 'Post Doc', 'beng' )	=> 'student_type',
-		esc_html__( 'Visitor', 'beng' )		=> 'student_type',
-		
-		esc_html__( 'Building', 'beng' )  	=> 'facility_type',
-		esc_html__( 'Room', 'beng' )  		=> 'facility_type',
-		esc_html__( 'Lab', 'beng' )			=> 'facility_type',
-		esc_html__( 'Tool or Equipment', 'beng' )  => 'facility_type',
-	);
-	
-	foreach ( $default_terms as $term => $taxonomy ) {
-		$exists = term_exists( $term, $taxonomy );
-		if ( !$exists ) {
-			if ( esc_html__( 'Tool or Equipment', 'beng' ) == $term )
-				wp_insert_term( $term, $taxonomy, array( 'slug' => 'equipment' ) );
-			else
-				wp_insert_term( $term, $taxonomy );
-		}	
-	}
-		
+	berkeley_maybe_insert_term( esc_html__( 'Faculty', 'beng' ), 'people_type' );
+	berkeley_maybe_insert_term( esc_html__( 'Staff', 'beng' ), 'people_type' );
+	berkeley_maybe_insert_term( esc_html__( 'Student', 'beng' ), 'people_type' );
+
+	$student = get_term_by( 'name', esc_html__( 'Student', 'beng' ), 'people_type' );
+	berkeley_maybe_insert_term( esc_html__( 'Undergrad', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
+	berkeley_maybe_insert_term( esc_html__( 'Masters', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
+	berkeley_maybe_insert_term( esc_html__( 'PhD', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
+	berkeley_maybe_insert_term( esc_html__( 'Post Doc', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
+	berkeley_maybe_insert_term( esc_html__( 'Visitor', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
+
+	berkeley_maybe_insert_term( esc_html__( 'Building', 'beng' ), 'facility_type' );
+	berkeley_maybe_insert_term( esc_html__( 'Room', 'beng' ), 'facility_type' );
+	berkeley_maybe_insert_term( esc_html__( 'Lab', 'beng' ), 'facility_type' );
+	berkeley_maybe_insert_term( esc_html__( 'Tool or Equipment', 'beng' ), 'facility_type', array( 'slug' => 'equipment' ) );
+}
+
+function berkeley_maybe_insert_term( $term, $taxonomy, $args = array() ) {
+	if ( !term_exists( $term, $taxonomy ) ) {
+		wp_insert_term( $term, $taxonomy, $args );
+	}	
 }

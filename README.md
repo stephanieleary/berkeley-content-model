@@ -17,7 +17,7 @@ Creates the custom post types, taxonomies, and Dashboard widget for the Berkeley
 Features:
 
 * Custom post types:  'people', 'publication', 'facility', 'research', 'course'
-* Custom taxonomies: 'people_type', 'student_type', 'organization', 'subject_area', 'facility_type'
+* Custom taxonomies: 'people_type', 'organization', 'subject_area', 'facility_type'
 * Optional taxonomies: 'committee', 'groups', 'research_areas'
 * Dashboard wayfinding widget
 * Genesis archive settings for custom post type slugs
@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.9.3 =
+* Remove student_type taxonomy; make former student_type default terms children of 'student' people_type
 = 1.9.2 =
 * Google Maps API key option and filter for Advanced Custom Fields options
 = 1.9.1 =
