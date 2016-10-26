@@ -233,13 +233,16 @@ function berkeley_engineering_create_terms() {
 	berkeley_maybe_insert_term( esc_html__( 'Faculty', 'beng' ), 'people_type' );
 	berkeley_maybe_insert_term( esc_html__( 'Staff', 'beng' ), 'people_type' );
 	berkeley_maybe_insert_term( esc_html__( 'Student', 'beng' ), 'people_type' );
-
+	
+	$args = array();
 	$student = get_term_by( 'name', esc_html__( 'Student', 'beng' ), 'people_type' );
-	berkeley_maybe_insert_term( esc_html__( 'Undergrad', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
-	berkeley_maybe_insert_term( esc_html__( 'Masters', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
-	berkeley_maybe_insert_term( esc_html__( 'PhD', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
-	berkeley_maybe_insert_term( esc_html__( 'Post Doc', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
-	berkeley_maybe_insert_term( esc_html__( 'Visitor', 'beng' ), 'people_type' array( 'parent' => $student->term_id ) );
+	if ( $student && isset( $student->term_id ) )
+		$args = array( 'parent' => $student->term_id );
+	berkeley_maybe_insert_term( esc_html__( 'Undergrad', 'beng' ), 'people_type', $args );
+	berkeley_maybe_insert_term( esc_html__( 'Masters', 'beng' ), 'people_type', $args );
+	berkeley_maybe_insert_term( esc_html__( 'PhD', 'beng' ), 'people_type', $args );
+	berkeley_maybe_insert_term( esc_html__( 'Post Doc', 'beng' ), 'people_type', $args );
+	berkeley_maybe_insert_term( esc_html__( 'Visitor', 'beng' ), 'people_type', $args );
 
 	berkeley_maybe_insert_term( esc_html__( 'Building', 'beng' ), 'facility_type' );
 	berkeley_maybe_insert_term( esc_html__( 'Room', 'beng' ), 'facility_type' );

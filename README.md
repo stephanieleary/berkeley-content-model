@@ -8,7 +8,7 @@ License: GPL2
 Text Domain: beng
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.9.2
+Stable tag: 1.9.4
 
 == Description ==
 
@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.9.4 =
+* Fix comma in taxonomy file
 = 1.9.3 =
 * Remove student_type taxonomy; make former student_type default terms children of 'student' people_type
 = 1.9.2 =
