@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 1.9.5 =
+* Adjust globals for PHP 7 compliance.
 = 1.9.4 =
 * Fix comma in taxonomy file
 = 1.9.3 =

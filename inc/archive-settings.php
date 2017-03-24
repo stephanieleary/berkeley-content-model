@@ -57,10 +57,9 @@ function berkeley_cpt_url_genesis_sanitize_settings() {
 	foreach ( $post_types as $post_type ) {
 		if ( isset( $post_type ) && is_object( $post_type ) && post_type_exists( $post_type ) ) {
 			$setting = '_genesis_admin_cpt_archives_' . $post_type;
-			global $$setting;
 		    genesis_add_option_filter(
 		        'no_html',
-		        $$setting->settings_field,
+		        $GLOBALS[$setting]->settings_field,
 		        array(
 		            'slug',
 		        )
