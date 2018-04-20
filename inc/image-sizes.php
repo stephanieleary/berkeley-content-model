@@ -69,6 +69,8 @@ function berkeley_site_icon_url( $url = '', $size = 512, $blog_id = 0 ) {
 add_filter( 'genesis_pre_load_favicon', 'berkeley_favicon' );
 
 function berkeley_favicon( $favicon_url ) {
+	if ( has_site_icon() )
+		return $favicon_url;
 	return get_stylesheet_directory_uri() . '/images/BE-favicon-150x150.png';
 }
 
