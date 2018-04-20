@@ -152,7 +152,7 @@ function berkeley_color_settings_box() {
 							$classes .= ' clear';
 						if ( $options['colors'] == $color )
 							$classes .= ' selected';
-						$path = get_stylesheet_directory_uri() . '/images/color-schemes/' . sanitize_title( $color );
+						$path = plugins_url( 'images/color-schemes/' . sanitize_title( $color ) , __FILE__ );
 						printf( '<label for="%1$s" class="%2$s">
 							<img alt="%3$s" title="%3$s" src="%4$s.png">
 							<input type="radio" class="screen-reader-text" 
