@@ -16,6 +16,11 @@ function berkeley_after_entry_widget() {
 	) );
 }
 
+function berkeley_sidebar_title_output( $heading, $sidebar_id ) {
+	return '';
+}
+
+add_filter( 'genesis_sidebar_title_output', 'berkeley_sidebar_title_output', 10, 2 );
 
 
 add_action( 'after_setup_theme', 'berkeley_register_sidebars' );

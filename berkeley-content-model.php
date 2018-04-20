@@ -28,6 +28,7 @@ include( '/inc/footer.php' );
 include( '/inc/image-sizes.php' );
 include( '/inc/loops.php' );
 include( '/inc/metaboxes.php' );
+include( '/inc/pagination.php' );
 include( '/inc/sidebars.php' );
 include( '/inc/template-loader.php' );
 include( '/inc/theme-options.php' );
