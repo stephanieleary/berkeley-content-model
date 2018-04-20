@@ -1,0 +1,119 @@
+/*Clearfix for floating elements*/
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after{
+	clear: both;
+}
+
+/*left and right containers*/
+.related_pages .left_container,
+.related_pages .right_container{
+	float: left;
+	min-height: 80px;
+	width: 47%;
+	padding: 15px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+	margin-right: 15px;
+}
+
+.related_pages .description {
+	margin-bottom: 1.6em;
+}
+
+.related_pages .right_container {
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+/*page item itself*/
+.related_pages .page_item {
+	background: #fafafa;
+	border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	padding: 12px;
+	margin-bottom: 10px;
+	width: 320px;
+	display: block;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+}
+
+.related_pages .page_item h3 {
+	font-size: 1em;
+	margin: 0;
+}
+
+/*title for the pages*/
+.page_item .page_title{
+	position: relative;
+	width: calc(100% - 40px);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/*removing an item from related pages*/
+.related_pages .left_container .page_item .remove_item {
+	display: none;
+}
+.page_item .remove_item{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 6px;
+	margin: 4px;
+	box-sizing: border-box;
+	background: #efefef;
+	width: 30px;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.page_item .remove_item.active{
+	display: block;
+}
+
+/*page item while dragging*/
+.related_pages .page_item.ui-draggable-dragging,
+.related_pages .page_item.ui-sortable-helper {
+	border: solid 1px #aaa;
+	background: #eee;
+}
+
+/*dragging item over droppable zone*/
+.right_container.hover-over-draggable{
+	border: solid 1px #aaa;
+}
+
+/*placeholder text for sorting items*/
+.related_pages .my-placeholder{
+	height: 40px;
+	border: dashed 1px #aaa;
+	margin-bottom: 10px;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 320px;
+}
+/*placeholder for when hovering over droppable*/
+.related_pages .droppable-helper{
+	width: 320px;
+	height: 40px;
+	border: dashed 1px #aaa;
+	margin-bottom: 10px;
+	display: none;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.droppable-helper.active{
+	display: block;
+}
