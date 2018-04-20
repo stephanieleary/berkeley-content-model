@@ -20,6 +20,25 @@ function berkeley_noposts_text( $text ) {
 	return $text;
 }
 
+
+// Filter Skip link text
+add_filter( 'genesis_skip_links_output', 'berkeley_skip_links_output' );
+function berkeley_skip_links_output( $links ) {
+	$links['genesis-content'] = esc_html__( 'Skip to main content', 'beng' );
+	return $links;
+}
+
+// Filter breadcrumbs
+add_filter( 'genesis_build_crumbs', 'berkeley_breadcrumbs', 10, 2 );
+function berkeley_breadcrumbs( $crumbs, $args ) {
+	// remove existing final crumb, which includes parent and current page (WHY)
+	$lastcrumb = array_pop( $crumbs );
+	$pos = strrpos( $lastcrumb, '>' );
+	$current = substr( $lastcrumb, $pos + 1 );
+	$crumbs[] = str_replace( $current, '', $lastcrumb ) . '<span class="breadcrumb-current">'.$current.'</span>';
+	return $crumbs;
+}
+
 /*	Content is filtered here instead of in single- and archive- templates
 	so the filters will be applied throughout the site--e.g., search results.
 /**/
