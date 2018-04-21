@@ -51,9 +51,9 @@ function berkeley_cpt_archive_scripts() {
 }
 
 
-add_filter( 'genesis_cpt_archive_settings_defaults', 'berkeley_cpt_url_settings_defaults', 10, 2 );
+add_filter( 'genesis_cpt_archive_settings_defaults', 'berkeley_cpt_genesis_settings_defaults', 10, 2 );
 
-function berkeley_cpt_url_settings_defaults( $settings, $post_type ) {
+function berkeley_cpt_genesis_settings_defaults( $settings, $post_type ) {
 	// Backward compatibility with Bill Erickson's Genesis Grid Loop plugin
 	$gg = array(
 		'grid_on' => genesis_get_option( 'grid_on_' . $post_type, 'genesis-grid' ),
@@ -288,7 +288,7 @@ function berkeley_post_layout_settings_box() {
 		'table_headers' => genesis_get_cpt_option( 'table_headers', $type )
 	);
 
-	$settings = wp_parse_args( array_filter( $settings, 'empty' ), berkeley_cpts_genesis_settings_defaults( array(), $type ) );
+	$settings = wp_parse_args( array_filter( $settings, 'empty' ), berkeley_cpt_genesis_settings_defaults( array(), $type ) );
 	
 	$taxonomies = get_object_taxonomies( $type, 'objects' );
 	

@@ -318,13 +318,16 @@ function berkeley_links_repeater() {
 function berkeley_display_custom_excerpts( $excerpt ) {
 	$post_type = get_post_type();
 	$post_id = get_the_ID();
-	$pre = $excerpt = '';
+	$pre = '';
 	
 	switch ( $post_type ) {
+		
 		case 'people':
 			return $excerpt;
 			break;
+		
 		case 'publication':
+			$excerpt = '';
 			$pre = sprintf( '<p class="pub-author">%s</p>', esc_html( get_field( 'author' ) ) );
 
 			if ( $link = get_field( 'link' ) )
@@ -332,11 +335,11 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 
 			if ( $pub_date = get_field( 'publication_date' ) )
 				$pre .= sprintf( '<p class="pub-date">%s</p>', esc_html( $pub_date ) );
-
+			
 			break;
 		
 		case 'facility':
-			
+			$excerpt = '';
 			if ( $street = get_field( 'street_address' ) )
 				$pre .= sprintf( '<address>%s</address>', esc_html( $street ) );
 			
@@ -347,6 +350,7 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 			break;
 		
 		case 'course':
+			$excerpt = '';
 			if ( $course = get_field( 'course_number' ) )
 				$pre = sprintf( '<p class="course-number">%s</p>', esc_html( $course ) );
 			break;

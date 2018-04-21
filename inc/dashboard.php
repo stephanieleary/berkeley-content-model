@@ -20,6 +20,9 @@ function berkeley_engineering_dashboard_widget_setup() {
 	remove_meta_box( 'dashboard_latest_comments', 'dashboard', 'normal' );
 	remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
 	// remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
+	
+	// Remove the WP Engine widget
+	unregister_widget( 'wpe_widget_powered_by' );
 }
 
 add_action( 'wp_dashboard_setup', 'berkeley_engineering_dashboard_widget_setup' );

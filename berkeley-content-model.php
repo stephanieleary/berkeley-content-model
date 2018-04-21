@@ -21,18 +21,18 @@ include( 'inc/shortcodes.php' );
 include( 'inc/taxonomies.php' );
 include( 'inc/taxonomy-functions.php' );
 
-include( '/inc/announcements.php' );
-include( '/inc/content-filters.php' );
-include( '/inc/editor.php' );
-include( '/inc/footer.php' );
-include( '/inc/image-sizes.php' );
-include( '/inc/loops.php' );
-include( '/inc/metaboxes.php' );
-include( '/inc/pagination.php' );
-include( '/inc/sidebars.php' );
-include( '/inc/template-loader.php' );
-include( '/inc/theme-options.php' );
-include( '/inc/widgets.php' );
+include( 'inc/announcements.php' );
+include( 'inc/content-filters.php' );
+include( 'inc/editor.php' );
+include( 'inc/footer.php' );
+include( 'inc/image-sizes.php' );
+include( 'inc/loops.php' );
+include( 'inc/metaboxes.php' );
+include( 'inc/pagination.php' );
+include( 'inc/sidebars.php' );
+include( 'inc/template-loader.php' );
+include( 'inc/theme-options.php' );
+include( 'inc/widgets.php' );
 
 add_action( 'init', 'berkeley_content_model_post_types' );
 add_action( 'init', 'berkeley_content_model_taxonomies' );
@@ -89,8 +89,8 @@ function berkeley_async_genesis_global_scripts( $tag, $handle ) {
 }
 
 // Admin scripts and styles for Genesis settings
-add_action( 'admin_enqueue_scripts', 'berkeley_settings_admin_styles', 99 );
-function berkeley_settings_admin_styles( $hook ) {
+add_action( 'admin_enqueue_scripts', 'berkeley_genesis_settings_styles', 99 );
+function berkeley_genesis_settings_styles( $hook ) {
 	if ( !in_array( $hook, array( 'edit.php', 'post.php', 'post-new.php', 'toplevel_page_genesis', 'widgets.php' ) ) )
 		return;
 		

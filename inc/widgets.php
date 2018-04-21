@@ -1,8 +1,5 @@
 <?php
 
-// Remove the WP Engine widget
-unregister_widget( 'wpe_widget_powered_by' );
-
 // Filter the Recent Posts widget to specify the post type when possible
 add_filter( 'widget_posts_args', 'berkeley_recent_post_widget_args' );
 

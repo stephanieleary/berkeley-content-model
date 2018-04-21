@@ -172,6 +172,7 @@ function berkeley_do_post_image() {
 add_action( 'genesis_before', 'berkeley_genesis_hooks', 10 );
 function berkeley_genesis_hooks() {
 	$post_type = get_post_type();
+	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 	remove_action( 'genesis_post_content', 'genesis_do_post_image' );
 	$showimg = get_post_meta( get_the_ID(), 'display_featured_image', true );
@@ -238,6 +239,7 @@ function berkeley_taxonomy_loop_switch() {
 // CPT archives with optional taxonomy-based subdivisions
 
 function berkeley_cpt_archive_subdivisions_loop() {
+	
 	$post_type = get_post_type();
 	$taxonomy = genesis_get_cpt_option( 'subdivide', $post_type );
 	
@@ -278,7 +280,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		if ( count( $have_posts ) ) {
 			echo '<div class="wrap '.$post_type.'_type_loop '.$term->slug. ' ' .$taxonomy.'">';
 			remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
-			remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+			remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
 			printf( '<h2 %s>%s</h2>', genesis_attr( 'archive-title' ), strip_tags( $term->name ) );
 			unset( $args['fields'] );
 			genesis_custom_loop( wp_parse_args( $args, $query_args ) );
@@ -312,7 +314,7 @@ function berkeley_sticky_post_loop() {
 			
 		echo '<div class="stickies">';
 		remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
-		remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+		remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
 		genesis_custom_loop( wp_parse_args( $args, $query_args ) );
 		echo '</div>';
 	endif;
