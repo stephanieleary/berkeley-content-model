@@ -271,6 +271,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 						'taxonomy' => $taxonomy,
 						'field'    => 'slug',
 						'terms'    => $term->slug,
+						'include_children' => false
 					),
 				),
 		);
@@ -400,4 +401,128 @@ function berkeley_people_table_loop() {
 	else : //* if no posts exist
 		do_action( 'genesis_loop_else' );
 	endif; //* end loop
+}
+
+// Generic CPT table loops
+
+function berkeley_cpt_table_loop() {
+	if ( have_posts() ) :
+
+		do_action( 'genesis_before_while' );
+		
+		$post_type = get_post_type();
+		$headers = apply_filters( 'berkeley_loop_table_headers', genesis_get_cpt_option( 'table_headers', $post_type ) );
+					
+		echo berkeley_loop_table_headers( $headers );
+	
+		while ( have_posts() ) : the_post();
+		
+			//do_action( 'genesis_before_entry' );
+			
+			$data = berkeley_loop_table_data( $headers );
+			
+			echo berkeley_loop_table_cells( array_combine( $headers, $data ) );
+			
+			//do_action( 'genesis_after_entry' );
+
+		endwhile; //* end of one post
+		
+		echo '</tbody></table>';
+		
+		echo '</div>';
+		
+		do_action( 'genesis_after_endwhile' );
+
+	else : //* if no posts exist
+		do_action( 'genesis_loop_else' );
+	endif; //* end loop
+}
+
+function berkeley_loop_table_data( $headers ) {
+	$data = array();
+	$post_id = get_the_ID();
+	
+	foreach ( $headers as $header ) {
+		
+		switch ( $header ) {
+			case 'title':
+				$data[$header] = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_the_title( $post_id ) );
+				break;
+			case 'post_excerpt': 
+				$data[$header] = apply_filters( 'the_excerpt', get_the_excerpt( $post_id ) );
+				break;
+			case 'post_author':
+				$author_id = get_post_field( 'post_author', $post_id );
+				$data[$header] = sprintf( '<a href="%s">%s</a>', get_author_posts_url( $author_id ), get_the_author( $post_id ) ); 
+				break;
+			case 'date':
+				$data[$header] = get_the_date( get_option( 'date_format' ), $post_id ); 
+				break;
+			case 'modified_date':
+				$data[$header] = get_the_modified_date( get_option( 'date_format' ), $post_id );
+				break;
+			
+			case 'course_title_num':
+			 	$data[$header] = sprintf( '<a href="%s">%s %s</a>', get_permalink( $post_id ), get_field( 'course_number' ), get_the_title( $post_id ) );
+				break;
+				
+			case 'first_name':
+			case 'last_name':
+			case 'publication_name':
+			case 'instructors':
+			case 'times':
+			case 'job_title':
+			case 'phone':
+			case 'phone_number':
+			case 'street_address':
+			case 'city':
+			case 'state':
+			case 'zip':
+			case 'hours':
+			case 'major':
+			case 'class_year':
+				$data[$header] = get_field( $header );
+				break;
+			
+			case 'course_number':
+			 	$data[$header] = sprintf( '<a href="%s">%s</a>', get_permalink( $post_id ), get_field( $header ) );
+				break;
+
+			case 'link':
+			case 'links':
+			 	$data[$header] = make_clickable( get_field( $header ) );
+				break;	
+		
+			case 'address':
+				if ( !empty( get_field( 'address_line_2' ) ) )
+			 		$data[$header] = sprintf( '%s<br />%s', get_field( 'address_line_1' ), get_field( 'address_line_2' ) );
+				else
+					$data[$header] = get_field( 'address_line_1' );
+				break;
+			
+			case 'email':
+				$data[$header] = sprintf( '<a href="mailto:%1$s">%1$s</a>', antispambot( get_field( $header ) ) );
+				break;
+					
+			case 'facility_type':
+			case 'people_type':
+			case 'publication_type':
+			case 'subject_area':
+			case 'service':
+			case 'post_tag':
+				$data[$header] = get_the_term_list( $post_id, $header, '', ', ', '' );
+				break;
+			default: break;
+		}
+		
+	}
+	
+	return apply_filters( 'berkeley_loop_table_data', $data );
+}
+
+add_filter( 'berkeley_loop_table_headers', 'berkeley_table_header_labels' );
+
+function berkeley_table_header_labels( $headers ) {
+	$labels = berkeley_get_available_table_view_headers( get_post_type() );
+	return array_intersect_key( $labels, array_flip( $headers ) );
 }

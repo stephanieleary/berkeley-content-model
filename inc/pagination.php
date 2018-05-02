@@ -14,7 +14,7 @@ function berkeley_a11y_posts_nav() {
 
 }
 
-function berkeley_a11y_numeric_posts_nav() {
+function berkeley_a11y_numeric_posts_nav( $paged = NULL, $max = NULL ) {
 
 	if( is_singular() ) {
 		return;
@@ -27,7 +27,9 @@ function berkeley_a11y_numeric_posts_nav() {
 		return;
 	}
 
-	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+	if ( !isset( $paged ) )
+		$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+	if ( !isset( $max ) )
 	$max   = (int) $wp_query->max_num_pages;
 
 	// Add current page to the array.

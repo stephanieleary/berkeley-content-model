@@ -206,9 +206,9 @@ function berkeley_get_available_table_view_headers( $post_type ) {
 }
 
 
-add_action( 'genesis_settings_sanitizer_init', 'berkeley_cpt_url_genesis_sanitize_settings' );
+add_action( 'genesis_settings_sanitizer_init', 'berkeley_genesis_theme_options_sanitize_settings' );
 
-function berkeley_cpt_url_genesis_sanitize_settings() {
+function berkeley_genesis_theme_options_sanitize_settings() {
 	$post_types = get_post_types( array( 'public' => true ) ); 
 
 	foreach ( $post_types as $post_type ) {
@@ -217,7 +217,7 @@ function berkeley_cpt_url_genesis_sanitize_settings() {
 
 		    genesis_add_option_filter(
 		        'no_html',
-		        $GLOBALS['setting']->settings_field,
+		        $GLOBALS[$setting]->settings_field,
 		        array(
 		            'slug',
 					'post_layout',
@@ -229,7 +229,7 @@ function berkeley_cpt_url_genesis_sanitize_settings() {
 		
 			genesis_add_option_filter(
 		        'absint',
-		        $GLOBALS['setting']->settings_field,
+		        $GLOBALS[$setting]->settings_field,
 		        array(
 					'grid_columns',
 					'grid_rows'
@@ -288,24 +288,11 @@ function berkeley_post_layout_settings_box() {
 		'table_headers' => genesis_get_cpt_option( 'table_headers', $type )
 	);
 
-	$settings = wp_parse_args( array_filter( $settings, 'empty' ), berkeley_cpt_genesis_settings_defaults( array(), $type ) );
-	
+	$settings = wp_parse_args( $settings, berkeley_cpt_genesis_settings_defaults( array(), $type ) );
+
 	$taxonomies = get_object_taxonomies( $type, 'objects' );
 	
 	$post_type_object = get_post_type_object( $type );
-	/*
-	$gg = array(
-		'grid_on' => genesis_get_option( 'grid_on_' . $type, 'genesis-grid' ),
-		'features_on_front' => (int) genesis_get_option( 'features_on_front', 'genesis-grid' ),
-		'teasers_on_front' =>  (int) genesis_get_option( 'teasers_on_front', 'genesis-grid' ),
-		'features_inside' =>   (int) genesis_get_option( 'features_inside', 'genesis-grid' ),
-		'teasers_inside' =>    (int) genesis_get_option( 'teasers_inside', 'genesis-grid' ),
-		'teaser_columns' =>    (int) genesis_get_option( 'teaser_columns', 'genesis-grid' ),
-		'teaser_image_size' => genesis_get_option( 'teaser_image_size', 'genesis-grid' ),
-	);
-	var_dump($gg);
-	var_dump($settings);
-	/**/
 	?>
 	<table class="form-table">
 	<tbody>

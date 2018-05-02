@@ -8,8 +8,8 @@ jQuery(function() {
 
 jQuery(document).ready(function($){	
 	
-	// _cpt_archives.input_name objects are set via wp_localize_script in archive-settings.php
-	
+	// _cpt_archives (hidden input name) is set via wp_localize_script in archive-settings.php
+	//console.log( _cpt_archives );
 	
 	/*Draggable Area*/
 	$('.left_container .page_item').draggable({
@@ -34,13 +34,15 @@ jQuery(document).ready(function($){
 
 			//on drop trigger actions
 			page_item.find('.remove_item').addClass('active');
-			page_item.append('<input type="hidden" name="genesis-cpt-archive-settings-publication[table_headers][]" value="' + page_item.attr('data-page-id') + '"/>');
+			page_item.append('<input type="hidden" name="'+ _cpt_archives +'[table_headers][]" value="' + page_item.attr('data-page-id') + '"/>');
 
 			//add this new item to the end of the droppable list
 			drop_helper.before(page_item);
 			drop_helper.removeClass('active');
 
 			trigger_remove_page_item_action();
+			
+			//console.log( _cpt_archives +'[table_headers]' );
 
 		},
 		over: function(event,ui){
