@@ -32,7 +32,7 @@ function berkeley_cpt_archive_sort( $query ) {
 
 			case 'people':
 				$query->set( 'order', 'ASC' );
-				$query->set( 'orderby', 'meta_value title' );
+				$query->set( 'orderby', 'menu_order meta_value title' );
 				$query->set( 'meta_key', 'last_name' );
 				break;
 
@@ -44,7 +44,7 @@ function berkeley_cpt_archive_sort( $query ) {
 	
 	if ( isset( $query->query['people_type'] ) ) {
 		$query->set( 'order', 'ASC' );
-		$query->set( 'orderby', 'meta_value title' );
+		$query->set( 'orderby', 'menu_order meta_value title' );
 		$query->set( 'meta_key', 'last_name' );
 	}
 	
@@ -61,6 +61,19 @@ function berkeley_cpt_archive_sort( $query ) {
 			$columns = (int) genesis_get_cpt_option( 'grid_columns', $query->post_type );
 			$rows = (int) genesis_get_cpt_option( 'grid_rows', $query->post_type );
 			$query->set( 'posts_per_page', $columns * $rows );
+		}
+	}
+	
+	// if single-CPT taxonomy, inherit CPT archive settings
+	if ( is_tax() ) {
+		if ( function_exists( 'berkeley_find_post_type' ) ){
+			$type = berkeley_find_post_type();
+			$layout = genesis_get_cpt_option( 'post_layout', $type );
+			if ( 'grid' == $layout ) {
+				$columns = (int) genesis_get_cpt_option( 'grid_columns', $type );
+				$rows = (int) genesis_get_cpt_option( 'grid_rows', $type );
+				$query->set( 'posts_per_page', $columns * $rows );
+			}
 		}
 	}
 	
@@ -199,8 +212,17 @@ function berkeley_genesis_hooks() {
 		}
 	}
 	
-	if ( is_tax() )
+	if ( is_tax() ) {
 		add_action( 'genesis_before', 'berkeley_taxonomy_loop_switch', 99 );
+		// inherit CPT archive settings for single-CPT taxonomies
+		$post_type = berkeley_find_post_type();
+		$layout = genesis_get_cpt_option( 'post_layout', $post_type );
+		
+		if ( $layout == 'table' ) {
+			remove_action( 'genesis_loop', 'genesis_do_loop' );
+			add_action( 'genesis_loop', 'berkeley_cpt_table_loop', 10 );
+		}
+	}
 }
 
 
@@ -240,10 +262,10 @@ function berkeley_taxonomy_loop_switch() {
 
 function berkeley_cpt_archive_subdivisions_loop() {
 	
-	$post_type = get_post_type();
-	$taxonomy = genesis_get_cpt_option( 'subdivide', $post_type );
+	$post_type = berkeley_find_post_type();
+	$divide_by_tax = genesis_get_cpt_option( 'subdivide', $post_type );
 	
-	if ( empty( $taxonomy ) ) {
+	if ( empty( $divide_by_tax ) ) {
 		// do not subdivide this archive page. Do the regular loop.
 		genesis_do_loop();
 		return;
@@ -251,13 +273,14 @@ function berkeley_cpt_archive_subdivisions_loop() {
 	
 	// Set up subdivisions
 	$terms = get_terms( array(
-	    'taxonomy' => $taxonomy,
+	    'taxonomy' => $divide_by_tax,
 	    'hide_empty' => true,
 	) );
 	if ( empty( $terms ) )
 		return;
 
 	global $query_args;
+//	$totalpostcount = 0;
 
 	foreach ( $terms as $term ) {
 		
@@ -268,7 +291,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 			'post_type' => $post_type,
 			'tax_query' => array(
 					array(
-						'taxonomy' => $taxonomy,
+						'taxonomy' => $divide_by_tax,
 						'field'    => 'slug',
 						'terms'    => $term->slug,
 						'include_children' => false
@@ -279,7 +302,8 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		$have_posts = get_posts( wp_parse_args( $args, $query_args ) );
 		
 		if ( count( $have_posts ) ) {
-			echo '<div class="wrap '.$post_type.'_type_loop '.$term->slug. ' ' .$taxonomy.'">';
+//			$totalpostcount += count( $have_posts );
+			echo '<div class="wrap '.$post_type.'_type_loop '.$term->slug. ' ' .$divide_by_tax.'">';
 			remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
 			remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
 			printf( '<h2 %s>%s</h2>', genesis_attr( 'archive-title' ), strip_tags( $term->name ) );
@@ -289,6 +313,12 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		}
 		
 	}
+	/*
+	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+	$max   = intval( $wp_query->max_num_pages );
+	
+	do_action( 'berkeley_a11y_numeric_posts_nav', $paged, $max );
+	/**/
 }
 
 
@@ -410,7 +440,7 @@ function berkeley_cpt_table_loop() {
 
 		do_action( 'genesis_before_while' );
 		
-		$post_type = get_post_type();
+		$post_type = berkeley_find_post_type();
 		$headers = apply_filters( 'berkeley_loop_table_headers', genesis_get_cpt_option( 'table_headers', $post_type ) );
 					
 		echo berkeley_loop_table_headers( $headers );
@@ -523,6 +553,6 @@ function berkeley_loop_table_data( $headers ) {
 add_filter( 'berkeley_loop_table_headers', 'berkeley_table_header_labels' );
 
 function berkeley_table_header_labels( $headers ) {
-	$labels = berkeley_get_available_table_view_headers( get_post_type() );
+	$labels = berkeley_get_available_table_view_headers( berkeley_find_post_type() );
 	return array_intersect_key( $labels, array_flip( $headers ) );
 }

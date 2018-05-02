@@ -299,7 +299,7 @@ function berkeley_post_layout_settings_box() {
 		
 	<tr valign="top">
 		<td colspan="2"><p>
-			<?php _e( sprintf( 'These settings are specific to %s and will override the <a href="%s">site-wide Genesis Content Archives settings</a>.', $post_type_object->label, admin_url( 'admin.php?page=genesis' ) ), 'beng' );?>
+			<?php _e( sprintf( 'These settings are specific to %s.', $post_type_object->label ), 'beng' );?>
 		</p>
 		</td>
 	</tr>
