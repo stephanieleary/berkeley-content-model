@@ -328,14 +328,22 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 			$text = strip_shortcodes( $text );
 			$text = str_replace( ']]>', ']]&gt;', $text );
 			$excerpt_more = apply_filters( 'get_the_content_more_link', sprintf( ' &hellip; <a href="%s" class="more-link">%s</a>', get_permalink(), __( '[Continue reading]', 'beng' ) ), __( '[Continue reading]', 'beng' ) );
-			// use the first paragraph of the bio (content), trimmed to 65 words
-			libxml_use_internal_errors( true );
-			$doc = new DOMDocument();
-			$doc->strictErrorChecking = FALSE;
-			$doc->loadHTML('<?xml encoding="UTF-8">' . $text );
-			$xml = simplexml_import_dom( $doc );
-			$excerpt = $xml->body->p[0];
-			$excerpt = wp_trim_words( $excerpt, 65, $excerpt_more );
+			// if list layout, use the first paragraph of the bio (content), trimmed to 65 words
+			if ( is_tax() && !isset( $post_type ) )
+				$post_type = berkeley_find_post_type();
+			if ( is_post_type_archive() || is_tax() ) {
+				$layout = genesis_get_cpt_option( 'post_layout', $post_type );
+				if ( 'list' == $layout ) {
+					libxml_use_internal_errors( true );
+					$doc = new DOMDocument();
+					$doc->strictErrorChecking = FALSE;
+					$doc->loadHTML('<?xml encoding="UTF-8">' . $text );
+					$xml = simplexml_import_dom( $doc );
+					$excerpt = $xml->body->p[0];
+					$excerpt = wp_trim_words( $excerpt, 65, $excerpt_more );
+				}
+			}
+			
 			return sprintf( '<div class="job_title">%s</div> <p>%s</p>', get_field( 'job_title' ), $excerpt );
 			break;
 		

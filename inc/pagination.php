@@ -1,9 +1,14 @@
 <?php
 
 // Replace Genesis pagination function. Ours has extra screen reader text for better context and accessibility.
+// Do it after_setup_theme; otherwise Genesis puts it back 
+add_action( 'after_setup_theme', 'berkeley_setup_pagination', 99 );
 
-remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
-add_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+function berkeley_setup_pagination() {
+	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+	add_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+}
+
 function berkeley_a11y_posts_nav() {
 
 	if ( 'numeric' === genesis_get_option( 'posts_nav' ) ) {

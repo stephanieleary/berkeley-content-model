@@ -1,9 +1,17 @@
 jQuery(function() {
-    jQuery('.toggle').click(function(){
+    jQuery('.toggle').on('change', function() {
 		var trClass = jQuery(this).val();
     	jQuery('.toggle-row').hide();
 		jQuery('.toggle-row.' + trClass).show('slow');
     });
+
+	jQuery('#subdivide').on('change', function() {
+		jQuery('#posts_per_archive_page').show();
+		if ( jQuery('#subdivide').val().length > 0 ) {
+			console.log( jQuery('#subdivide').val() );
+			jQuery('#posts_per_archive_page').hide();
+		}
+	});
  });
 
 jQuery(document).ready(function($){	

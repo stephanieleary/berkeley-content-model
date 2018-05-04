@@ -70,6 +70,7 @@ function berkeley_cpt_genesis_settings_defaults( $settings, $post_type ) {
 	if ( class_exists( 'BE_Genesis_Grid' ) && $gg[ 'grid_on'] )
 		$settings['post_layout'] = 'grid'; 
 	$settings['subdivide'] = '';
+	$settings['posts_per_archive_page'] = get_option( 'posts_per_page' );
 	$settings['grid_columns'] = (int) $gg[ 'teaser_columns' ];
 	$settings['grid_rows'] = (int) $gg[ 'teasers_on_front' ] / $settings['grid_columns'];
 	$settings['grid_thumbnail_size'] = $gg['teaser_image_size'];
@@ -232,7 +233,8 @@ function berkeley_genesis_theme_options_sanitize_settings() {
 		        $GLOBALS[$setting]->settings_field,
 		        array(
 					'grid_columns',
-					'grid_rows'
+					'grid_rows',
+					'posts_per_archive_page'
 		        )
 		    );
 		}
@@ -282,6 +284,7 @@ function berkeley_post_layout_settings_box() {
 	$settings = array(
 		'subdivide' => genesis_get_cpt_option( 'subdivide', $type ),
 		'post_layout' => genesis_get_cpt_option( 'post_layout', $type ),
+		'posts_per_archive_page' => genesis_get_cpt_option( 'posts_per_archive_page', $type ),
 		'grid_columns' => genesis_get_cpt_option( 'grid_columns', $type ),
 		'grid_rows' => genesis_get_cpt_option( 'grid_rows', $type ),
 		'grid_thumbnail_size' => genesis_get_cpt_option( 'grid_thumbnail_size', $type ),
@@ -338,6 +341,7 @@ function berkeley_post_layout_settings_box() {
 		</th>
 		<td>
 		<p> <input name="<?php echo esc_attr( $name . '[grid_rows]' ); ?>" value="<?php echo esc_attr( $settings['grid_rows'] ) ?>"> </p>
+		<p class="description"><?php _e( 'Enter -1 to show all posts on one page.', 'beng' ); ?></p>
 		</td>
 	</tr>
 	
@@ -369,6 +373,16 @@ function berkeley_post_layout_settings_box() {
 		</td>
 	</tr>
 	
+	<tr valign="top" id="posts_per_archive_page" class="toggle-row list table" <?php if ( $settings['post_layout'] == 'grid' || !empty( $settings['subdivide'] ) ) echo 'style="display: none;"' ?>>
+		<th scope="row">
+			<label for="<?php echo esc_attr( $name. '[posts_per_archive_page]' ); ?>"><?php esc_html_e( 'Posts per page ', 'beng' );?></label>
+		</th>
+		<td>
+		<p> <input name="<?php echo esc_attr( $name . '[posts_per_archive_page]' ); ?>" value="<?php echo esc_attr( $settings['posts_per_archive_page'] ) ?>"> </p>
+		<p class="description"><?php _e( 'Enter -1 to show all posts on one page.', 'beng' ); ?></p>
+		</td>
+	</tr>
+	
 	<tr valign="top" id="table-headers" class="toggle-row table" <?php if ( $settings['post_layout'] !== 'table' ) echo 'style="display: none;"' ?>>
 		<th scope="row">
 			<label for="<?php echo esc_attr( $name. '[table_headers]' ); ?>"><?php esc_html_e( 'Table columns ', 'beng' );?></label>
@@ -395,7 +409,7 @@ function berkeley_post_layout_settings_box() {
 			</div><!-- left_container -->
 			<div class="right_container">
 			<?php
-			printf( __('<h2>Your Columns</h2>') );
+			printf( __( '<h2>Your Columns</h2>' ) );
 			printf( __( '<p class="description">Columns listed here will appear on your <a href="%s">archive page</a>.</p>', 'beng' ), get_post_type_archive_link( $type ) );
 			$columns = array_intersect_key( $columns, array_flip( $settings['table_headers'] ) );
 			
@@ -416,13 +430,13 @@ function berkeley_post_layout_settings_box() {
 		</td>
 	</tr>
 
-	<tr valign="top" id="subdivide"  class="toggle-row grid list" <?php if ( $settings['post_layout'] == 'table' ) echo 'style="display: none;"' ?>>
+	<tr valign="top" id="subdivide-row"  class="toggle-row grid list" <?php if ( $settings['post_layout'] == 'table' ) echo 'style="display: none;"' ?>>
 		<th scope="row">
 			<label for="<?php echo esc_attr( $name. '[subdivide]' ); ?>"><?php esc_html_e( 'Divide archives into sections by ', 'beng' );?></label>
 		</th>
 		<td>
 		<p>
-		<select name="<?php echo esc_attr( $name. '[subdivide]' ); ?>" value="<?php echo esc_attr( $settings['subdivide'] ); ?>">
+		<select id="subdivide" name="<?php echo esc_attr( $name. '[subdivide]' ); ?>" value="<?php echo esc_attr( $settings['subdivide'] ); ?>">
 			<?php 
 			printf( '<option value="" %s>%s</option>'."\n", selected( $settings['subdivide'], '', false), __( 'Do not divide this archive', 'beng' ) );
 			foreach ( $taxonomies as $taxonomy ) :

@@ -12,17 +12,9 @@ function berkeley_cpt_archive_sort( $query ) {
 		switch ( $query->query['post_type'] ) {
 
 			case 'course':
-				$query->set( 'posts_per_page', -1 );
 				$query->set( 'order', 'ASC' );
-				$query->set( 'orderby', 'meta_value meta_value_num' );
+				$query->set( 'orderby', 'meta_value meta_value_num title' );
 				$query->set( 'meta_key', 'course_number' );
-				$query->set( 'meta_query', array(
-					array(
-						'key' 	  => 'course_number',
-						'compare' => 'EXISTS',
-					)
-				) );
-				$query->set( 'ignore_sticky_posts', true );
 				break;
 
 			case 'facility':
@@ -54,33 +46,44 @@ function berkeley_cpt_archive_sort( $query ) {
 	}
 	
 	
-	// handle CPT archive grid loop settings
+	// handle CPT archive grid/table layout loop settings
 	if ( is_post_type_archive() ) {
-		$layout = genesis_get_cpt_option( 'post_layout', $query->post_type );
-		if ( 'grid' == $layout ) {
-			$columns = (int) genesis_get_cpt_option( 'grid_columns', $query->post_type );
-			$rows = (int) genesis_get_cpt_option( 'grid_rows', $query->post_type );
-			$query->set( 'posts_per_page', $columns * $rows );
-		}
+		berkeley_genesis_archive_paging( $query, $query->post_type );
 	}
 	
-	// if single-CPT taxonomy, inherit CPT archive settings
-	if ( is_tax() ) {
-		if ( function_exists( 'berkeley_find_post_type' ) ){
-			$type = berkeley_find_post_type();
-			$layout = genesis_get_cpt_option( 'post_layout', $type );
-			if ( 'grid' == $layout ) {
-				$columns = (int) genesis_get_cpt_option( 'grid_columns', $type );
-				$rows = (int) genesis_get_cpt_option( 'grid_rows', $type );
-				$query->set( 'posts_per_page', $columns * $rows );
-			}
+	// if single-CPT taxonomy, inherit CPT archive layout settings
+	if ( is_tax() && function_exists( 'berkeley_find_post_type' ) ) {
+		$post_type = berkeley_find_post_type();
+		if ( isset( $post_type ) && !empty( $post_type ) ) {
+			berkeley_genesis_archive_paging( $query, $post_type );
 		}
 	}
-	
 	
 	return $query;
 }
 
+
+function berkeley_genesis_archive_paging( $query, $post_type ) {
+	
+	$layout = genesis_get_cpt_option( 'post_layout', $post_type );
+	if ( 'grid' == $layout ) {
+		$rows = genesis_get_cpt_option( 'grid_rows', $post_type );
+		if ( -1 == $rows )
+			$query->set( 'posts_per_archive_page', -1 );
+		else {
+			$columns = (int) genesis_get_cpt_option( 'grid_columns', $post_type );
+			$query->set( 'posts_per_archive_page', $columns * (int)$rows );
+		}
+	}
+	else {
+		$perpage = genesis_get_cpt_option( 'posts_per_archive_page', $post_type );
+		if ( isset( $perpage ) && !empty( $perpage ) ) {
+			$query->set( 'posts_per_archive_page', $perpage );
+		}
+	}
+	
+	return $query;
+}
 
 // Grid loop post classes
 add_filter( 'post_class', 'berkeley_grid_post_classes' );
@@ -185,7 +188,7 @@ function berkeley_do_post_image() {
 add_action( 'genesis_before', 'berkeley_genesis_hooks', 10 );
 function berkeley_genesis_hooks() {
 	$post_type = get_post_type();
-	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+	//remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 	remove_action( 'genesis_post_content', 'genesis_do_post_image' );
 	$showimg = get_post_meta( get_the_ID(), 'display_featured_image', true );
@@ -280,7 +283,6 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		return;
 
 	global $query_args;
-//	$totalpostcount = 0;
 
 	foreach ( $terms as $term ) {
 		
@@ -288,6 +290,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 			'fields' => 'ids',
 			'posts_per_page'  => -1,
 			'posts_per_archive_page' => -1,
+			'nopaging' => true,
 			'post_type' => $post_type,
 			'tax_query' => array(
 					array(
@@ -302,7 +305,6 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		$have_posts = get_posts( wp_parse_args( $args, $query_args ) );
 		
 		if ( count( $have_posts ) ) {
-//			$totalpostcount += count( $have_posts );
 			echo '<div class="wrap '.$post_type.'_type_loop '.$term->slug. ' ' .$divide_by_tax.'">';
 			remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
 			remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
@@ -313,12 +315,6 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		}
 		
 	}
-	/*
-	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
-	$max   = intval( $wp_query->max_num_pages );
-	
-	do_action( 'berkeley_a11y_numeric_posts_nav', $paged, $max );
-	/**/
 }
 
 
@@ -347,6 +343,8 @@ function berkeley_sticky_post_loop() {
 		remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
 		remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
 		genesis_custom_loop( wp_parse_args( $args, $query_args ) );
+		add_action( 'genesis_loop_else', 'genesis_do_noposts' );
+		add_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
 		echo '</div>';
 	endif;
 }
