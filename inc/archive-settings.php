@@ -298,13 +298,6 @@ function berkeley_post_layout_settings_box() {
 	<tbody>
 		
 	<tr valign="top">
-		<td colspan="2"><p>
-			<?php _e( sprintf( 'These settings are specific to %s.', $post_type_object->label ), 'beng' );?>
-		</p>
-		</td>
-	</tr>
-		
-	<tr valign="top">
 		<th scope="row">
 			<label for="<?php echo esc_attr( $name. '[post_layout]' ); ?>"><?php esc_html_e( 'Display posts as ', 'beng' );?></label>
 		</th>
