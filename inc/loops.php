@@ -472,7 +472,7 @@ function berkeley_loop_table_data( $headers ) {
 	$data = array();
 	$post_id = get_the_ID();
 	
-	foreach ( $headers as $header ) {
+	foreach ( $headers as $header => $label ) {
 		
 		switch ( $header ) {
 			case 'title':
