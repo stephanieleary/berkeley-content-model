@@ -323,7 +323,20 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 	switch ( $post_type ) {
 		
 		case 'people':
-			return $excerpt;
+			$excerpt = '';
+			$text = get_the_content( '' );
+			$text = strip_shortcodes( $text );
+			$text = str_replace( ']]>', ']]&gt;', $text );
+			$excerpt_more = apply_filters( 'get_the_content_more_link', sprintf( ' &hellip; <a href="%s" class="more-link">%s</a>', get_permalink(), __( '[Continue reading]', 'beng' ) ), __( '[Continue reading]', 'beng' ) );
+			// use the first paragraph of the bio (content), trimmed to 65 words
+			libxml_use_internal_errors( true );
+			$doc = new DOMDocument();
+			$doc->strictErrorChecking = FALSE;
+			$doc->loadHTML('<?xml encoding="UTF-8">' . $text );
+			$xml = simplexml_import_dom( $doc );
+			$excerpt = $xml->body->p[0];
+			$excerpt = wp_trim_words( $excerpt, 65, $excerpt_more );
+			return sprintf( '<div class="job_title">%s</div> <p>%s</p>', get_field( 'job_title' ), $excerpt );
 			break;
 		
 		case 'publication':
