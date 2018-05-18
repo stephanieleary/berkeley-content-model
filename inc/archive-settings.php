@@ -388,7 +388,6 @@ function berkeley_post_layout_settings_box() {
 			<label for="<?php echo esc_attr( $name. '[table_headers]' ); ?>"><?php esc_html_e( 'Table columns ', 'beng' );?></label>
 		</th>
 		<td> 
-
 			<div class="related_pages">
 			<div class="left_container">
 			<?php
@@ -411,15 +410,14 @@ function berkeley_post_layout_settings_box() {
 			<?php
 			printf( __( '<h2>Your Columns</h2>' ) );
 			printf( __( '<p class="description">Columns listed here will appear on your <a href="%s">archive page</a>.</p>', 'beng' ), get_post_type_archive_link( $type ) );
-			$columns = array_intersect_key( $columns, array_flip( $settings['table_headers'] ) );
-			
-			if ( !empty( $columns ) ) {
+
+			if ( !empty( $settings['table_headers'] ) ) {
 				
-				foreach( $columns as $column => $label ) {
-					printf( '<div class="page_item" data-page-id="%s">', esc_attr( $column ) );
-					printf(	'<div class="page_title"><h3>%s</h3></div>', esc_html( $label ) );
+				foreach( $settings['table_headers'] as $key ) {
+					printf( '<div class="page_item" data-page-id="%s">', esc_attr( $key ) );
+					printf(	'<div class="page_title"><h3>%s</h3></div>', esc_html( $columns[$key] ) );
 					printf( '<div class="remove_item" title="%1$s"><span class="screen-reader-text">%1$s</span>%2$s</div>', __( 'Remove' ), __( '&times;' ) );
-					printf(	'<input type="hidden" name="'. $name. '[table_headers][]' .'" value="%s"/>', esc_attr( $column ) );
+					printf(	'<input type="hidden" name="'. $name. '[table_headers][]' .'" value="%s"/>', esc_attr( $key ) );
 					echo '</div>';
 				}
 			}
