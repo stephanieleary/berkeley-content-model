@@ -33,7 +33,7 @@ function berkeley_content_model_post_types() {
 			'description'         => esc_html__( 'People', 'beng' ),
 			'labels'              => $labels,
 			'supports'            => $supports,
-			'hierarchical'        => false,
+			'hierarchical'        => true,
 			'public'              => true,
 			'show_in_rest'		  => true,
 			'show_ui'             => true,
