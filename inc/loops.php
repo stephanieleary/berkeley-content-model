@@ -551,7 +551,10 @@ function berkeley_loop_table_data( $headers ) {
 add_filter( 'berkeley_loop_table_headers', 'berkeley_table_header_labels' );
 
 function berkeley_table_header_labels( $headers ) {
-	$labels = berkeley_get_available_table_view_headers( berkeley_find_post_type() );
+	$post_type = berkeley_find_post_type();
+	if ( empty( $headers ) )
+		$headers = berkeley_get_default_table_view_headers( $post_type );
+	$labels = berkeley_get_available_table_view_headers( $post_type );
 	// array_intersect_keys() destroys order
 	$header_labels = array();
 	foreach ( $headers as $key ) {
