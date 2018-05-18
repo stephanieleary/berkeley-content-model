@@ -54,8 +54,11 @@ function berkeley_custom_footer() {
 add_theme_support( 'genesis-footer-widgets', 3 );
 
 //* Move the footer widgets inside the footer area instead of just above it
-remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
-add_action( 'genesis_footer', 'genesis_footer_widget_areas', 6 );
+add_action( 'after_setup_theme', 'berkeley_move_footer_widgets', 20 );
+function berkeley_move_footer_widgets() {
+	remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
+	add_action( 'genesis_footer', 'genesis_footer_widget_areas', 6 );
+}
 
 //* Add count class to footer widgets
 // And add a note about 3-widget limit to widget description. 
