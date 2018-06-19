@@ -20,9 +20,18 @@ function berkeley_register_footer_menu() {
 }
 add_action( 'init', 'berkeley_register_footer_menu' );
 
-// replace footer text
-remove_action( 'genesis_footer', 'genesis_do_footer' );
-add_action( 'genesis_footer', 'berkeley_custom_footer' );
+//* Add support for 3 rows (not columns!) of footer widgets
+add_theme_support( 'genesis-footer-widgets', 3 );
+
+//* Footer setup
+add_action( 'after_setup_theme', 'berkeley_footer_setup', 20 );
+function berkeley_footer_setup() {
+	remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
+	add_action( 'genesis_footer', 'genesis_footer_widget_areas', 6 );
+	// replace footer text
+	remove_action( 'genesis_footer', 'genesis_do_footer' );
+	add_action( 'genesis_footer', 'berkeley_custom_footer' );
+}
 
 function berkeley_custom_footer() {
 	wp_nav_menu( array( 
@@ -48,16 +57,6 @@ function berkeley_custom_footer() {
 	echo '<div class="footer-content">';
 	echo do_shortcode( get_field( 'footer_text', 'option' ) );
 	echo '</div><!-- end .footer-content -->';
-}
-
-//* Add support for 3 rows (not columns!) of footer widgets
-add_theme_support( 'genesis-footer-widgets', 3 );
-
-//* Move the footer widgets inside the footer area instead of just above it
-add_action( 'after_setup_theme', 'berkeley_move_footer_widgets', 20 );
-function berkeley_move_footer_widgets() {
-	remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
-	add_action( 'genesis_footer', 'genesis_footer_widget_areas', 6 );
 }
 
 //* Add count class to footer widgets
