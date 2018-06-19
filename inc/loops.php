@@ -66,6 +66,7 @@ function berkeley_cpt_archive_sort( $query ) {
 function berkeley_genesis_archive_paging( $query, $post_type ) {
 	
 	$layout = genesis_get_cpt_option( 'post_layout', $post_type );
+	
 	if ( 'grid' == $layout ) {
 		$rows = genesis_get_cpt_option( 'grid_rows', $post_type );
 		if ( -1 == $rows )
@@ -89,49 +90,46 @@ function berkeley_genesis_archive_paging( $query, $post_type ) {
 add_filter( 'post_class', 'berkeley_grid_post_classes' );
 
 function berkeley_grid_post_classes( $classes ) {
-	if ( !is_post_type_archive() )
-		return $classes;	
-		
-	$layout = genesis_get_cpt_option( 'post_layout', get_post_type() );
-	if ( 'grid' !== $layout ) 
-		return $classes;
-		
-	$columns = (int) genesis_get_cpt_option( 'grid_columns', get_post_type() );
-	if ( !isset( $columns ) || empty( $columns ) )
-		return $classes;
-	
-	global $wp_query;
-	/*
-	if( ! $wp_query->is_main_query() )
-		return $classes;
-	/**/
-	switch ( $columns ) {
-		case '6': 
-			$classes[] = 'one-sixth';
-			if ( 0 == $wp_query->current_post % 6 )
-				$classes[] = 'first';
+	if ( is_post_type_archive() || is_tax() ) {
+		$post_type = berkeley_find_post_type();
+
+		$layout = genesis_get_cpt_option( 'post_layout', $post_type );
+		if ( 'grid' !== $layout ) 
+			return $classes;
+
+		$columns = (int) genesis_get_cpt_option( 'grid_columns', $post_type );
+		if ( !isset( $columns ) || empty( $columns ) )
+			return $classes;
+
+		global $wp_query;
+		switch ( $columns ) {
+			case '6': 
+				$classes[] = 'one-sixth';
+				if ( 0 == $wp_query->current_post % 6 )
+					$classes[] = 'first';
+				break;
+			case '5':
+				$classes[] = 'one-fifth';
+				if ( 0 == $wp_query->current_post % 5 )
+					$classes[] = 'first';
+				break;
+			case '4':
+				$classes[] = 'one-fourth';
+				if ( 0 == $wp_query->current_post % 4 )
+					$classes[] = 'first';
+				break;
+			case '3':
+				$classes[] = 'one-third';
+				if ( 0 == $wp_query->current_post % 3 )
+					$classes[] = 'first';
+				break;
+			case '2':
+			default: 
+				$classes[] = 'one-half';
+				if ( 0 == $wp_query->current_post % 2 )
+					$classes[] = 'first';
 			break;
-		case '5':
-			$classes[] = 'one-fifth';
-			if ( 0 == $wp_query->current_post % 5 )
-				$classes[] = 'first';
-			break;
-		case '4':
-			$classes[] = 'one-fourth';
-			if ( 0 == $wp_query->current_post % 4 )
-				$classes[] = 'first';
-			break;
-		case '3':
-			$classes[] = 'one-third';
-			if ( 0 == $wp_query->current_post % 3 )
-				$classes[] = 'first';
-			break;
-		case '2':
-		default: 
-			$classes[] = 'one-half';
-			if ( 0 == $wp_query->current_post % 2 )
-				$classes[] = 'first';
-		break;
+		}
 	}
 	
 	return $classes;
@@ -142,20 +140,19 @@ function berkeley_grid_post_classes( $classes ) {
 add_action( 'genesis_meta', 'berkeley_grid_post_images' );
 
 function berkeley_grid_post_images() {
-	if ( !is_post_type_archive() )
-		return;
-		
-	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-	remove_action( 'genesis_post_content', 'genesis_do_post_image' );
-	remove_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
-	add_action( 'genesis_entry_header', 'berkeley_do_post_image', 1 );
+	if ( is_post_type_archive() || is_tax() ) {
+		remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
+		remove_action( 'genesis_post_content', 'genesis_do_post_image' );
+		remove_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
+		add_action( 'genesis_entry_header', 'berkeley_do_post_image', 1 );
+	}
 }
 
 function berkeley_do_post_image() {
 	if ( !is_archive() )
 		return;
 		
-	$post_type = get_post_type();
+	$post_type = berkeley_find_post_type();
 	
 	if ( ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) && genesis_get_cpt_option( 'grid_thumbnails', $post_type ) ) || genesis_get_option( 'content_archive_thumbnail' ) ) {
 		
@@ -187,7 +184,7 @@ function berkeley_do_post_image() {
 // Display featured image; switch loops when applicable
 add_action( 'genesis_before', 'berkeley_genesis_hooks', 10 );
 function berkeley_genesis_hooks() {
-	$post_type = get_post_type();
+	$post_type = berkeley_find_post_type();
 	//remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 	remove_action( 'genesis_post_content', 'genesis_do_post_image' );
@@ -218,7 +215,6 @@ function berkeley_genesis_hooks() {
 	if ( is_tax() ) {
 		add_action( 'genesis_before', 'berkeley_taxonomy_loop_switch', 99 );
 		// inherit CPT archive settings for single-CPT taxonomies
-		$post_type = berkeley_find_post_type();
 		$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 		
 		if ( $layout == 'table' ) {
