@@ -8,7 +8,7 @@ License: GPL2
 Text Domain: beng
 Requires at least: 3.1
 Tested up to: 4.5
-Stable tag: 1.9.4
+Stable tag: 1.9.5
 
 == Description ==
 

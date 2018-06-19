@@ -181,25 +181,27 @@ function berkeley_do_post_image() {
 	}
 }
 
-// Display featured image; switch loops when applicable
+// switch loops when applicable
 add_action( 'genesis_before', 'berkeley_genesis_hooks', 10 );
 function berkeley_genesis_hooks() {
 	$post_type = berkeley_find_post_type();
-	//remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+	
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 	remove_action( 'genesis_post_content', 'genesis_do_post_image' );
-	$showimg = get_post_meta( get_the_ID(), 'display_featured_image', true );
-	if ( $showimg )
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
 	
-	if ( is_singular() )
+	if ( is_singular() ) {
+		$showimg = get_post_meta( get_the_ID(), 'display_featured_image', true );
+		if ( $showimg )
+			add_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
 		return;
+	}
 	
 	if ( is_archive() )
 		add_action( 'genesis_loop', 'berkeley_sticky_post_loop', 1 );
 	
+	$layout = genesis_get_cpt_option( 'post_layout', $post_type );
+	
 	if ( is_post_type_archive() ) {
-		$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 		$subdivide = genesis_get_cpt_option( 'subdivide', $post_type );	
 		
 		if ( $layout == 'table' ) {
@@ -214,9 +216,8 @@ function berkeley_genesis_hooks() {
 	
 	if ( is_tax() ) {
 		add_action( 'genesis_before', 'berkeley_taxonomy_loop_switch', 99 );
-		// inherit CPT archive settings for single-CPT taxonomies
-		$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 		
+		// inherit CPT archive settings for single-CPT taxonomies
 		if ( $layout == 'table' ) {
 			remove_action( 'genesis_loop', 'genesis_do_loop' );
 			add_action( 'genesis_loop', 'berkeley_cpt_table_loop', 10 );
@@ -251,6 +252,8 @@ function berkeley_taxonomy_loop_switch() {
 		
 	if ( empty( $type ) || 'any' == $type || is_array( $type ) ) {
 		remove_action( 'genesis_loop', 'genesis_do_loop' );
+		remove_action( 'genesis_loop', 'berkeley_cpt_table_loop', 10 );
+		remove_action( 'genesis_loop', 'berkeley_cpt_archive_subdivisions_loop', 10 );
 		add_action( 'genesis_loop', 'berkeley_list_taxonomy_post_types', 1 );
 	}
 	else
