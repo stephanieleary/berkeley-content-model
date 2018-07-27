@@ -3,15 +3,29 @@ jQuery(function() {
 		var trClass = jQuery(this).val();
     	jQuery('.toggle-row').hide();
 		jQuery('.toggle-row.' + trClass).show('slow');
+		
+		if ( jQuery('#show_excerpt_checkbox').prop( 'checked', false ) )
+			jQuery('.toggle-row.show_excerpt').hide();
     });
 
 	jQuery('#subdivide').on('change', function() {
 		jQuery('#posts_per_archive_page').show();
 		if ( jQuery('#subdivide').val().length > 0 ) {
-			console.log( jQuery('#subdivide').val() );
+			//console.log( jQuery('#subdivide').val() );
 			jQuery('#posts_per_archive_page').hide();
 		}
 	});
+	
+	if ( jQuery('#show_excerpt_checkbox').prop( 'checked' ) )
+		jQuery('.toggle-row.show_excerpt').show();
+		
+	jQuery('#show_excerpt_checkbox').on('change', function() {
+		jQuery('.toggle-row.show_excerpt').hide();
+    	if ( jQuery('#show_excerpt_checkbox').prop( 'checked' ) )
+			jQuery('.toggle-row.show_excerpt').show('slow');
+    });
+	
+	
  });
 
 jQuery(document).ready(function($){	

@@ -317,72 +317,42 @@ function berkeley_links_repeater() {
 
 function berkeley_display_custom_excerpts( $excerpt ) {
 	$post_type = get_post_type();
-	$post_id = get_the_ID();
-	$pre = '';
 	
-	switch ( $post_type ) {
-		
-		case 'people':
-			$excerpt = '';
-			$text = get_the_content( '' );
-			$text = strip_shortcodes( $text );
-			$text = str_replace( ']]>', ']]&gt;', $text );
-			$excerpt_more = apply_filters( 'get_the_content_more_link', sprintf( ' &hellip; <a href="%s" class="more-link">%s</a>', get_permalink(), __( '[Continue reading]', 'beng' ) ), __( '[Continue reading]', 'beng' ) );
-			// if list layout, use the first paragraph of the bio (content), trimmed to 65 words
-			if ( is_tax() && !isset( $post_type ) )
-				$post_type = berkeley_find_post_type();
-			if ( is_post_type_archive() || is_tax() ) {
-				$layout = genesis_get_cpt_option( 'post_layout', $post_type );
-				if ( 'list' == $layout ) {
-					libxml_use_internal_errors( true );
-					$doc = new DOMDocument();
-					$doc->strictErrorChecking = FALSE;
-					$doc->loadHTML('<?xml encoding="UTF-8">' . $text );
-					$xml = simplexml_import_dom( $doc );
-					$excerpt = $xml->body->p[0];
-					$excerpt = wp_trim_words( $excerpt, 65, $excerpt_more );
-				}
-			}
-			
-			return sprintf( '<div class="job_title">%s</div> <p>%s</p>', get_field( 'job_title' ), $excerpt );
-			break;
-		
-		case 'publication':
-			$excerpt = '';
-			$pre = sprintf( '<p class="pub-author">%s</p>', esc_html( get_field( 'author' ) ) );
-
-			if ( $link = get_field( 'link' ) )
-				$pre .= sprintf( '<p class="pub-link"><a href="%s">%s</a></p>', esc_url( $link ), esc_html( get_field( 'publication_name' ) ) );
-
-			if ( $pub_date = get_field( 'publication_date' ) )
-				$pre .= sprintf( '<p class="pub-date">%s</p>', esc_html( $pub_date ) );
-			
-			break;
-		
-		case 'facility':
-			$excerpt = '';
-			if ( $street = get_field( 'street_address' ) )
-				$pre .= sprintf( '<address>%s</address>', esc_html( $street ) );
-			
-			if ( $link = get_field( 'link' ) ) {
-				$label = apply_filters( 'berkeley_facility_website_label', esc_html__( 'Website', 'berkeley-coe-theme' ) );
-				$pre .= sprintf( '<p class="facility-link"><a href="%s">%s</a></p>', esc_url( $link ), esc_html( $label ) );
-			}
-			break;
-		
-		case 'course':
-			$excerpt = '';
-			if ( $course = get_field( 'course_number' ) )
-				$pre = sprintf( '<p class="course-number">%s</p>', esc_html( $course ) );
-			break;
-			
-		default: break;
-	}
+	$pre = do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'before_excerpt', $post_type ) ) );
+	$post = do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'after_excerpt', $post_type ) ) );
 	
-	return $pre . $excerpt;
+	return $pre . $excerpt . $post;
 }
 
 add_filter( 'the_excerpt', 'berkeley_display_custom_excerpts' );
+
+add_action( 'wp', 'berkeley_post_type_excerpt_filters' );
+
+function berkeley_post_type_excerpt_filters() {
+	$n = genesis_get_cpt_option( 'excerpt_words', get_post_type() );
+	add_filter( 'excerpt_length', $n, 999 );
+}
+
+add_filter( 'get_the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
+add_filter( 'excerpt_more', 'berkeley_genesis_read_more_link', 999 );
+
+function berkeley_genesis_read_more_link( $more ) {
+	if ( is_post_type_archive() ) {
+		$more = sanitize_text_field( genesis_get_cpt_option( 'excerpt_readmore', get_post_type() ) );
+		if ( empty( $more ) )
+			return;
+	}
+	else {
+		$more = __( ' [Continue Reading]', 'beng' );
+	}
+
+	$excerpt = trim( get_the_excerpt( get_the_ID() ) );
+	
+	if ( empty( $excerpt ) )
+		return;
+	
+	return ' <a class="more-link" href="' . get_permalink() . '">'.$more.'</a>';
+}
 
 // Post meta filters
 // entry header: post info
