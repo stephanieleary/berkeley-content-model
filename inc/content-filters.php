@@ -315,41 +315,48 @@ function berkeley_links_repeater() {
 	return $content;
 }
 
-function berkeley_display_custom_excerpts( $excerpt ) {
-	$post_type = get_post_type();
-	
-	$pre = do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'before_excerpt', $post_type ) ) );
-	$post = do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'after_excerpt', $post_type ) ) );
-	
-	return $pre . $excerpt . $post;
-}
-
 add_filter( 'the_excerpt', 'berkeley_display_custom_excerpts' );
 
-add_action( 'wp', 'berkeley_post_type_excerpt_filters' );
+function berkeley_display_custom_excerpts( $excerpt ) {
+	$post_type = berkeley_find_post_type();
+	if ( !$post_type )
+		return $excerpt;
+	
+	$pre = wpautop( do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'before_excerpt', $post_type ) ) ) );
+	$post = wpautop( do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'after_excerpt', $post_type ) ) ) );
+	
+	return $pre . ' ' . $excerpt . ' ' . $post;
+}
 
-function berkeley_post_type_excerpt_filters() {
-	$n = genesis_get_cpt_option( 'excerpt_words', get_post_type() );
-	add_filter( 'excerpt_length', $n, 999 );
+add_filter( 'excerpt_length', 'berkeley_post_type_excerpt_length', 999 );
+
+function berkeley_post_type_excerpt_length( $n ) {
+	if ( is_post_type_archive() || is_tax() ) {
+		$post_type = berkeley_find_post_type();
+		if ( $post_type )
+			$n = genesis_get_cpt_option( 'excerpt_words', $post_type );
+	}
+	
+	return $n;
 }
 
 add_filter( 'get_the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
 add_filter( 'excerpt_more', 'berkeley_genesis_read_more_link', 999 );
 
 function berkeley_genesis_read_more_link( $more ) {
-	if ( is_post_type_archive() ) {
-		$more = sanitize_text_field( genesis_get_cpt_option( 'excerpt_readmore', get_post_type() ) );
+	$excerpt = trim( get_post_field( 'post_excerpt', get_the_ID() ) );
+	if ( empty( $excerpt ) )
+		return;
+	
+	$post_type = berkeley_find_post_type();
+	if ( $post_type && ( is_post_type_archive() || is_tax() ) ) {
+		$more = sanitize_text_field( genesis_get_cpt_option( 'excerpt_readmore', $post_type ) );
 		if ( empty( $more ) )
 			return;
 	}
 	else {
 		$more = __( ' [Continue Reading]', 'beng' );
 	}
-
-	$excerpt = trim( get_the_excerpt( get_the_ID() ) );
-	
-	if ( empty( $excerpt ) )
-		return;
 	
 	return ' <a class="more-link" href="' . get_permalink() . '">'.$more.'</a>';
 }
