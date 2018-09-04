@@ -156,37 +156,32 @@ function berkeley_display_custom_field_content( $content ) {
 		
 		$before_content = $after_content = '';
 		
-		$before_content = '<div class="bio-details">';
-		
-		// featured image
-		if ( is_singular() )
-			$before_content .= get_the_post_thumbnail( get_the_ID(), 'medium' );
-		
-		$before_content .= sprintf( '<div class="job_title">%s</div> ', get_field( 'job_title' ) );
-		
-		if ( has_term( 'staff', 'people_type' ) )
-			$before_content .= get_field( 'responsibilities' );
-
-		$email = get_field( 'email' );
-		if ( !empty( $email ) ) :
-			$before_content .= sprintf( '<p class="bio-email"><a href="mailto:%1$s">%1$s</a></p>', antispambot( $email ) );
-		endif;
-		
-		$phone = get_field( 'phone' );
-		if ( !empty( $phone ) ) :
-			$punctuation = array( '(', ')', '-', ':', '.', ' ' );
-			$number = str_replace( $punctuation, '', $phone );
-			$prefix = apply_filters( 'berkeley_phone_prefix', esc_html__( 'Phone:', 'berkeley-coe-theme' ) );
-			$before_content .= sprintf( '<p class="bio-phone"><strong>%s </strong><a href="tel:%d">%s</a></p>', $prefix, $number, $phone );
-		endif;
-
-		
-		
-		
-		$before_content .= berkeley_links_repeater();
 		
 		
 		if ( is_singular() ) {
+			$before_content = '<div class="bio-details">';
+			
+			$before_content .= get_the_post_thumbnail( get_the_ID(), 'medium' );
+			
+			$before_content .= sprintf( '<div class="job_title">%s</div> ', get_field( 'job_title' ) );
+		
+			if ( has_term( 'staff', 'people_type' ) )
+				$before_content .= get_field( 'responsibilities' );
+
+			$email = get_field( 'email' );
+			if ( !empty( $email ) ) :
+				$before_content .= sprintf( '<p class="bio-email"><a href="mailto:%1$s">%1$s</a></p>', antispambot( $email ) );
+			endif;
+		
+			$phone = get_field( 'phone' );
+			if ( !empty( $phone ) ) :
+				$punctuation = array( '(', ')', '-', ':', '.', ' ' );
+				$number = str_replace( $punctuation, '', $phone );
+				$prefix = apply_filters( 'berkeley_phone_prefix', esc_html__( 'Phone:', 'berkeley-coe-theme' ) );
+				$before_content .= sprintf( '<p class="bio-phone"><strong>%s </strong><a href="tel:%d">%s</a></p>', $prefix, $number, $phone );
+			endif;
+		
+			$before_content .= berkeley_links_repeater();
 
 			$address = array_filter( array( 
 				'line1' => get_field( 'address_line_1' ), 
@@ -322,8 +317,8 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 	if ( !$post_type )
 		return $excerpt;
 	
-	$pre = wpautop( do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'before_excerpt', $post_type ) ) ) );
-	$post = wpautop( do_shortcode( sanitize_text_field( genesis_get_cpt_option( 'after_excerpt', $post_type ) ) ) );
+	$pre = wpautop( do_shortcode( genesis_get_cpt_option( 'before_excerpt', $post_type ) ) );
+	$post = wpautop( do_shortcode( genesis_get_cpt_option( 'after_excerpt', $post_type ) ) );
 	
 	return $pre . ' ' . $excerpt . ' ' . $post;
 }
