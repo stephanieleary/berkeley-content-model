@@ -313,7 +313,7 @@ function berkeley_post_layout_settings_box() {
 		'excerpt_readmore' => genesis_get_cpt_option( 'excerpt_readmore', $type )
 	);
 
-	$settings = wp_parse_args( berkeley_cpt_genesis_settings_defaults( array(), $type ), $settings );
+	$settings = wp_parse_args( $settings, berkeley_cpt_genesis_settings_defaults( array(), $type ) );
 
 	$taxonomies = get_object_taxonomies( $type, 'objects' );
 	
@@ -378,15 +378,16 @@ function berkeley_post_layout_settings_box() {
 	
 	<tr valign="top" id="grid-rows" class="toggle-row grid" <?php if ( $settings['post_layout'] !== 'grid' ) echo 'style="display: none;"' ?>>
 		<th scope="row">
-			<label for="<?php echo esc_attr( $name. '[grid_rows]' ); ?>"><?php esc_html_e( 'Grid rows per page ', 'beng' );?></label>
+			<label class="toggle-label no-subdivide" for="<?php echo esc_attr( $name. '[grid_rows]' ); ?>" <?php if ( $settings['subdivide'] ) echo 'style="display: none;"' ?>><?php esc_html_e( 'Grid rows per page ', 'beng' );?></label>
+			<label class="toggle-label subdivide" for="<?php echo esc_attr( $name. '[grid_rows]' ); ?>" <?php if ( !$settings['subdivide'] ) echo 'style="display: none;"' ?>><?php esc_html_e( 'Grid rows per section ', 'beng' );?></label>
 		</th>
 		<td>
 		<p> <input name="<?php echo esc_attr( $name . '[grid_rows]' ); ?>" value="<?php echo esc_attr( $settings['grid_rows'] ) ?>"> </p>
-		<p class="description"><?php _e( 'Enter -1 to show all posts on one page.', 'beng' ); ?></p>
+		<p class="description"><?php _e( 'Enter -1 to show all posts.', 'beng' ); ?></p>
 		</td>
 	</tr>
 	
-	<tr valign="top" id="grid-rows" class="toggle-row grid" <?php if ( $settings['post_layout'] !== 'grid' ) echo 'style="display: none;"' ?>>
+	<tr valign="top" id="grid-thumbnail" class="toggle-row grid" <?php if ( $settings['post_layout'] !== 'grid' ) echo 'style="display: none;"' ?>>
 		<th scope="row">
 			<label for="<?php echo esc_attr( $name. '[grid_thumbnail_size]' ); ?>"><?php esc_html_e( 'Grid image size ', 'beng' );?></label>
 		</th>

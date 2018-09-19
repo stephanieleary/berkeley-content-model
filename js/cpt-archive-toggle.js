@@ -10,9 +10,14 @@ jQuery(function() {
 
 	jQuery('#subdivide').on('change', function() {
 		jQuery('#posts_per_archive_page').show();
+		jQuery('.toggle-label').hide();
 		if ( jQuery('#subdivide').val().length > 0 ) {
 			//console.log( jQuery('#subdivide').val() );
 			jQuery('#posts_per_archive_page').hide();
+			jQuery('.toggle-label.subdivide').show();
+		}
+		else {
+			jQuery('.toggle-label.no-subdivide').show();
 		}
 	});
 	
