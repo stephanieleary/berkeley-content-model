@@ -289,6 +289,73 @@ function berkeley_display_custom_field_content( $content ) {
 
 add_filter( 'the_content', 'berkeley_display_custom_field_content' );
 
+// Replace built-in post content function with our custom one
+
+function berkeley_replace_post_content() {
+	
+	if ( is_post_type_archive() || is_tax() ) {
+		$post_type = berkeley_find_post_type();		
+	}
+	if ( $post_type ) {
+		remove_filter( 'the_excerpt', 'wpautop' );
+		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
+		remove_action( 'genesis_post_content', 'genesis_do_post_content' );
+		add_action( 'genesis_entry_content', 'berkeley_do_post_content' );
+		add_action( 'genesis_post_content', 'berkeley_do_post_content' );
+		add_filter( 'excerpt_length', 'berkeley_post_type_excerpt_length', 999 );
+		add_filter( 'get_the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
+		add_filter( 'excerpt_more', 'berkeley_genesis_read_more_link', 999 );
+	}
+}
+add_action( 'genesis_before', 'berkeley_replace_post_content' );
+
+
+function berkeley_do_post_content() {
+
+	if ( is_singular() ) {
+		the_content();
+
+		if ( is_single() && 'open' === get_option( 'default_ping_status' ) && post_type_supports( get_post_type(), 'trackbacks' ) ) {
+			echo '<!--';
+			trackback_rdf();
+			echo '-->' . "\n";
+		}
+
+		if ( is_page() && apply_filters( 'genesis_edit_post_link', true ) ) {
+			edit_post_link( __( '(Edit)', 'genesis' ), '', '' );
+		}
+	}
+	else {
+		$post_type = '';
+		
+		if ( is_post_type_archive() || is_tax() ) {
+			$post_type = berkeley_find_post_type();		
+			$post_layout = genesis_get_cpt_option( 'post_layout', $post_type );
+		}
+		if ( $post_type && isset( $post_layout ) ) {
+			$show_excerpt = genesis_get_cpt_option( 'show_excerpt', $post_type );
+			if ( 'table' !== $post_layout && $show_excerpt ) {
+				the_excerpt();
+			}
+		}
+		// default to Genesis settings if post type archive layout is not set or we're on some other template
+		elseif ( 'excerpts' === genesis_get_option( 'content_archive' ) ) {
+			the_excerpt();
+		}
+		else {
+			if ( genesis_get_option( 'content_archive_limit' ) ) {
+				the_content_limit( (int) genesis_get_option( 'content_archive_limit' ), genesis_a11y_more_link( __( '[Read more...]', 'genesis' ) ) );
+			} else {
+				the_content( genesis_a11y_more_link( __( '[Read more...]', 'genesis' ) ) );
+			}
+		}
+		
+		
+	}
+	
+
+}
+
 
 function berkeley_links_repeater() {
 	$content = '';
@@ -313,17 +380,23 @@ function berkeley_links_repeater() {
 add_filter( 'the_excerpt', 'berkeley_display_custom_excerpts' );
 
 function berkeley_display_custom_excerpts( $excerpt ) {
-	$post_type = berkeley_find_post_type();
-	if ( !$post_type )
-		return $excerpt;
-	
-	$pre = wpautop( do_shortcode( genesis_get_cpt_option( 'before_excerpt', $post_type ) ) );
-	$post = wpautop( do_shortcode( genesis_get_cpt_option( 'after_excerpt', $post_type ) ) );
-	
-	return $pre . ' ' . $excerpt . ' ' . $post;
-}
+	if ( is_post_type_archive() || is_tax() ) {
+		$post_type = berkeley_find_post_type();
+		if ( $post_type ) {
+			$pre = do_shortcode( genesis_get_cpt_option( 'before_excerpt', $post_type ) );
+			$post = do_shortcode( genesis_get_cpt_option( 'after_excerpt', $post_type ) );
+			
+			$pre = str_replace( array( '<br><br>', '<br /><br />', '<br/><br/>' ), '', $pre );
+			$post = str_replace( array( '<br><br>', '<br /><br />', '<br/><br/>' ), '', $post );
 
-add_filter( 'excerpt_length', 'berkeley_post_type_excerpt_length', 999 );
+			$smushed_excerpt = $pre . " " . $excerpt . " " . $post;
+			//$smushed_excerpt = str_replace( array("<p>", "</p>") , "\n", $smushed_excerpt );
+			
+			return wpautop( $smushed_excerpt );
+		}
+	}
+	return $excerpt;
+}
 
 function berkeley_post_type_excerpt_length( $n ) {
 	if ( is_post_type_archive() || is_tax() ) {
@@ -335,8 +408,7 @@ function berkeley_post_type_excerpt_length( $n ) {
 	return $n;
 }
 
-add_filter( 'get_the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
-add_filter( 'excerpt_more', 'berkeley_genesis_read_more_link', 999 );
+
 
 function berkeley_genesis_read_more_link( $more ) {
 	$excerpt = trim( get_post_field( 'post_excerpt', get_the_ID() ) );
