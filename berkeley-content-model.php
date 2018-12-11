@@ -91,10 +91,14 @@ function berkeley_async_genesis_global_scripts( $tag, $handle ) {
 // Admin scripts and styles for Genesis settings
 add_action( 'admin_enqueue_scripts', 'berkeley_genesis_settings_styles', 99 );
 function berkeley_genesis_settings_styles( $hook ) {
-	if ( !in_array( $hook, array( 'edit.php', 'post.php', 'post-new.php', 'toplevel_page_genesis', 'widgets.php' ) ) )
-		return;
+	
+	if ( 'toplevel_page_genesis' === $current_screen->base && 'genesis' === $current_screen->parent_base ) {
+		wp_enqueue_style( 'berkeley-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ) );
+	}
+	
+	if ( in_array( $hook, array( 'edit.php', 'post.php', 'post-new.php', 'widgets.php' ) ) )
+		wp_enqueue_style( 'berkeley-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ) );
 		
-    wp_enqueue_style( 'berkeley-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ) );
 }
 
 // Load Admin CSS and JS files and pass PHP variables to JS scripts
