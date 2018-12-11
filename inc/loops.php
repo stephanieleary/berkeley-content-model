@@ -304,7 +304,8 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		$have_posts = get_posts( wp_parse_args( $args, $query_args ) );
 		
 		if ( count( $have_posts ) ) {
-			echo '<div class="wrap '.$post_type.'_type_loop '.$term->slug. ' ' .$divide_by_tax.'">';
+			$classes = array( 'wrap', 'subdivided', $post_type.'_type_loop', $term->slug, $divide_by_tax );
+			echo '<div class="' . implode( ' ', $classes ) . '">';
 			remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
 			remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
 			printf( '<h2 %s>%s</h2>', genesis_attr( 'archive-title' ), strip_tags( $term->name ) );
