@@ -303,7 +303,11 @@ function berkeley_replace_post_content() {
 		add_action( 'genesis_entry_content', 'berkeley_do_post_content' );
 		add_action( 'genesis_post_content', 'berkeley_do_post_content' );
 		add_filter( 'excerpt_length', 'berkeley_post_type_excerpt_length', 999 );
+		// modify Read More link when using <!--more--> in post content
+		add_filter( 'the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
+		// modify Read More link when using Genesis-generated excerpts
 		add_filter( 'get_the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
+		// modify Read More link in custom excerpts
 		add_filter( 'excerpt_more', 'berkeley_genesis_read_more_link', 999 );
 	}
 }
@@ -344,9 +348,9 @@ function berkeley_do_post_content() {
 		}
 		else {
 			if ( genesis_get_option( 'content_archive_limit' ) ) {
-				the_content_limit( (int) genesis_get_option( 'content_archive_limit' ), genesis_a11y_more_link( __( '[Read more...]', 'genesis' ) ) );
+				the_content_limit( (int) genesis_get_option( 'content_archive_limit' ), genesis_a11y_more_link( berkeley_genesis_read_more_link() ) );
 			} else {
-				the_content( genesis_a11y_more_link( __( '[Read more...]', 'genesis' ) ) );
+				the_content( genesis_a11y_more_link( berkeley_genesis_read_more_link() ) );
 			}
 		}
 		
@@ -411,19 +415,18 @@ function berkeley_post_type_excerpt_length( $n ) {
 
 
 function berkeley_genesis_read_more_link( $more ) {
+	/*
 	$excerpt = trim( get_post_field( 'post_excerpt', get_the_ID() ) );
 	if ( empty( $excerpt ) )
-		return;
-	
+		return '';
+	/**/
 	$post_type = berkeley_find_post_type();
 	if ( $post_type && ( is_post_type_archive() || is_tax() ) ) {
 		$more = sanitize_text_field( genesis_get_cpt_option( 'excerpt_readmore', $post_type ) );
-		if ( empty( $more ) )
-			return;
 	}
-	else {
-		$more = __( ' [Continue Reading]', 'beng' );
-	}
+	
+	if ( empty( $more ) )
+		$more = genesis_a11y_more_link( __( ' [More&hellip;]', 'beng' ) );
 	
 	return ' <a class="more-link" href="' . get_permalink() . '">'.$more.'</a>';
 }
