@@ -49,12 +49,19 @@ add_filter( 'get_custom_logo', 'berkeley_site_icon' );
 
 function berkeley_site_icon( $html ) {
 	if ( empty( $html ) ) {
-		$html = sprintf( '<a href="%s" class="custom-logo-link" rel="home" itemprop="url"><img class="custom-logo" itemprop="logo" src="%s" /></a>', esc_url( home_url( '/' ) ), get_stylesheet_directory_uri() . '/images/BE-favicon.png' );
+		$custom_logo_id = get_theme_mod( 'custom_logo' );
+		if ( !isset($custom_logo_id ) || empty( $custom_logo_id ) ) {
+			$logo_url = wp_get_attachment_image( $custom_logo_id, 'full', false, array( 'class' => 'custom-logo' ) );
+		}
+		else {
+			$logo_url = get_stylesheet_directory_uri() . '/images/BE-favicon.png';
+		}
+		$html = sprintf( '<a href="%s" class="custom-logo-link" rel="home" itemprop="url"><img class="custom-logo" itemprop="logo" src="%s" /></a>', esc_url( home_url( '/' ) ), $logo_url );
 	}
 	return $html;
 }
 
-add_filter( 'get_site_icon_url', 'berkeley_site_icon_url', 10, 3 );
+//add_filter( 'get_site_icon_url', 'berkeley_site_icon_url', 10, 3 );
 
 function berkeley_site_icon_url( $url = '', $size = 512, $blog_id = 0 ) {
 	$default_url = get_stylesheet_directory_uri() . "/images/BE-favicon-{$size}x{$size}.png";
@@ -65,7 +72,7 @@ function berkeley_site_icon_url( $url = '', $size = 512, $blog_id = 0 ) {
 	return $url;
 }
 
-
+remove_action( 'wp_head', 'genesis_load_favicon' );
 add_filter( 'genesis_pre_load_favicon', 'berkeley_favicon' );
 
 function berkeley_favicon( $favicon_url ) {
