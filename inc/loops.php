@@ -153,31 +153,35 @@ function berkeley_do_post_image() {
 		return;
 		
 	$post_type = berkeley_find_post_type();
+	$size = 0;
 	
-	if ( ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) && genesis_get_cpt_option( 'grid_thumbnails', $post_type ) ) || genesis_get_option( 'content_archive_thumbnail' ) ) {
+	if ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) ) {
+		$size = genesis_get_cpt_option( 'grid_thumbnails', $post_type );
 		
-		if ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) )
-			$size = genesis_get_cpt_option( 'grid_thumbnails', $post_type );
-		else
-			$size = genesis_get_option( 'image_size' );
-		
-		$img = genesis_get_image( array(
-			'format'  => 'html',
-			'size'    => $size,
-			'context' => 'archive',
-			'attr'    => genesis_parse_attr( 'entry-image', array ( 'alt' => get_the_title() ) ),
-		) );
+	}
+	elseif ( genesis_get_option( 'content_archive_thumbnail' ) ) {
+		$size = genesis_get_option( 'image_size' );
+	}
+	
+	if ( empty( $size ) )
+		return;
+	
+	$img = genesis_get_image( array(
+		'format'  => 'html',
+		'size'    => $size,
+		'context' => 'archive',
+		'attr'    => genesis_parse_attr( 'entry-image', array ( 'alt' => get_the_title() ) ),
+	) );
 
-		if ( ! empty( $img ) ) {
+	if ( ! empty( $img ) ) {
 
-			genesis_markup( array(
-				'open'    => '<a %s>',
-				'close'   => '</a>',
-				'content' => wp_make_content_images_responsive( $img ),
-				'context' => 'entry-image-link'
-			));
+		genesis_markup( array(
+			'open'    => '<a %s>',
+			'close'   => '</a>',
+			'content' => wp_make_content_images_responsive( $img ),
+			'context' => 'entry-image-link'
+		));
 
-		}
 	}
 }
 
