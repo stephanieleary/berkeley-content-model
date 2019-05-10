@@ -392,6 +392,9 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 			
 			$pre = str_replace( array( '<br><br>', '<br /><br />', '<br/><br/>' ), '', $pre );
 			$post = str_replace( array( '<br><br>', '<br /><br />', '<br/><br/>' ), '', $post );
+			$n = genesis_get_cpt_option( 'excerpt_words', $post_type );
+			if ( $n < 0 )
+				$excerpt = '';
 
 			$smushed_excerpt = $pre . " " . $excerpt . " " . $post;
 			//$smushed_excerpt = str_replace( array("<p>", "</p>") , "\n", $smushed_excerpt );
