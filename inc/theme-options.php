@@ -1,5 +1,12 @@
 <?php
 
+// Tell Genesis not to redirect all theme settings to the Customizer
+function be_disable_genesis_redirect() {
+	global $_genesis_admin_settings;
+	$_genesis_admin_settings->redirect_to = false;
+}
+add_action( 'genesis_admin_menu', 'be_disable_genesis_redirect', 1 );
+
 // Register theme settings boxes
 function berkeley_register_options_settings_box( $_genesis_theme_settings_pagehook ) {
 	add_meta_box( 'berkeley-logo-settings', esc_html__( 'Logo and Front Page Title', 'berkeley-coe-theme' ), 'berkeley_logo_settings_box', $_genesis_theme_settings_pagehook, 'main', 'high' );
