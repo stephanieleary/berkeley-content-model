@@ -12,16 +12,6 @@ function berkeley_image_default_args( $args ) {
 	return $args;
 }
 
-// Make custom image size available in Insert Media
-
-add_filter( 'image_size_names_choose', 'berkeley_image_size_names_choose' );
- 
-function berkeley_image_size_names_choose( $sizes ) {
-    return array_merge( $sizes, array(
-        'berkeley-small' => esc_html__( 'Small', 'berkeley-coe-theme' ),
-    ) );
-}
-
 // Blog post image sizes
 
 add_filter( 'genesis_pre_get_option_image_size', 'berkeley_blog_image_sizes' );
