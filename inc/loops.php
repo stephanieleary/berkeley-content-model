@@ -156,7 +156,7 @@ function berkeley_do_post_image() {
 	$size = 0;
 	
 	if ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) ) {
-		$size = genesis_get_cpt_option( 'grid_thumbnails', $post_type );
+		$size = genesis_get_cpt_option( 'grid_thumbnail_size', $post_type );
 		
 	}
 	elseif ( genesis_get_option( 'content_archive_thumbnail' ) ) {
