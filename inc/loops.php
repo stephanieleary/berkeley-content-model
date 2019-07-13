@@ -102,34 +102,30 @@ function berkeley_grid_post_classes( $classes ) {
 			return $classes;
 
 		global $wp_query;
+		
 		switch ( $columns ) {
 			case '6': 
-				$classes[] = 'one-sixth';
-				if ( 0 == $wp_query->current_post % 6 )
-					$classes[] = 'first';
+				$classes[] = 'one-sixth';	
 				break;
 			case '5':
 				$classes[] = 'one-fifth';
-				if ( 0 == $wp_query->current_post % 5 )
-					$classes[] = 'first';
 				break;
 			case '4':
 				$classes[] = 'one-fourth';
-				if ( 0 == $wp_query->current_post % 4 )
-					$classes[] = 'first';
 				break;
 			case '3':
 				$classes[] = 'one-third';
-				if ( 0 == $wp_query->current_post % 3 )
-					$classes[] = 'first';
 				break;
 			case '2':
-			default: 
 				$classes[] = 'one-half';
-				if ( 0 == $wp_query->current_post % 2 )
-					$classes[] = 'first';
-			break;
+				break;
+			default:
+				break;
 		}
+	
+		if ( 0 == $wp_query->current_post % $columns )
+			$classes[] = 'first';
+	
 	}
 	
 	return $classes;
@@ -297,6 +293,37 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		return;
 
 	global $query_args;
+	
+	// first, display posts that have no terms
+	
+	$args = array(
+		'fields' => 'ids',
+		'posts_per_page'  => -1,
+		'posts_per_archive_page' => -1,
+		'nopaging' => true,
+		'post_type' => $post_type,
+		'tax_query' => array(
+				array(
+					'taxonomy' => $divide_by_tax,
+					'terms'    => get_terms( $divide_by_tax, array( 'fields' => 'ids' ) ),
+					'operator' => 'NOT IN'
+				),
+			),
+	);
+	
+	$have_posts = get_posts( wp_parse_args( $args, $query_args ) );
+	
+	if ( count( $have_posts ) ) {
+		$classes = array( 'wrap', 'subdivided', $post_type.'_type_loop', 'uncategorized' );
+		echo '<div class="' . implode( ' ', $classes ) . '">';
+		remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
+		remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+		unset( $args['fields'] );
+		genesis_custom_loop( wp_parse_args( $args, $query_args ) );
+		echo '</div>';
+	}
+	
+	// then, display posts sorted into sections by term
 
 	foreach ( $terms as $term ) {
 		
@@ -323,7 +350,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 			echo '<div class="' . implode( ' ', $classes ) . '">';
 			remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
 			remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
-			printf( '<h2 %s>%s</h2>', genesis_attr( 'archive-title' ), strip_tags( $term->name ) );
+			printf( '<h2 %s>%s</h2>', genesis_attr( 'archive-subtitle' ), strip_tags( $term->name ) );
 			unset( $args['fields'] );
 			genesis_custom_loop( wp_parse_args( $args, $query_args ) );
 			echo '</div>';
@@ -380,7 +407,7 @@ function berkeley_loop_table_headers( $headers ) {
 		$headerrow .= sprintf( "<th>%s</th>\n", $header );
 	}
 	
-	return sprintf( '<div class="loop"><table cellspacing="0" class="responsive">
+	return sprintf( '<div class="loop"><table cellspacing="0" class="responsive tablesorter">
 		<thead>
 			<tr>
 		      %s
