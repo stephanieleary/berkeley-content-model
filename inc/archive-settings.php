@@ -387,6 +387,16 @@ function berkeley_post_layout_settings_box() {
 		</td>
 	</tr>
 	
+	<tr valign="top" id="grid-thumbnail" class="toggle-row list" <?php if ( $settings['post_layout'] !== 'list' ) echo 'style="display: none;"' ?>>
+		<th scope="row">
+		</th>
+		<td>
+			<p> <?php _e( 'For Image settings under List view, see Genesis Theme Settings > Content Archives', 'beng' ); ?></p>
+		</td>
+	</tr>
+	
+	
+	
 	<tr valign="top" id="grid-thumbnail" class="toggle-row grid" <?php if ( $settings['post_layout'] !== 'grid' ) echo 'style="display: none;"' ?>>
 		<th scope="row">
 			<label for="<?php echo esc_attr( $name. '[grid_thumbnail_size]' ); ?>"><?php esc_html_e( 'Grid image size ', 'beng' );?></label>
