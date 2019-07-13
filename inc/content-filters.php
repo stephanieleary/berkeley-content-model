@@ -396,10 +396,10 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 			if ( $n < 0 )
 				$excerpt = '';
 
-			$smushed_excerpt = $pre . " " . $excerpt . " " . $post;
+			$smushed_excerpt = '<p class="excerpt-pre">' . $pre . '</p>' . $excerpt . '<p class="excerpt-post">' . $post . '</p>';
 			//$smushed_excerpt = str_replace( array("<p>", "</p>") , "\n", $smushed_excerpt );
 			
-			return wpautop( $smushed_excerpt );
+			return $smushed_excerpt;
 		}
 	}
 	return $excerpt;
