@@ -465,7 +465,9 @@ function berkeley_post_info_filter( $post_info ) {
 			break;
 		
 		case 'post':
-			$post_info = genesis_get_option( 'post_info' );
+			$post_info = get_theme_mod( 'genesis_be_blog_info' );
+			if ( !isset( $post_info ) )
+				$post_info = genesis_get_option( 'post_info' );
 			break;
 		
 		case 'facility':
@@ -492,7 +494,9 @@ function berkeley_post_meta_filter( $post_meta ) {
 	switch ( $post_type ) {
 		
 		case 'post':
-			$post_meta = genesis_get_option( 'post_meta' );
+			$post_meta = get_theme_mod( 'genesis_be_blog_meta' );
+			if ( !isset( $post_meta ) )
+				$post_meta = genesis_get_option( 'post_meta' );
 			break;
 		
 		case 'publication':
