@@ -26,19 +26,8 @@ function berkeley_genesis_theme_settings_config( $config ) {
 add_action( 'customize_register', 'berkeley_theme_settings_customizer_register', 999 );
 
 function berkeley_theme_settings_customizer_register( $wp_customize ) {
-	
-	$mods = get_theme_mods();
-	
-	if ( !isset( $mods['genesis_be_blog_meta'] ) )
-		$mods['genesis_be_blog_meta'] = genesis_get_option( 'post_meta' );
-	if ( !isset( $mods['genesis_be_blog_info'] ) )
-		$mods['genesis_be_blog_info'] = genesis_get_option( 'post_info' );
-	if ( !isset( $mods['genesis_be_hide_title'] ) )
-		$mods['genesis_be_hide_title'] = genesis_get_option( 'hide_home_title' );
-	if ( !isset( $mods['genesis_be_show_logo'] ) )
-		$mods['genesis_be_show_logo'] = genesis_get_option( 'hide_home_title' );
-	
-	$mods = wp_parse_args( $mods, berkeley_theme_defaults() );
+
+	$defaults = berkeley_theme_defaults();
 	
 	// remove WP Colors section; use Theme Settings -> Color Scheme instead
 	$wp_customize->remove_section( 'colors' );
@@ -52,10 +41,10 @@ function berkeley_theme_settings_customizer_register( $wp_customize ) {
  
 	// setting and control for post_info
 	$wp_customize->add_setting( 'genesis_be_post_info', array(
-		'default' => $mods['genesis_be_blog_info'],
-		'sanitize_callback' => 'berkeley_theme_option_sanitization',
+		'default' => $defaults['genesis_be_blog_info'],
+		'sanitize_callback' => 'wp_kses_post',
 		'transport' => 'refresh',
-		'type' => 'theme_mod',
+		'type' => 'option',
 	) );
  
 	$wp_customize->add_control( 'genesis_be_post_info', array(
@@ -66,10 +55,10 @@ function berkeley_theme_settings_customizer_register( $wp_customize ) {
 	
 	// setting and control for post_meta
 	$wp_customize->add_setting( 'genesis_be_post_meta', array(
-		'default' => $mods['genesis_be_blog_meta'],
-		'sanitize_callback' => 'berkeley_theme_option_sanitization',
+		'default' => $defaults['genesis_be_blog_meta'],
+		'sanitize_callback' => 'wp_kses_post',
 		'transport' => 'refresh',
-		'type' => 'theme_mod',
+		'type' => 'option',
 	) );
  
 	$wp_customize->add_control( 'genesis_be_post_meta', array(
@@ -80,32 +69,32 @@ function berkeley_theme_settings_customizer_register( $wp_customize ) {
 	
 	// setting and control for hide_title
 	$wp_customize->add_setting( 'genesis_be_hide_title', array(
-		'default' => $mods['genesis_be_hide_title'],
-		'sanitize_callback' => 'berkeley_theme_option_sanitization',
+		'default' => $defaults['genesis_be_hide_title'],
+		'sanitize_callback' => 'absint',
 		'transport' => 'refresh',
-		'type' => 'theme_mod',
+		'type' => 'option',
 	) );
  
 	$wp_customize->add_control( 'genesis_be_hide_title', array(
 		'label' => __( 'Hide page title on home page', 'beng' ),
 		'section' => 'title_tagline',
 		'type' => 'checkbox',
-		'priority' => 35,
+		'priority' => 45,
 	) );
 	
 	// setting and control for show_logo
 	$wp_customize->add_setting( 'genesis_be_show_logo', array(
-		'default' => $mods['genesis_be_show_logo'],
-		'sanitize_callback' => 'berkeley_theme_option_sanitization',
+		'default' => $defaults['genesis_be_show_logo'],
+		'sanitize_callback' => 'absint',
 		'transport' => 'refresh',
-		'type' => 'theme_mod',
+		'type' => 'option',
 	) );
  
 	$wp_customize->add_control( 'genesis_be_show_logo', array(
 		'label' => __( 'Show Berkeley Engineering logo above the site title', 'beng' ),
 		'section' => 'title_tagline',
 		'type' => 'checkbox',
-		'priority' => 35,
+		'priority' => 45,
 	) );
 
 }
@@ -114,7 +103,7 @@ function berkeley_theme_settings_customizer_register( $wp_customize ) {
 add_filter( 'genesis_theme_settings_defaults', 'berkeley_theme_defaults' );
 
 function berkeley_theme_defaults( $defaults = array() ) {
-	$defaults['genesis_be_show_logo'] = false;
+	$defaults['genesis_be_show_logo'] = true;
 	$defaults['genesis_be_hide_title'] = false;
 	$defaults['style_selection'] = 'pool';
 	$defaults['genesis_be_blog_meta'] = '[post_categories] [post_tags]';
@@ -122,28 +111,17 @@ function berkeley_theme_defaults( $defaults = array() ) {
 	return $defaults;
 }
 
+// Copy settings from older versions of Genesis
+add_action( 'upgrader_process_complete', 'be_genesis_upgrade_completed', 10, 2 );
 
-add_action( 'genesis_settings_sanitizer_init', 'berkeley_theme_option_sanitization' );
-
-function berkeley_theme_option_sanitization() {
-		
-	genesis_add_option_filter( 
-		'no_html', 
-		'genesis_be_show_logo'
-	);
-	
-	genesis_add_option_filter( 
-		'no_html', 
-		'genesis_be_hide_title'
-	);
-	
-	genesis_add_option_filter( 
-		'safe_html', 
-		'genesis_be_post_meta'
-	);
-	
-	genesis_add_option_filter( 
-		'safe_html', 
-		'genesis_be_post_info'
-	);
+function be_genesis_upgrade_completed( $upgrader_object, $args ) { 
+	if( $args['action'] == 'update' && $args['type'] == 'theme' ) {
+		$version = genesis_get_option( 'theme_version' );
+		if ( $version >= 3 ) {
+			add_option( 'genesis_be_show_logo', genesis_get_option( 'be_logo' ) );
+			add_option( 'genesis_be_hide_title', genesis_get_option( 'hide_title' ) );
+			add_option( 'genesis_be_post_meta', genesis_get_option( 'post_meta' ) );
+			add_option( 'genesis_be_post_info', genesis_get_option( 'post_info' ) );
+		}
+	}
 }

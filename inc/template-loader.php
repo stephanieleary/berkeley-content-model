@@ -109,6 +109,10 @@ class PageTemplater {
 		if ( ! $post ) {
 			return $template;
 		}
+		
+		// for the purposes of the Berkeley Content Model plugin, home and front pages will never have templates assigned
+		if ( is_home() && is_front_page() )
+			return $template;
 
 		// Return default template if we don't have a custom one defined
 		if ( !isset( $this->templates[get_post_meta( 
@@ -124,8 +128,6 @@ class PageTemplater {
 		// Just to be safe, we check if the file exist first
 		if ( file_exists( $file ) ) {
 			return $file;
-		} else {
-			echo $file;
 		}
 
 		// Return template
