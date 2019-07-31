@@ -17,10 +17,12 @@ function berkeley_customizer_styles() { ?>
 add_filter( 'genesis_customizer_theme_settings_config', 'berkeley_genesis_theme_settings_config' );
 
 function berkeley_genesis_theme_settings_config( $config ) {
-	unset( $config['sections']['genesis_updates'] );
-	unset( $config['sections']['genesis_header'] );
+	unset( $config['genesis']['sections']['genesis_updates'] );
+	unset( $config['genesis']['sections']['genesis_header'] );
+	$config['genesis']['sections']['genesis_archives']['controls']['content_archive_thumbnail']['description'] = __( 'Affects all content archives unless set to table or grid view, e.g. People archive image display/size is under People > Archive Settings > Post Layout Settings in the Dashboard', 'beng' );
 	return $config;
 }
+
 
 
 add_action( 'customize_register', 'berkeley_theme_settings_customizer_register', 999 );

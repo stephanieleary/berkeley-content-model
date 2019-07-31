@@ -391,7 +391,7 @@ function berkeley_post_layout_settings_box() {
 		<th scope="row">
 		</th>
 		<td>
-			<p> <?php _e( 'For Image settings under List view, see Genesis Theme Settings > Content Archives', 'beng' ); ?></p>
+			<p> <?php _e( 'For Image settings under List view, see Customizer > Theme Settings > Content Archives', 'beng' ); ?></p>
 		</td>
 	</tr>
 	
