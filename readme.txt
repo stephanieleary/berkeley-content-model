@@ -8,7 +8,7 @@ License: GPL2
 Text Domain: beng
 Requires at least: 3.1
 Tested up to: 5.2.2
-Stable tag: 2.2
+Stable tag: 2.2.1
 
 == Description ==
 
@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 2.2.1 =
+* added Research section heading on People singular archives
 = 2.2 =
 * Genesis 3.x compatibility. Move old Genesis Theme Options page settings to Customizer
 = 2.1 =

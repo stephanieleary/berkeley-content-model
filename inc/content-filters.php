@@ -235,11 +235,11 @@ function berkeley_display_custom_field_content( $content ) {
 				$prefix = apply_filters( 'berkeley_subject_area_prefix', esc_html__( 'Research Interests: ', 'berkeley-coe-theme' ) );
 				$after_content .= get_the_term_list( get_the_ID(), 'subject_area', '<h3>'.$prefix.'</h3><div class="subject_area">', ', ', '</div>' );
 			}
-			if ( has_term( 'faculty', 'people_type' ) )	
-				$after_content .= get_field( 'research_description' );
+			
 
 			// WYSIWYG fields
 			$sections = array(
+				'research'					=> apply_filters( 'berkeley_people_research_prefix', esc_html__( 'Research', 'berkeley-coe-theme' ) ),
 				'education'					=> apply_filters( 'berkeley_people_education_prefix', esc_html__( 'Education', 'berkeley-coe-theme' ) ),
 				'awards'					=> apply_filters( 'berkeley_people_awards_prefix', esc_html__( 'Awards', 'berkeley-coe-theme' ) ),
 				'experience'				=> apply_filters( 'berkeley_people_experience_prefix', esc_html__( 'Experience', 'berkeley-coe-theme' ) ),
