@@ -1,11 +1,11 @@
 <?php
 
 // Filter the Recent Posts widget to specify the post type when possible
-add_filter( 'widget_posts_args', 'berkeley_recent_post_widget_args' );
+add_filter( 'widget_posts_args', 'berkeley_eng_recent_post_widget_args' );
 
-function berkeley_recent_post_widget_args( $args ) {
-	if ( function_exists( 'berkeley_find_post_type' ) )
-		$type = berkeley_find_post_type();
+function berkeley_eng_recent_post_widget_args( $args ) {
+	if ( function_exists( 'berkeley_eng_find_post_type' ) )
+		$type = berkeley_eng_find_post_type();
 	else
 		$type = get_query_var( 'post_type' );
 	
@@ -17,7 +17,7 @@ function berkeley_recent_post_widget_args( $args ) {
 
 // Add background color selector to specific widgets
 // cf. http://ednailor.com/2011/01/24/adding-custom-css-classes-to-sidebar-widgets/
-function berkeley_editor_widget_class_form_extend( $instance, $widget ) {
+function berkeley_eng_editor_widget_class_form_extend( $instance, $widget ) {
 	// apply only to the rich text widget for now
 	if ( 'wp_editor_widget' !== $widget->id_base )
 		return $instance;
@@ -41,17 +41,17 @@ function berkeley_editor_widget_class_form_extend( $instance, $widget ) {
 	return $instance;
 }
 
-add_filter( 'widget_form_callback', 'berkeley_editor_widget_class_form_extend', 10, 2 );
+add_filter( 'widget_form_callback', 'berkeley_eng_editor_widget_class_form_extend', 10, 2 );
 
-function berkeley_editor_widget_class_update( $instance, $new_instance ) {
+function berkeley_eng_editor_widget_class_update( $instance, $new_instance ) {
 	if ( isset( $new_instance['classes'] ) && in_array( $new_instance['classes'], array( 'bold', 'subtle' ) ) )
 		$instance['classes'] = $new_instance['classes'];
 	return $instance;
 }
 
-add_filter( 'widget_update_callback', 'berkeley_editor_widget_class_update', 10, 2 );
+add_filter( 'widget_update_callback', 'berkeley_eng_editor_widget_class_update', 10, 2 );
 
-function berkeley_editor_widget_class_params( $params ) {
+function berkeley_eng_editor_widget_class_params( $params ) {
 	if ( is_admin() )
 		return $params;
 	
@@ -66,4 +66,4 @@ function berkeley_editor_widget_class_params( $params ) {
 
 	return $params;
 }
-add_filter( 'dynamic_sidebar_params', 'berkeley_editor_widget_class_params' );
+add_filter( 'dynamic_sidebar_params', 'berkeley_eng_editor_widget_class_params' );

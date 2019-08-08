@@ -1,14 +1,14 @@
 <?php
 
 // hide taxonomy metaboxes for fields that are shown in ACF
-add_action( 'admin_menu', 'berkeley_engineering_remove_tax_metaboxes', 99 );
-function berkeley_engineering_remove_tax_metaboxes() {
+add_action( 'admin_menu', 'berkeley_eng_remove_tax_metaboxes', 99 );
+function berkeley_eng_remove_tax_metaboxes() {
 	remove_meta_box( 'people_typediv', 'people', 'side' );
 	remove_meta_box( 'facility_typediv', 'facility', 'side' );
 }
 
 // infer post type when query var is not set
-function berkeley_find_post_type() {
+function berkeley_eng_find_post_type() {
 	
 	$type = get_query_var( 'post_type' );
 	
@@ -24,7 +24,7 @@ function berkeley_find_post_type() {
 }
 
 // add post_type arg to term links (narrow down the query)
-function berkeley_taxonomy_link_for_post_type( $termlink, $term, $taxonomy ) {
+function berkeley_eng_taxonomy_link_for_post_type( $termlink, $term, $taxonomy ) {
 	
 	$tax_obj = get_taxonomy( $taxonomy );
 	
@@ -32,7 +32,7 @@ function berkeley_taxonomy_link_for_post_type( $termlink, $term, $taxonomy ) {
 	if ( count( $tax_obj->object_type ) == 1 )
 		return $termlink;
 	
-	$post_type = berkeley_find_post_type();
+	$post_type = berkeley_eng_find_post_type();
 	
 	if ( !isset( $post_type ) || 'any' == $post_type )
 		return $termlink;
@@ -44,7 +44,7 @@ function berkeley_taxonomy_link_for_post_type( $termlink, $term, $taxonomy ) {
 
 
 // get an array of taxonomy term IDs associated with a specific post type (for shared taxonomies)
-function berkeley_get_term_ids_limited_to_post_type( $taxonomies, $post_types ) {
+function berkeley_eng_get_term_ids_limited_to_post_type( $taxonomies, $post_types ) {
 	
 	$transient = sanitize_key( 'limited_term_ids_' . $taxonomies . '_for_' . $post_types );
 	
@@ -79,7 +79,7 @@ function berkeley_get_term_ids_limited_to_post_type( $taxonomies, $post_types ) 
 
 }
 
-function berkeley_get_terms_parent_ids( $limited_term_ids, $taxonomy ) {
+function berkeley_eng_get_terms_parent_ids( $limited_term_ids, $taxonomy ) {
 	
 	$parent_ids = array();
 	foreach ( $limited_term_ids as $child_term ) {
@@ -93,7 +93,7 @@ function berkeley_get_terms_parent_ids( $limited_term_ids, $taxonomy ) {
 function berkeley_get_term_post_count_by_type( $term_ids, $taxonomy, $post_type = '' ) {
 	
 	if ( !isset( $post_type ) || empty( $post_type ) )
-		$post_type = berkeley_find_post_type();
+		$post_type = berkeley_eng_find_post_type();
 	
 	if ( !isset( $post_type ) )
 		return -1;

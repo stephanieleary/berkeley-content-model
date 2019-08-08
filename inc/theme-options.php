@@ -1,8 +1,8 @@
 <?php
 
-add_action( 'customize_controls_print_styles', 'berkeley_customizer_styles', 999 );
+add_action( 'customize_controls_print_styles', 'berkeley_eng_customizer_styles', 999 );
 
-function berkeley_customizer_styles() { ?>
+function berkeley_eng_customizer_styles() { ?>
 	<style>
 		#customize-theme-controls #customize-control-genesis_style_selection {
 			background: url( <?php echo plugins_url( '../images/color-schemes/color-schemes-layers.png', __FILE__ ); ?>) bottom left no-repeat;
@@ -14,9 +14,9 @@ function berkeley_customizer_styles() { ?>
 }
 
 
-add_filter( 'genesis_customizer_theme_settings_config', 'berkeley_genesis_theme_settings_config' );
+add_filter( 'genesis_customizer_theme_settings_config', 'berkeley_eng_theme_settings_config' );
 
-function berkeley_genesis_theme_settings_config( $config ) {
+function berkeley_eng_theme_settings_config( $config ) {
 	unset( $config['genesis']['sections']['genesis_updates'] );
 	unset( $config['genesis']['sections']['genesis_header'] );
 	$config['genesis']['sections']['genesis_archives']['controls']['content_archive_thumbnail']['description'] = __( 'Affects all content archives unless set to table or grid view, e.g. People archive image display/size is under People > Archive Settings > Post Layout Settings in the Dashboard', 'beng' );
@@ -25,11 +25,11 @@ function berkeley_genesis_theme_settings_config( $config ) {
 
 
 
-add_action( 'customize_register', 'berkeley_theme_settings_customizer_register', 999 );
+add_action( 'customize_register', 'berkeley_eng_theme_settings_customizer_register', 999 );
 
-function berkeley_theme_settings_customizer_register( $wp_customize ) {
+function berkeley_eng_theme_settings_customizer_register( $wp_customize ) {
 
-	$defaults = berkeley_theme_defaults();
+	$defaults = berkeley_eng_theme_defaults();
 	
 	// remove WP Colors section; use Theme Settings -> Color Scheme instead
 	$wp_customize->remove_section( 'colors' );
@@ -102,9 +102,9 @@ function berkeley_theme_settings_customizer_register( $wp_customize ) {
 }
 
 
-add_filter( 'genesis_theme_settings_defaults', 'berkeley_theme_defaults' );
+add_filter( 'genesis_theme_settings_defaults', 'berkeley_eng_theme_defaults' );
 
-function berkeley_theme_defaults( $defaults = array() ) {
+function berkeley_eng_theme_defaults( $defaults = array() ) {
 	$defaults['genesis_be_show_logo'] = true;
 	$defaults['genesis_be_hide_title'] = false;
 	$defaults['style_selection'] = 'pool';
@@ -114,9 +114,9 @@ function berkeley_theme_defaults( $defaults = array() ) {
 }
 
 // Copy settings from older versions of Genesis
-add_action( 'upgrader_process_complete', 'be_genesis_upgrade_completed', 10, 2 );
+add_action( 'upgrader_process_complete', 'berkeley_eng_genesis_upgrade_completed', 10, 2 );
 
-function be_genesis_upgrade_completed( $upgrader_object, $args ) { 
+function berkeley_eng_genesis_upgrade_completed( $upgrader_object, $args ) { 
 	if( $args['action'] == 'update' && $args['type'] == 'theme' ) {
 		$version = genesis_get_option( 'theme_version' );
 		if ( $version >= 3 ) {

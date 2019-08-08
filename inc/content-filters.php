@@ -1,16 +1,16 @@
 <?php
 
 // Send taxonomy archive links to the same post type we're currently viewing
-add_action( 'genesis_before', 'berkeley_filter_term_links' );
+add_action( 'genesis_before', 'berkeley_filter_cpt_term_links' );
 
-function berkeley_filter_term_links() {
-	if ( !is_admin() && function_exists( 'berkeley_taxonomy_link_for_post_type' ) )
-		add_filter( 'term_link', 'berkeley_taxonomy_link_for_post_type', 10, 3 );
+function berkeley_filter_cpt_term_links() {
+	if ( !is_admin() && function_exists( 'berkeley_eng_taxonomy_link_for_post_type' ) )
+		add_filter( 'term_link', 'berkeley_eng_taxonomy_link_for_post_type', 10, 3 );
 }
 
 // Filter the "no content matched your criteria" error
-add_filter( 'genesis_noposts_text', 'berkeley_noposts_text', 10, 2 );
-function berkeley_noposts_text( $text ) {
+add_filter( 'genesis_noposts_text', 'berkeley_noposts_text_filter', 10, 2 );
+function berkeley_noposts_text_filter( $text ) {
 	if ( is_search() ) {
 		$text = esc_html__( "I'm sorry. I couldn't find any pages with that phrase. Try again?", 'berkeley-coe-theme' );
 	} elseif ( is_archive() ) {
@@ -20,17 +20,9 @@ function berkeley_noposts_text( $text ) {
 	return $text;
 }
 
-
-// Filter Skip link text
-add_filter( 'genesis_skip_links_output', 'berkeley_skip_links_output' );
-function berkeley_skip_links_output( $links ) {
-	$links['genesis-content'] = esc_html__( 'Skip to main content', 'beng' );
-	return $links;
-}
-
 // Filter breadcrumbs
-add_filter( 'genesis_build_crumbs', 'berkeley_breadcrumbs', 10, 2 );
-function berkeley_breadcrumbs( $crumbs, $args ) {
+add_filter( 'genesis_build_crumbs', 'berkeley_breadcrumbs_define_current', 10, 2 );
+function berkeley_breadcrumbs_define_current( $crumbs, $args ) {
 	// remove existing final crumb, which includes parent and current page (WHY)
 	$lastcrumb = array_pop( $crumbs );
 	$pos = strrpos( $lastcrumb, '>' );
@@ -46,7 +38,7 @@ function berkeley_breadcrumbs( $crumbs, $args ) {
 // Main content filters
 // Prepend / Append custom field output to post body ($content)
 
-function berkeley_display_custom_field_content( $content ) {
+function berkeley_display_acf_content( $content ) {
 	
 	$before_content = $after_content = '';
 	$post_type = get_post_type();
@@ -181,7 +173,7 @@ function berkeley_display_custom_field_content( $content ) {
 				$before_content .= sprintf( '<p class="bio-phone"><strong>%s </strong><a href="tel:%d">%s</a></p>', $prefix, $number, $phone );
 			endif;
 		
-			$before_content .= berkeley_links_repeater();
+			$before_content .= berkeley_eng_links_repeater();
 
 			$address = array_filter( array( 
 				'line1' => get_field( 'address_line_1' ), 
@@ -287,34 +279,34 @@ function berkeley_display_custom_field_content( $content ) {
 	return $before_content . $content . $after_content;
 }
 
-add_filter( 'the_content', 'berkeley_display_custom_field_content' );
+add_filter( 'the_content', 'berkeley_display_acf_content' );
 
 // Replace built-in post content function with our custom one
 
-function berkeley_replace_post_content() {
+function berkeley_eng_replace_post_content() {
 	
 	if ( is_post_type_archive() || is_tax() ) {
-		$post_type = berkeley_find_post_type();		
+		$post_type = berkeley_eng_find_post_type();		
 	}
 	if ( $post_type ) {
 		remove_filter( 'the_excerpt', 'wpautop' );
 		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
 		remove_action( 'genesis_post_content', 'genesis_do_post_content' );
-		add_action( 'genesis_entry_content', 'berkeley_do_post_content' );
-		add_action( 'genesis_post_content', 'berkeley_do_post_content' );
-		add_filter( 'excerpt_length', 'berkeley_post_type_excerpt_length', 999 );
+		add_action( 'genesis_entry_content', 'berkeley_eng_do_post_content' );
+		add_action( 'genesis_post_content', 'berkeley_eng_do_post_content' );
+		add_filter( 'excerpt_length', 'berkeley_eng_excerpt_length', 999 );
 		// modify Read More link when using <!--more--> in post content
-		add_filter( 'the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
+		add_filter( 'the_content_more_link', 'berkeley_eng_read_more_link', 999 );
 		// modify Read More link when using Genesis-generated excerpts
-		add_filter( 'get_the_content_more_link', 'berkeley_genesis_read_more_link', 999 );
+		add_filter( 'get_the_content_more_link', 'berkeley_eng_read_more_link', 999 );
 		// modify Read More link in custom excerpts
-		add_filter( 'excerpt_more', 'berkeley_genesis_read_more_link', 999 );
+		add_filter( 'excerpt_more', 'berkeley_eng_read_more_link', 999 );
 	}
 }
-add_action( 'genesis_before', 'berkeley_replace_post_content' );
+add_action( 'genesis_before', 'berkeley_eng_replace_post_content' );
 
 
-function berkeley_do_post_content() {
+function berkeley_eng_do_post_content() {
 
 	if ( is_singular() ) {
 		the_content();
@@ -333,7 +325,7 @@ function berkeley_do_post_content() {
 		$post_type = '';
 		
 		if ( is_post_type_archive() || is_tax() ) {
-			$post_type = berkeley_find_post_type();		
+			$post_type = berkeley_eng_find_post_type();		
 			$post_layout = genesis_get_cpt_option( 'post_layout', $post_type );
 		}
 		if ( $post_type && isset( $post_layout ) ) {
@@ -348,9 +340,9 @@ function berkeley_do_post_content() {
 		}
 		else {
 			if ( genesis_get_option( 'content_archive_limit' ) ) {
-				the_content_limit( (int) genesis_get_option( 'content_archive_limit' ), genesis_a11y_more_link( berkeley_genesis_read_more_link() ) );
+				the_content_limit( (int) genesis_get_option( 'content_archive_limit' ), genesis_a11y_more_link( berkeley_eng_read_more_link() ) );
 			} else {
-				the_content( genesis_a11y_more_link( berkeley_genesis_read_more_link() ) );
+				the_content( genesis_a11y_more_link( berkeley_eng_read_more_link() ) );
 			}
 		}
 		
@@ -361,7 +353,7 @@ function berkeley_do_post_content() {
 }
 
 
-function berkeley_links_repeater() {
+function berkeley_eng_links_repeater() {
 	$content = '';
 	// links repeater
 	// check if the repeater field has rows of data
@@ -381,11 +373,11 @@ function berkeley_links_repeater() {
 	return $content;
 }
 
-add_filter( 'the_excerpt', 'berkeley_display_custom_excerpts' );
+add_filter( 'the_excerpt', 'berkeley_custom_excerpts' );
 
-function berkeley_display_custom_excerpts( $excerpt ) {
+function berkeley_custom_excerpts( $excerpt ) {
 	if ( is_post_type_archive() || is_tax() ) {
-		$post_type = berkeley_find_post_type();
+		$post_type = berkeley_eng_find_post_type();
 		if ( $post_type ) {
 			$pre = do_shortcode( genesis_get_cpt_option( 'before_excerpt', $post_type ) );
 			$post = do_shortcode( genesis_get_cpt_option( 'after_excerpt', $post_type ) );
@@ -405,9 +397,9 @@ function berkeley_display_custom_excerpts( $excerpt ) {
 	return $excerpt;
 }
 
-function berkeley_post_type_excerpt_length( $n ) {
+function berkeley_eng_excerpt_length( $n ) {
 	if ( is_post_type_archive() || is_tax() ) {
-		$post_type = berkeley_find_post_type();
+		$post_type = berkeley_eng_find_post_type();
 		if ( $post_type )
 			$n = genesis_get_cpt_option( 'excerpt_words', $post_type );
 	}
@@ -417,13 +409,13 @@ function berkeley_post_type_excerpt_length( $n ) {
 
 
 
-function berkeley_genesis_read_more_link( $more ) {
+function berkeley_eng_read_more_link( $more ) {
 	/*
 	$excerpt = trim( get_post_field( 'post_excerpt', get_the_ID() ) );
 	if ( empty( $excerpt ) )
 		return '';
 	/**/
-	$post_type = berkeley_find_post_type();
+	$post_type = berkeley_eng_find_post_type();
 	if ( $post_type && ( is_post_type_archive() || is_tax() ) ) {
 		$more = sanitize_text_field( genesis_get_cpt_option( 'excerpt_readmore', $post_type ) );
 	}
@@ -438,7 +430,7 @@ function berkeley_genesis_read_more_link( $more ) {
 // entry header: post info
 // entry footer: post meta
 
-function berkeley_post_info_filter( $post_info ) {
+function berkeley_eng_post_info_filter( $post_info ) {
 	$post_type = get_post_type();
 	$post_id = get_the_ID();
 	$post_info = '';
@@ -482,9 +474,9 @@ function berkeley_post_info_filter( $post_info ) {
 	}
 	return $post_info;
 }
-add_filter( 'genesis_post_info', 'berkeley_post_info_filter' );
+add_filter( 'genesis_post_info', 'berkeley_eng_post_info_filter' );
 
-function berkeley_post_meta_filter( $post_meta ) {
+function berkeley_eng_post_meta_filter( $post_meta ) {
 	$post_type = get_post_type();
 	$post_id = get_the_ID();
 	$post_meta = '';
@@ -503,4 +495,4 @@ function berkeley_post_meta_filter( $post_meta ) {
 	}
 	return $post_meta;
 }
-add_filter( 'genesis_post_meta', 'berkeley_post_meta_filter' );
+add_filter( 'genesis_post_meta', 'berkeley_eng_post_meta_filter' );

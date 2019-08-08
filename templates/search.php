@@ -2,9 +2,9 @@
 
 // Search results title
 remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
-add_action( 'genesis_before_loop', 'berkeley_do_search_title' );
+add_action( 'genesis_before_loop', 'berkeley_eng_do_search_title' );
 
-function berkeley_do_search_title() {
+function berkeley_eng_do_search_title() {
 	global $wp_query;
 	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 	if ( $paged > 1 ) {

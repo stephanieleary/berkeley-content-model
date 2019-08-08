@@ -1,6 +1,6 @@
 <?php
 
-function berkeley_content_model_post_types() {
+function berkeley_eng_content_model_post_types() {
 	
 	add_post_type_support( 'page', 'excerpt' );
 

@@ -5,27 +5,27 @@ add_filter( 'jpeg_quality', function( $arg ){ return 100; } );
 
 // Disable Genesis's default first-uploaded image fallback
 
-add_filter( 'genesis_get_image_default_args', 'berkeley_image_default_args' );
+add_filter( 'genesis_get_image_default_args', 'berkeley_eng_image_default_args' );
 
-function berkeley_image_default_args( $args ) {
+function berkeley_eng_image_default_args( $args ) {
 	$args['fallback'] = '';
 	return $args;
 }
 
 // Blog post image sizes
 
-add_filter( 'genesis_pre_get_option_image_size', 'berkeley_blog_image_sizes' );
+add_filter( 'genesis_pre_get_option_image_size', 'berkeley_eng_blog_image_sizes' );
 
-function berkeley_blog_image_sizes( $size = 'thumbnail' ) {
+function berkeley_eng_blog_image_sizes( $size = 'thumbnail' ) {
 	if ( is_sticky() && ( 'post' == get_post_type() || !is_main_query() ) ) {
 		$size = 'medium';
 	}
 	return $size;
 }
 
-add_filter( 'genesis_attr_entry-image', 'berkeley_blog_image_classes', 10, 2 );
+add_filter( 'genesis_attr_entry-image', 'berkeley_eng_blog_image_classes', 10, 2 );
 
-function berkeley_blog_image_classes( $attributes, $context ) {
+function berkeley_eng_blog_image_classes( $attributes, $context ) {
 	if ( is_sticky() && ( 'post' == get_post_type() || !is_main_query() ) ) {
 		$attributes['class'] = str_replace( array( 'alignleft', 'alignnone', 'aligncenter' ), '', $attributes['class'] );
 		$attributes['class'] .= ' alignright';
@@ -35,9 +35,9 @@ function berkeley_blog_image_classes( $attributes, $context ) {
 
 // Default site icon / favicon
 
-add_filter( 'get_custom_logo', 'berkeley_site_icon' );
+add_filter( 'get_custom_logo', 'berkeley_eng_site_icon' );
 
-function berkeley_site_icon( $html ) {
+function berkeley_eng_site_icon( $html ) {
 	if ( empty( $html ) ) {
 		$custom_logo_id = get_theme_mod( 'custom_logo' );
 		if ( !isset($custom_logo_id ) || empty( $custom_logo_id ) ) {
@@ -51,21 +51,10 @@ function berkeley_site_icon( $html ) {
 	return $html;
 }
 
-//add_filter( 'get_site_icon_url', 'berkeley_site_icon_url', 10, 3 );
-
-function berkeley_site_icon_url( $url = '', $size = 512, $blog_id = 0 ) {
-	$default_url = get_stylesheet_directory_uri() . "/images/BE-favicon-{$size}x{$size}.png";
-	if ( file_exists( $default_url ) )
-		$url = $default_url;
-	else
-		$url = $default_url = get_stylesheet_directory_uri() . "/images/BE-favicon.png";
-	return $url;
-}
-
 remove_action( 'wp_head', 'genesis_load_favicon' );
-add_filter( 'genesis_pre_load_favicon', 'berkeley_favicon' );
+add_filter( 'genesis_pre_load_favicon', 'berkeley_load_favicon' );
 
-function berkeley_favicon( $favicon_url ) {
+function berkeley_load_favicon( $favicon_url ) {
 	if ( has_site_icon() )
 		return $favicon_url;
 	return get_stylesheet_directory_uri() . '/images/BE-favicon-150x150.png';
@@ -73,9 +62,9 @@ function berkeley_favicon( $favicon_url ) {
 
 // Featured Image support
 
-//add_action( 'genesis_before_entry', 'berkeley_featured_image_singular', 8 );
-add_action( 'genesis_entry_header', 'berkeley_featured_image_singular', 1 );
-function berkeley_featured_image_singular() {
+//add_action( 'genesis_before_entry', 'berkeley_eng_featured_image_singular', 8 );
+add_action( 'genesis_entry_header', 'berkeley_eng_featured_image_singular', 1 );
+function berkeley_eng_featured_image_singular() {
 	if ( ! is_singular() || ! has_post_thumbnail() )
 		return;
 	

@@ -4,9 +4,9 @@
 add_theme_support( 'genesis-after-entry-widget-area' );
 
 //* Add support for after-entry widget area to CPTs as well
-add_action( 'genesis_entry_footer', 'berkeley_after_entry_widget'  );
+add_action( 'genesis_entry_footer', 'berkeley_eng_after_entry_widget'  );
  
-function berkeley_after_entry_widget() {
+function berkeley_eng_after_entry_widget() {
 	if ( ! is_page() )
 		return;
 
@@ -16,16 +16,16 @@ function berkeley_after_entry_widget() {
 	) );
 }
 
-function berkeley_sidebar_title_output( $heading, $sidebar_id ) {
+function berkeley_eng_sidebar_title_output( $heading, $sidebar_id ) {
 	return '';
 }
 
-add_filter( 'genesis_sidebar_title_output', 'berkeley_sidebar_title_output', 10, 2 );
+add_filter( 'genesis_sidebar_title_output', 'berkeley_eng_sidebar_title_output', 10, 2 );
 
 
-add_action( 'after_setup_theme', 'berkeley_register_sidebars' );
+add_action( 'after_setup_theme', 'berkeley_eng_register_sidebars' );
 
-function berkeley_register_sidebars() {
+function berkeley_eng_register_sidebars() {
 	// Register widget areas 
 	// * Announcement feature
 	genesis_register_sidebar( array(
@@ -53,7 +53,7 @@ function berkeley_register_sidebars() {
 	) );
 	
 	
-	// CPT-specific sidebar names match CPT names; see berkeley_do_sidebar() below
+	// CPT-specific sidebar names match CPT names; see berkeley_eng_do_sidebar() below
 	$cpts = get_option( 'berkeley_cpts' );
 	
 	if ( 1 == $cpts[ 'people' ] )
@@ -91,16 +91,16 @@ function berkeley_register_sidebars() {
 
 // Do widget areas on corresponding post types
 
-add_action( 'get_header', 'berkeley_cpt_switch_sidebar' );
+add_action( 'get_header', 'berkeley_eng_cpt_switch_sidebar' );
 
-function berkeley_cpt_switch_sidebar() {
+function berkeley_eng_cpt_switch_sidebar() {
 	remove_action( 'genesis_sidebar', 'genesis_do_sidebar' ); 
-	add_action( 'genesis_sidebar', 'berkeley_do_sidebar' );
+	add_action( 'genesis_sidebar', 'berkeley_eng_do_sidebar' );
 }
 
-function berkeley_do_sidebar() {
-	if ( function_exists( 'berkeley_find_post_type' ) )
-		$type = berkeley_find_post_type();
+function berkeley_eng_do_sidebar() {
+	if ( function_exists( 'berkeley_eng_find_post_type' ) )
+		$type = berkeley_eng_find_post_type();
 	else
 		$type = get_query_var( 'post_type' );
 	

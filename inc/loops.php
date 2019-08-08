@@ -1,8 +1,8 @@
 <?php
 
-add_filter( 'pre_get_posts', 'berkeley_cpt_archive_sort' );
+add_filter( 'pre_get_posts', 'berkeley_eng_cpt_archive_sort' );
 
-function berkeley_cpt_archive_sort( $query ) {
+function berkeley_eng_cpt_archive_sort( $query ) {
 	if ( is_admin() )
 		return $query;
 	if ( !is_archive() )
@@ -48,14 +48,14 @@ function berkeley_cpt_archive_sort( $query ) {
 	
 	// handle CPT archive grid/table layout loop settings
 	if ( is_post_type_archive() ) {
-		berkeley_genesis_archive_paging( $query, $query->post_type );
+		berkeley_cpt_archive_paging( $query, $query->post_type );
 	}
 	
 	// if single-CPT taxonomy, inherit CPT archive layout settings
-	if ( is_tax() && function_exists( 'berkeley_find_post_type' ) ) {
-		$post_type = berkeley_find_post_type();
+	if ( is_tax() && function_exists( 'berkeley_eng_find_post_type' ) ) {
+		$post_type = berkeley_eng_find_post_type();
 		if ( isset( $post_type ) && !empty( $post_type ) ) {
-			berkeley_genesis_archive_paging( $query, $post_type );
+			berkeley_cpt_archive_paging( $query, $post_type );
 		}
 	}
 	
@@ -63,7 +63,7 @@ function berkeley_cpt_archive_sort( $query ) {
 }
 
 
-function berkeley_genesis_archive_paging( $query, $post_type ) {
+function berkeley_cpt_archive_paging( $query, $post_type ) {
 	
 	$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 	
@@ -87,11 +87,11 @@ function berkeley_genesis_archive_paging( $query, $post_type ) {
 }
 
 // Grid loop post classes
-add_filter( 'post_class', 'berkeley_grid_post_classes' );
+add_filter( 'post_class', 'berkeley_eng_grid_post_classes' );
 
-function berkeley_grid_post_classes( $classes ) {
+function berkeley_eng_grid_post_classes( $classes ) {
 	if ( is_post_type_archive() || is_tax() ) {
-		$post_type = berkeley_find_post_type();
+		$post_type = berkeley_eng_find_post_type();
 
 		$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 		if ( 'grid' !== $layout ) 
@@ -133,22 +133,22 @@ function berkeley_grid_post_classes( $classes ) {
 
 // Grid loop image setting override 
 
-add_action( 'genesis_meta', 'berkeley_grid_post_images' );
+add_action( 'genesis_meta', 'berkeley_eng_grid_post_images' );
 
-function berkeley_grid_post_images() {
+function berkeley_eng_grid_post_images() {
 	if ( is_post_type_archive() || is_tax() ) {
 		remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 		remove_action( 'genesis_post_content', 'genesis_do_post_image' );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_image', 1 );
-		add_action( 'genesis_entry_header', 'berkeley_do_post_image', 1 );
+		add_action( 'genesis_entry_header', 'berkeley_eng_do_post_image', 1 );
 	}
 }
 
-function berkeley_do_post_image() {
+function berkeley_eng_do_post_image() {
 	if ( !is_archive() )
 		return;
 		
-	$post_type = berkeley_find_post_type();
+	$post_type = berkeley_eng_find_post_type();
 	$size = 0;
 	
 	if ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) ) {
@@ -193,9 +193,9 @@ function berkeley_do_post_image() {
 }
 
 // switch loops when applicable
-add_action( 'genesis_before', 'berkeley_genesis_hooks', 10 );
-function berkeley_genesis_hooks() {
-	$post_type = berkeley_find_post_type();
+add_action( 'genesis_before', 'berkeley_eng_genesis_hooks', 10 );
+function berkeley_eng_genesis_hooks() {
+	$post_type = berkeley_eng_find_post_type();
 	
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 	remove_action( 'genesis_post_content', 'genesis_do_post_image' );
@@ -208,7 +208,7 @@ function berkeley_genesis_hooks() {
 	}
 	
 	if ( is_archive() )
-		add_action( 'genesis_loop', 'berkeley_sticky_post_loop', 1 );
+		add_action( 'genesis_loop', 'berkeley_eng_sticky_post_loop', 1 );
 	
 	$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 	
@@ -217,21 +217,21 @@ function berkeley_genesis_hooks() {
 		
 		if ( $layout == 'table' ) {
 			remove_action( 'genesis_loop', 'genesis_do_loop' );
-			add_action( 'genesis_loop', 'berkeley_cpt_table_loop', 10 );
+			add_action( 'genesis_loop', 'berkeley_eng_cpt_table_loop', 10 );
 		}
 		elseif ( $subdivide ) {
 			remove_action( 'genesis_loop', 'genesis_do_loop' );
-			add_action( 'genesis_loop', 'berkeley_cpt_archive_subdivisions_loop', 10 );
+			add_action( 'genesis_loop', 'berkeley_eng_cpt_archive_subdivisions_loop', 10 );
 		}
 	}
 	
 	if ( is_tax() ) {
-		add_action( 'genesis_before', 'berkeley_taxonomy_loop_switch', 99 );
+		add_action( 'genesis_before', 'berkeley_eng_taxonomy_loop_switch', 99 );
 		
 		// inherit CPT archive settings for single-CPT taxonomies
 		if ( $layout == 'table' ) {
 			remove_action( 'genesis_loop', 'genesis_do_loop' );
-			add_action( 'genesis_loop', 'berkeley_cpt_table_loop', 10 );
+			add_action( 'genesis_loop', 'berkeley_eng_cpt_table_loop', 10 );
 		}
 	}
 }
@@ -239,7 +239,7 @@ function berkeley_genesis_hooks() {
 
 // Shared taxonomies: list post types with filtered links
 
-function berkeley_list_taxonomy_post_types() {
+function berkeley_eng_list_taxonomy_post_types() {
 	$current_term = get_queried_object();
 	$tax_obj = get_taxonomy( $current_term->taxonomy );
 	if ( count( $tax_obj->object_type ) ) {
@@ -255,27 +255,27 @@ function berkeley_list_taxonomy_post_types() {
 
 // Single taxonomies: replace loop with list of post types if there's more than one
 
-function berkeley_taxonomy_loop_switch() {
-	if ( function_exists( 'berkeley_find_post_type' ) )
-		$type = berkeley_find_post_type();
+function berkeley_eng_taxonomy_loop_switch() {
+	if ( function_exists( 'berkeley_eng_find_post_type' ) )
+		$type = berkeley_eng_find_post_type();
 	else
 		$type = get_query_var( 'post_type' );
 		
 	if ( empty( $type ) || 'any' == $type || is_array( $type ) ) {
 		remove_action( 'genesis_loop', 'genesis_do_loop' );
-		remove_action( 'genesis_loop', 'berkeley_cpt_table_loop', 10 );
-		remove_action( 'genesis_loop', 'berkeley_cpt_archive_subdivisions_loop', 10 );
-		add_action( 'genesis_loop', 'berkeley_list_taxonomy_post_types', 1 );
+		remove_action( 'genesis_loop', 'berkeley_eng_cpt_table_loop', 10 );
+		remove_action( 'genesis_loop', 'berkeley_eng_cpt_archive_subdivisions_loop', 10 );
+		add_action( 'genesis_loop', 'berkeley_eng_list_taxonomy_post_types', 1 );
 	}
 	else
-		add_action( 'genesis_loop', 'berkeley_sticky_post_loop', 1 );
+		add_action( 'genesis_loop', 'berkeley_eng_sticky_post_loop', 1 );
 }
 
 // CPT archives with optional taxonomy-based subdivisions
 
-function berkeley_cpt_archive_subdivisions_loop() {
+function berkeley_eng_cpt_archive_subdivisions_loop() {
 	
-	$post_type = berkeley_find_post_type();
+	$post_type = berkeley_eng_find_post_type();
 	$divide_by_tax = genesis_get_cpt_option( 'subdivide', $post_type );
 	
 	if ( empty( $divide_by_tax ) ) {
@@ -317,7 +317,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 		$classes = array( 'wrap', 'subdivided', $post_type.'_type_loop', 'uncategorized' );
 		echo '<div class="' . implode( ' ', $classes ) . '">';
 		remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
-		remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+		remove_action( 'genesis_after_endwhile', 'berkeley_eng_a11y_posts_nav' );
 		unset( $args['fields'] );
 		genesis_custom_loop( wp_parse_args( $args, $query_args ) );
 		echo '</div>';
@@ -349,7 +349,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 			$classes = array( 'wrap', 'subdivided', $post_type.'_type_loop', $term->slug, $divide_by_tax );
 			echo '<div class="' . implode( ' ', $classes ) . '">';
 			remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
-			remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+			remove_action( 'genesis_after_endwhile', 'berkeley_eng_a11y_posts_nav' );
 			printf( '<h2 %s>%s</h2>', genesis_attr( 'archive-subtitle' ), strip_tags( $term->name ) );
 			unset( $args['fields'] );
 			genesis_custom_loop( wp_parse_args( $args, $query_args ) );
@@ -362,7 +362,7 @@ function berkeley_cpt_archive_subdivisions_loop() {
 
 // Sticky posts
 
-function berkeley_sticky_post_loop() {
+function berkeley_eng_sticky_post_loop() {
 	if ( !get_option( 'sticky_posts' ) )
 		return;
 		
@@ -383,17 +383,17 @@ function berkeley_sticky_post_loop() {
 			
 		echo '<div class="stickies">';
 		remove_action( 'genesis_loop_else', 'genesis_do_noposts' );
-		remove_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+		remove_action( 'genesis_after_endwhile', 'berkeley_eng_a11y_posts_nav' );
 		genesis_custom_loop( wp_parse_args( $args, $query_args ) );
 		add_action( 'genesis_loop_else', 'genesis_do_noposts' );
-		add_action( 'genesis_after_endwhile', 'berkeley_a11y_posts_nav' );
+		add_action( 'genesis_after_endwhile', 'berkeley_eng_a11y_posts_nav' );
 		echo '</div>';
 	endif;
 }
 
-add_filter( 'post_class', 'berkeley_sticky_post_class' );
+add_filter( 'post_class', 'berkeley_eng_sticky_post_class' );
 
-function berkeley_sticky_post_class( $classes ) {
+function berkeley_eng_sticky_post_class( $classes ) {
 	if ( is_sticky() || in_array( get_the_ID(), get_option( 'sticky_posts' ) ) )
 		$classes[] = 'sticky';
 	return $classes;
@@ -401,7 +401,7 @@ function berkeley_sticky_post_class( $classes ) {
 
 // Table loops
 
-function berkeley_loop_table_headers( $headers ) {
+function berkeley_eng_loop_table_headers( $headers ) {
 	$headerrow = '';
 	foreach ( $headers as $header ) {
 		$headerrow .= sprintf( "<th>%s</th>\n", $header );
@@ -416,7 +416,7 @@ function berkeley_loop_table_headers( $headers ) {
 		<tbody>'."\n", $headerrow );
 }
 
-function berkeley_loop_table_cells( $data ) {
+function berkeley_eng_loop_table_cells( $data ) {
 	$datarow = '';
 	$rowindex = 1;
 	foreach ( $data as $title => $field ) {
@@ -433,19 +433,19 @@ function berkeley_loop_table_cells( $data ) {
 	return sprintf( "<tr id='post-%d' %s>\n %s \n </tr>\n", get_the_ID(), genesis_attr( 'entry' ), $datarow );
 }
 
-function berkeley_loop_table_footer() {
+function berkeley_eng_loop_table_footer() {
 	return "</tbody>\n </table>\n</div><!-- .loop -->\n";
 }
 
 
-function berkeley_people_table_loop() {
+function berkeley_eng_people_table_loop() {
 	if ( have_posts() ) :
 
 		do_action( 'genesis_before_while' );
 		
 		$headers = array( esc_html__('Name', 'berkeley-coe-theme'), esc_html__('Title', 'berkeley-coe-theme'), esc_html__('Office', 'berkeley-coe-theme'), esc_html__('Email', 'berkeley-coe-theme') );
 		
-		echo berkeley_loop_table_headers( $headers );
+		echo berkeley_eng_loop_table_headers( $headers );
 	
 		while ( have_posts() ) : the_post();
 		
@@ -458,13 +458,13 @@ function berkeley_people_table_loop() {
 				sprintf( '<a href="mailto:%1$s">%1$s</a>', antispambot( get_field( 'email' ) ) )
 			);
 			
-			echo berkeley_loop_table_cells( array_combine( $headers, $data ) );
+			echo berkeley_eng_loop_table_cells( array_combine( $headers, $data ) );
 			
 			do_action( 'genesis_after_entry' );
 
 		endwhile; //* end of one post
 		
-		echo berkeley_loop_table_footer();
+		echo berkeley_eng_loop_table_footer();
 		
 		do_action( 'genesis_after_endwhile' );
 		
@@ -475,23 +475,23 @@ function berkeley_people_table_loop() {
 
 // Generic CPT table loops
 
-function berkeley_cpt_table_loop() {
+function berkeley_eng_cpt_table_loop() {
 	if ( have_posts() ) :
 
 		do_action( 'genesis_before_while' );
 		
-		$post_type = berkeley_find_post_type();
+		$post_type = berkeley_eng_find_post_type();
 		$headers = apply_filters( 'berkeley_loop_table_headers', genesis_get_cpt_option( 'table_headers', $post_type ) );
 					
-		echo berkeley_loop_table_headers( $headers );
+		echo berkeley_eng_loop_table_headers( $headers );
 	
 		while ( have_posts() ) : the_post();
 		
 			//do_action( 'genesis_before_entry' );
 			
-			$data = berkeley_loop_table_data( $headers );
+			$data = berkeley_eng_loop_table_data( $headers );
 			
-			echo berkeley_loop_table_cells( array_combine( $headers, $data ) );
+			echo berkeley_eng_loop_table_cells( array_combine( $headers, $data ) );
 			
 			//do_action( 'genesis_after_entry' );
 
@@ -508,7 +508,7 @@ function berkeley_cpt_table_loop() {
 	endif; //* end loop
 }
 
-function berkeley_loop_table_data( $headers ) {
+function berkeley_eng_loop_table_data( $headers ) {
 	$data = array();
 	$post_id = get_the_ID();
 	
@@ -590,13 +590,13 @@ function berkeley_loop_table_data( $headers ) {
 	return apply_filters( 'berkeley_loop_table_data', $data );
 }
 
-add_filter( 'berkeley_loop_table_headers', 'berkeley_table_header_labels' );
+add_filter( 'berkeley_eng_loop_table_headers', 'berkeley_eng_table_header_labels' );
 
-function berkeley_table_header_labels( $headers ) {
-	$post_type = berkeley_find_post_type();
+function berkeley_eng_table_header_labels( $headers ) {
+	$post_type = berkeley_eng_find_post_type();
 	if ( empty( $headers ) )
-		$headers = berkeley_get_default_table_view_headers( $post_type );
-	$labels = berkeley_get_available_table_view_headers( $post_type );
+		$headers = berkeley_eng_get_default_table_view_headers( $post_type );
+	$labels = berkeley_eng_get_available_table_view_headers( $post_type );
 	// array_intersect_keys() destroys order
 	$header_labels = array();
 	foreach ( $headers as $key ) {

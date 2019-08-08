@@ -15,25 +15,25 @@ if ( function_exists('acf_add_options_page') ) {
 }
 
 // Add menu location in footer
-function berkeley_register_footer_menu() {
+function berkeley_eng_register_footer_menu() {
 	register_nav_menu( 'footer-menu', esc_html__( 'Footer Navigation Menu', 'berkeley-coe-theme' ) );
 }
-add_action( 'init', 'berkeley_register_footer_menu' );
+add_action( 'init', 'berkeley_eng_register_footer_menu' );
 
 //* Add support for 3 rows (not columns!) of footer widgets
 add_theme_support( 'genesis-footer-widgets', 3 );
 
 //* Footer setup
-add_action( 'after_setup_theme', 'berkeley_footer_setup', 20 );
-function berkeley_footer_setup() {
+add_action( 'after_setup_theme', 'berkeley_eng_footer_setup', 20 );
+function berkeley_eng_footer_setup() {
 	remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
 	add_action( 'genesis_footer', 'genesis_footer_widget_areas', 6 );
 	// replace footer text
 	remove_action( 'genesis_footer', 'genesis_do_footer' );
-	add_action( 'genesis_footer', 'berkeley_custom_footer' );
+	add_action( 'genesis_footer', 'berkeley_eng_custom_footer' );
 }
 
-function berkeley_custom_footer() {
+function berkeley_eng_custom_footer() {
 	wp_nav_menu( array( 
 		'theme_location' => 'footer-menu', 
 		'container_class' => 'genesis-nav-menu', 
@@ -61,8 +61,8 @@ function berkeley_custom_footer() {
 
 //* Add count class to footer widgets
 // And add a note about 3-widget limit to widget description. 
-add_filter( 'dynamic_sidebar_params', 'berkeley_widget_count_params' );
-function berkeley_widget_count_params( $params ) {
+add_filter( 'dynamic_sidebar_params', 'berkeley_eng_widget_count_params' );
+function berkeley_eng_widget_count_params( $params ) {
 	if ( is_admin() )
 		return $params;
 		
@@ -103,8 +103,8 @@ function berkeley_widget_count_params( $params ) {
 }
 
 //* Limit footer widgets to 3 items
-add_action( 'admin_enqueue_scripts', 'berkeley_enqueue_limit_sidebars_scripts' );
-function berkeley_enqueue_limit_sidebars_scripts( $hook_suffix ) {
+add_action( 'admin_enqueue_scripts', 'berkeley_eng_enqueue_limit_sidebars_scripts' );
+function berkeley_eng_enqueue_limit_sidebars_scripts( $hook_suffix ) {
     if ( 'widgets.php' == $hook_suffix ) {
         wp_enqueue_script( 'berkeley-limit-sidebar-widgets', get_stylesheet_directory_uri() . '/js/limit-sidebar-widgets.js', array(), false, true );
     }

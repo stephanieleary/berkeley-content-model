@@ -1,6 +1,6 @@
 <?php
 
-class PageTemplater {
+class BerkeleyPageTemplater {
 
 	/**
 	 * A reference to an instance of this class.
@@ -137,4 +137,4 @@ class PageTemplater {
 
 
 } 
-add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'BerkeleyPageTemplater', 'get_instance' ) );
