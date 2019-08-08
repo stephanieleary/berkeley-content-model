@@ -18,7 +18,7 @@ class BerkeleyPageTemplater {
 	public static function get_instance() {
 
 		if ( null == self::$instance ) {
-			self::$instance = new PageTemplater();
+			self::$instance = new BerkeleyPageTemplater();
 		} 
 
 		return self::$instance;
