@@ -224,14 +224,14 @@ function berkeley_display_acf_content( $content ) {
 			}
 
 			if ( has_term( '', 'subject_area' ) ) {
-				$prefix = apply_filters( 'berkeley_subject_area_prefix', esc_html__( 'Research Interests: ', 'berkeley-coe-theme' ) );
+				$prefix = apply_filters( 'berkeley_subject_area_prefix', esc_html__( 'Subject areas: ', 'berkeley-coe-theme' ) );
 				$after_content .= get_the_term_list( get_the_ID(), 'subject_area', '<h3>'.$prefix.'</h3><div class="subject_area">', ', ', '</div>' );
 			}
 			
 
 			// WYSIWYG fields
 			$sections = array(
-				'research'					=> apply_filters( 'berkeley_people_research_prefix', esc_html__( 'Research', 'berkeley-coe-theme' ) ),
+				'research_description'		=> apply_filters( 'berkeley_people_research_prefix', esc_html__( 'Research', 'berkeley-coe-theme' ) ),
 				'education'					=> apply_filters( 'berkeley_people_education_prefix', esc_html__( 'Education', 'berkeley-coe-theme' ) ),
 				'awards'					=> apply_filters( 'berkeley_people_awards_prefix', esc_html__( 'Awards', 'berkeley-coe-theme' ) ),
 				'experience'				=> apply_filters( 'berkeley_people_experience_prefix', esc_html__( 'Experience', 'berkeley-coe-theme' ) ),
