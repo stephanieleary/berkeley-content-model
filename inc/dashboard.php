@@ -1,9 +1,9 @@
 <?php
-function berkeley_engineering_dashboard_widget_setup() {
+function berkeley_eng_dashboard_widget_setup() {
 	add_meta_box(
-	    'berkeley_engineering_dashboard_wayfinding_widget',
+	    'berkeley_eng_dashboard_wayfinding_widget',
 	   	'Manage Content',
-	    'berkeley_engineering_wayfinding_dashboard_widget',
+	    'berkeley_eng_dashboard_wayfinding_widget',
 	    'dashboard', 
 	    'normal',
 	    'high'
@@ -20,12 +20,15 @@ function berkeley_engineering_dashboard_widget_setup() {
 	remove_meta_box( 'dashboard_latest_comments', 'dashboard', 'normal' );
 	remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
 	// remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
+	
+	// Remove the WP Engine widget
+	unregister_widget( 'wpe_widget_powered_by' );
 }
 
-add_action( 'wp_dashboard_setup', 'berkeley_engineering_dashboard_widget_setup' );
+add_action( 'wp_dashboard_setup', 'berkeley_eng_dashboard_widget_setup' );
 
 
-function berkeley_engineering_wayfinding_dashboard_widget() {?>
+function berkeley_eng_dashboard_wayfinding_widget() {?>
 	<div class="welcome-panel">
 	<div class="welcome-panel-content">
 	<div class="welcome-panel-column-container">

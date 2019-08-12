@@ -1,32 +1,32 @@
 <?php
 
-add_action( 'admin_init', 'berkeley_cpts_setting_api_init' );
+add_action( 'admin_init', 'berkeley_eng_cpts_setting_api_init' );
 
-function berkeley_cpts_setting_api_init() {
+function berkeley_eng_cpts_setting_api_init() {
 	
 	register_setting(
 		'general',
 		'berkeley_cpts',
-		'berkeley_cpts_setting_validate'
+		'berkeley_eng_cpts_setting_validate'
 	);
 
 	add_settings_field( 
 		'berkeley_cpts', 
 		esc_html__( 'Enable Content Types' ), 
-		'berkeley_cpts_setting_html', 
+		'berkeley_eng_cpts_setting_html', 
 		'general' 
 	);
 	
 	register_setting(
 		'general',
 		'berkeley_taxes',
-		'berkeley_taxes_setting_validate'
+		'berkeley_eng_taxes_setting_validate'
 	);
 
 	add_settings_field( 
 		'berkeley_taxes', 
 		esc_html__( 'Enable Extra Groups for People' ), 
-		'berkeley_taxes_setting_html', 
+		'berkeley_eng_taxes_setting_html', 
 		'general' 
 	);
 	
@@ -39,13 +39,13 @@ function berkeley_cpts_setting_api_init() {
 	add_settings_field( 
 		'berkeley_gmaps_api', 
 		esc_html__( 'Google Maps API Key' ), 
-		'berkeley_gmaps_api_setting_html', 
+		'berkeley_eng_gmaps_api_setting_html', 
 		'general' 
 	);
 	
 }
 
-function berkeley_cpts_setting_validate( $settings ) {
+function berkeley_eng_cpts_setting_validate( $settings ) {
 	
 	$allcpts = array( 
 		'course', 
@@ -64,7 +64,7 @@ function berkeley_cpts_setting_validate( $settings ) {
 	return $newsettings;
 }
 
-function berkeley_taxes_setting_validate( $settings ) {
+function berkeley_eng_taxes_setting_validate( $settings ) {
 	
 	$taxes = array( 
 		'committee', 
@@ -87,7 +87,7 @@ function berkeley_taxes_setting_validate( $settings ) {
  *
  * @return html
  */
-function berkeley_cpts_setting_html() { 
+function berkeley_eng_cpts_setting_html() { 
 	
 	$cpts = get_option( 'berkeley_cpts' );
 
@@ -108,7 +108,7 @@ function berkeley_cpts_setting_html() {
 }
 
 
-function berkeley_taxes_setting_html() { 
+function berkeley_eng_taxes_setting_html() { 
 	
 	$taxes = get_option( 'berkeley_taxes' );
 
@@ -126,7 +126,7 @@ function berkeley_taxes_setting_html() {
 	
 }
 
-function berkeley_gmaps_api_setting_html() {
+function berkeley_eng_gmaps_api_setting_html() {
 	
 	$key = get_option( 'berkeley_gmaps_api' );
 	

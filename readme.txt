@@ -7,8 +7,8 @@ Description: Custom post types and taxonomies, plus various helper filters and D
 License: GPL2
 Text Domain: beng
 Requires at least: 3.1
-Tested up to: 4.5
-Stable tag: 1.9.4
+Tested up to: 5.2.2
+Stable tag: 2.3.1
 
 == Description ==
 
@@ -43,6 +43,18 @@ Includes filters for:
 
 == Changelog ==
 
+= 2.3.1 =
+* Correction to research and subject area labels in people archives
+= 2.3 =
+* renamed migrated functions to avoid collisions
+= 2.2.1 =
+* added Research section heading on People singular archives
+= 2.2 =
+* Genesis 3.x compatibility. Move old Genesis Theme Options page settings to Customizer
+= 2.1 =
+* migration-related bug fixes
+= 2.0 =
+* Move logical functions from theme to plugin in order to use them across other Genesis-based themes
 = 1.9.5 =
 * Adjust globals for PHP 7 compliance.
 = 1.9.4 =

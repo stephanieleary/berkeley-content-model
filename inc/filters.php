@@ -4,17 +4,18 @@
 define( 'WPE_GOVERNOR', false );
 
 // Pass Google Maps API key option to Advanced Custom Fields options
-add_action( 'acf/init', 'berkeley_gmaps_for_acf' );
+add_action( 'acf/init', 'berkeley_gmaps_for_acf_api_key' );
 
-function berkeley_gmaps_for_acf() {
+function berkeley_gmaps_for_acf_api_key() {
 	$key = sanitize_text_field( get_option( 'berkeley_gmaps_api' ) );
 	if ( $key )
 		acf_update_setting( 'google_api_key', $key );
 }
 
-add_action( 'pre_get_posts', 'berkeley_engineering_pre_posts_filters' );
 
-function berkeley_engineering_pre_posts_filters( $query ) {
+// set loop sort
+add_action( 'pre_get_posts', 'berkeley_eng_pre_posts_filters' );
+function berkeley_eng_pre_posts_filters( $query ) {
 	if ( is_admin() )
 		return $query;
 	
@@ -34,10 +35,28 @@ function berkeley_engineering_pre_posts_filters( $query ) {
 	}
 }
 
-// Change placeholder text for  post titles
-add_filter( 'enter_title_here', 'berkeley_engineering_title_placeholders' );
+// Add body classes to post type archives
+add_filter( 'body_class', 'berkeley_cpt_body_classes' );
+function berkeley_cpt_body_classes( $classes ) {
+	if ( is_post_type_archive() ) {
+		if ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) ) {
+			$size = genesis_get_cpt_option( 'grid_thumbnail_size', $post_type );
 
-function berkeley_engineering_title_placeholders( $placeholder ){
+		}
+		elseif ( genesis_get_option( 'content_archive_thumbnail' ) ) {
+			$size = genesis_get_option( 'image_size' );
+		}
+
+		if ( !empty( $size ) )
+			$classes[] = 'content_archive_thumbnails_on';
+	}
+	return $classes;
+}
+
+// Change placeholder text for  post titles
+add_filter( 'enter_title_here', 'berkeley_eng_title_placeholders' );
+
+function berkeley_eng_title_placeholders( $placeholder ){
     $screen = get_current_screen();
 	switch ( $screen->post_type ) {
 		case 'people':
