@@ -8,7 +8,7 @@ License: GPL2
 Text Domain: beng
 Requires at least: 3.1
 Tested up to: 5.2.2
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 
 == Description ==
 
@@ -43,6 +43,8 @@ Includes filters for:
 
 == Changelog ==
 
+= 2.3.2 =
+* Prevent fatal errors involving Genesis functions
 = 2.3.1 =
 * Correction to research and subject area labels in people archives
 = 2.3 =
