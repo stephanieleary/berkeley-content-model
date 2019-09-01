@@ -38,7 +38,7 @@ function berkeley_eng_pre_posts_filters( $query ) {
 // Add body classes to post type archives
 add_filter( 'body_class', 'berkeley_cpt_body_classes' );
 function berkeley_cpt_body_classes( $classes ) {
-	if ( is_post_type_archive() ) {
+	if ( is_post_type_archive() && function_exists( 'genesis_get_cpt_option' ) ) {
 		if ( 'grid' == genesis_get_cpt_option( 'post_layout', $post_type ) ) {
 			$size = genesis_get_cpt_option( 'grid_thumbnail_size', $post_type );
 

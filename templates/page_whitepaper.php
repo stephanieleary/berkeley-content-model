@@ -3,6 +3,9 @@
 Template Name: White Paper
 */
 
+if ( !function_exists( 'genesis' ) )
+	return;
+
 //* Add custom body class to the head
 add_filter( 'body_class', 'berkeley_eng_whitepaper_body_class' );
 function berkeley_eng_whitepaper_body_class( $classes ) {

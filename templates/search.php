@@ -1,5 +1,8 @@
 <?php
 
+if ( !function_exists( 'genesis' ) )
+	return;
+
 // Search results title
 remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 add_action( 'genesis_before_loop', 'berkeley_eng_do_search_title' );

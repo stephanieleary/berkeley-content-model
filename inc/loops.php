@@ -65,6 +65,9 @@ function berkeley_eng_cpt_archive_sort( $query ) {
 
 function berkeley_cpt_archive_paging( $query, $post_type ) {
 	
+	if ( !function_exists( 'genesis_get_cpt_option' ) )
+		return $query;
+	
 	$layout = genesis_get_cpt_option( 'post_layout', $post_type );
 	
 	if ( 'grid' == $layout ) {
@@ -145,7 +148,7 @@ function berkeley_eng_grid_post_images() {
 }
 
 function berkeley_eng_do_post_image() {
-	if ( !is_archive() )
+	if ( !is_archive() || !function_exists( 'genesis_get_cpt_option' ) )
 		return;
 		
 	$post_type = berkeley_eng_find_post_type();
@@ -195,6 +198,9 @@ function berkeley_eng_do_post_image() {
 // switch loops when applicable
 add_action( 'genesis_before', 'berkeley_eng_genesis_hooks', 10 );
 function berkeley_eng_genesis_hooks() {
+	if ( !function_exists( 'genesis' ) )
+		return;
+	
 	$post_type = berkeley_eng_find_post_type();
 	
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
@@ -274,7 +280,9 @@ function berkeley_eng_taxonomy_loop_switch() {
 // CPT archives with optional taxonomy-based subdivisions
 
 function berkeley_eng_cpt_archive_subdivisions_loop() {
-	
+	if ( !function_exists( 'genesis' ) )
+		return;
+		
 	$post_type = berkeley_eng_find_post_type();
 	$divide_by_tax = genesis_get_cpt_option( 'subdivide', $post_type );
 	

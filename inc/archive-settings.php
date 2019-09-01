@@ -3,7 +3,7 @@
 add_action( 'init', 'berkeley_eng_cpt_slugs', 99 );
 
 function berkeley_eng_cpt_slugs() {
-	if ( !function_exists( 'genesis_get_cpt_option' ) )
+	if ( !function_exists( 'genesis' ) )
 		return;
 	
     $post_types = get_post_types( array( 'public' => true ) ); 
@@ -55,15 +55,17 @@ add_filter( 'genesis_cpt_archive_settings_defaults', 'berkeley_eng_cpt_genesis_s
 
 function berkeley_eng_cpt_genesis_settings_defaults( $settings, $post_type ) {
 	// Backward compatibility with Bill Erickson's Genesis Grid Loop plugin
-	$gg = array(
-		'grid_on' => genesis_get_option( 'grid_on_' . $post_type, 'genesis-grid' ),
-		'features_on_front' => (int) genesis_get_option( 'features_on_front', 'genesis-grid' ),
-		'teasers_on_front' =>  (int) genesis_get_option( 'teasers_on_front', 'genesis-grid' ),
-		'features_inside' =>   (int) genesis_get_option( 'features_inside', 'genesis-grid' ),
-		'teasers_inside' =>    (int) genesis_get_option( 'teasers_inside', 'genesis-grid' ),
-		'teaser_columns' =>    (int) genesis_get_option( 'teaser_columns', 'genesis-grid' ),
-		'teaser_image_size' => genesis_get_option( 'teaser_image_size', 'genesis-grid' ),
-	);
+	( if ( function_exists( 'genesis_get_option' ) ) ) {
+		$gg = array(
+			'grid_on' => genesis_get_option( 'grid_on_' . $post_type, 'genesis-grid' ),
+			'features_on_front' => (int) genesis_get_option( 'features_on_front', 'genesis-grid' ),
+			'teasers_on_front' =>  (int) genesis_get_option( 'teasers_on_front', 'genesis-grid' ),
+			'features_inside' =>   (int) genesis_get_option( 'features_inside', 'genesis-grid' ),
+			'teasers_inside' =>    (int) genesis_get_option( 'teasers_inside', 'genesis-grid' ),
+			'teaser_columns' =>    (int) genesis_get_option( 'teaser_columns', 'genesis-grid' ),
+			'teaser_image_size' => genesis_get_option( 'teaser_image_size', 'genesis-grid' ),
+		);
+	}
 	
 	$settings['slug'] = '';
 	$settings['post_layout'] = 'list'; 
@@ -218,6 +220,10 @@ function berkeley_eng_theme_options_sanitize_settings() {
 	$post_types = get_post_types( array( 'public' => true ) ); 
 
 	foreach ( $post_types as $post_type ) {
+		
+		if ( !function_exists( 'genesis_add_option_filter' ) )	
+			return;
+		
 		if ( isset( $post_type ) && is_object( $post_type ) && post_type_exists( $post_type ) ) {
 			$setting = '_genesis_admin_cpt_archives_' . $post_type;
 
@@ -264,7 +270,7 @@ function berkeley_eng_cpt_url_error_notice() {
 
 
 function berkeley_eng_cpt_url_settings_box() { 
-	if ( !function_exists( 'genesis_get_cpt_option' ) )
+	if ( !function_exists( 'genesis' ) )
 		return;
 		
 	$name = GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $_REQUEST['post_type'] . '[slug]';
