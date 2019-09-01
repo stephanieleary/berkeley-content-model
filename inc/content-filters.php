@@ -321,7 +321,7 @@ function berkeley_eng_do_post_content() {
 			edit_post_link( __( '(Edit)', 'genesis' ), '', '' );
 		}
 	}
-	else {
+	elseif ( function_exists( 'genesis_get_option' ) ) {
 		$post_type = '';
 		
 		if ( is_post_type_archive() || is_tax() ) {
@@ -378,7 +378,7 @@ add_filter( 'the_excerpt', 'berkeley_custom_excerpts' );
 function berkeley_custom_excerpts( $excerpt ) {
 	if ( is_post_type_archive() || is_tax() ) {
 		$post_type = berkeley_eng_find_post_type();
-		if ( $post_type ) {
+		if ( $post_type && function_exists( 'genesis_get_cpt_option' ) ) {
 			$pre = do_shortcode( genesis_get_cpt_option( 'before_excerpt', $post_type ) );
 			$post = do_shortcode( genesis_get_cpt_option( 'after_excerpt', $post_type ) );
 			
@@ -416,11 +416,11 @@ function berkeley_eng_read_more_link( $more ) {
 		return '';
 	/**/
 	$post_type = berkeley_eng_find_post_type();
-	if ( $post_type && ( is_post_type_archive() || is_tax() ) ) {
+	if ( $post_type && ( is_post_type_archive() || is_tax() ) && function_exists( 'genesis_get_cpt_option' ) ) {
 		$more = sanitize_text_field( genesis_get_cpt_option( 'excerpt_readmore', $post_type ) );
 	}
 	
-	if ( empty( $more ) )
+	if ( empty( $more ) && function_exists( 'genesis_a11y_more_link' ) )
 		$more = genesis_a11y_more_link( __( ' [More&hellip;]', 'beng' ) );
 	
 	return ' <a class="more-link" href="' . get_permalink() . '">'.$more.'</a>';

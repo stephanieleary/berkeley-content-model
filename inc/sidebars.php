@@ -26,6 +26,9 @@ add_filter( 'genesis_sidebar_title_output', 'berkeley_eng_sidebar_title_output',
 add_action( 'after_setup_theme', 'berkeley_eng_register_sidebars' );
 
 function berkeley_eng_register_sidebars() {
+	if ( !function_exists( 'genesis' ) )
+		return;
+		
 	// Register widget areas 
 	// * Announcement feature
 	genesis_register_sidebar( array(
@@ -109,6 +112,6 @@ function berkeley_eng_do_sidebar() {
 	
 	if ( isset( $type ) && !empty( $type ) && is_active_sidebar( $type ) && !in_array( $type, array( 'any', 'page', 'attachment' ) ) )
 		dynamic_sidebar( $type );
-	else
+	elseif ( function_exists( 'genesis_do_sidebar' ) )
 		genesis_do_sidebar();
 }

@@ -11,7 +11,7 @@ function berkeley_classic_editor_styles() {
 		add_editor_style( array( 'editor-style.css', berkeley_theme_fonts_url() ) );
 	
 	// add color scheme stylesheet
-	if ( function_exists( 'berkeley_get_color_stylesheet' ) )
+	if ( function_exists( 'berkeley_get_color_stylesheet' ) && function_exists( 'genesis_get_option' ) )
 		$path = berkeley_get_color_stylesheet( genesis_get_option( 'style_selection' ) );
 	if ( !empty( $path ) )
 		add_editor_style( $path );
@@ -19,7 +19,8 @@ function berkeley_classic_editor_styles() {
 
 // Add color scheme classes to TinyMCE styles
 function berkeley_tinymce_before_init( $init_array ) {
-    $init_array['body_class'] = genesis_get_option( 'style_selection' );
+	if ( function_exists( 'genesis_get_option' ) )
+    	$init_array['body_class'] = genesis_get_option( 'style_selection' );
 	$init_array['preview_styles'] = false;
 	
 	$template = get_post_meta( get_the_ID(), '_wp_page_template', true );

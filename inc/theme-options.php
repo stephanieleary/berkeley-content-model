@@ -117,6 +117,9 @@ function berkeley_eng_theme_defaults( $defaults = array() ) {
 add_action( 'upgrader_process_complete', 'berkeley_eng_genesis_upgrade_completed', 10, 2 );
 
 function berkeley_eng_genesis_upgrade_completed( $upgrader_object, $args ) { 
+	if ( !function_exists( 'genesis' ) )
+		return;
+		
 	if( $args['action'] == 'update' && $args['type'] == 'theme' ) {
 		$version = genesis_get_option( 'theme_version' );
 		if ( $version >= 3 ) {
