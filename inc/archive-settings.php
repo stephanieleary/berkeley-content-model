@@ -55,7 +55,7 @@ add_filter( 'genesis_cpt_archive_settings_defaults', 'berkeley_eng_cpt_genesis_s
 
 function berkeley_eng_cpt_genesis_settings_defaults( $settings, $post_type ) {
 	// Backward compatibility with Bill Erickson's Genesis Grid Loop plugin
-	( if ( function_exists( 'genesis_get_option' ) ) ) {
+	if ( function_exists( 'genesis_get_option' ) ) {
 		$gg = array(
 			'grid_on' => genesis_get_option( 'grid_on_' . $post_type, 'genesis-grid' ),
 			'features_on_front' => (int) genesis_get_option( 'features_on_front', 'genesis-grid' ),
